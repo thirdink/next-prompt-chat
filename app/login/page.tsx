@@ -28,6 +28,20 @@ export default function Login({
 		return redirect('/');
 	};
 
+	const signInWithGithub = async () => {
+		'use server';
+
+		const cookieStore = cookies();
+		const supabase = createClient(cookieStore);
+		const { data, error } = await supabase.auth.signInWithOAuth({
+			provider: 'github',
+		});
+		if (error) {
+			return redirect('/login?message=Could not authenticate user');
+		}
+		return redirect(data.url);
+	};
+
 	const signUp = async (formData: FormData) => {
 		'use server';
 
@@ -36,7 +50,6 @@ export default function Login({
 		const password = formData.get('password') as string;
 		const cookieStore = cookies();
 		const supabase = createClient(cookieStore);
-		console.log(email, password, origin);
 		const { error } = await supabase.auth.signUp({
 			email,
 			password,
@@ -114,6 +127,11 @@ export default function Login({
 						{searchParams.message}
 					</p>
 				)}
+			</form>
+			<form action={signInWithGithub}>
+				<button className='border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2'>
+					Sign In with Github
+				</button>
 			</form>
 		</div>
 	);
