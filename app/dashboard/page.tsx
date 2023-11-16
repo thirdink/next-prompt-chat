@@ -1,9 +1,9 @@
-import AuthButton from '../components/ui/AuthButton';
+import React from 'react';
+import AuthButton from '@/components/ui/AuthButton';
 import { createClient } from '@/utils/supabase/server';
 import Header from '@/components/ui/Header';
 import { cookies } from 'next/headers';
-
-export default async function Index() {
+const page = () => {
 	const cookieStore = cookies();
 
 	const canInitSupabaseClient = () => {
@@ -18,7 +18,6 @@ export default async function Index() {
 	};
 
 	const isSupabaseConnected = canInitSupabaseClient();
-
 	return (
 		<div className='flex-1 w-full flex flex-col gap-20 items-center'>
 			<nav className='w-full flex justify-center border-b border-b-foreground/10 h-16'>
@@ -46,4 +45,6 @@ export default async function Index() {
 			</footer>
 		</div>
 	);
-}
+};
+
+export default page;
