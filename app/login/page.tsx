@@ -128,11 +128,11 @@ export default function Login({
 					</p>
 				)}
 			</form>
-			<form action={signInWithGithub}>
+			{/* <form action={signInWithGithub}>
 				<button className='border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2'>
 					Sign In with Github
 				</button>
-			</form>
+			</form> */}
 		</div>
 	);
 }
