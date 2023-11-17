@@ -1,7 +1,7 @@
-import { GeistSans } from 'geist/font';
-import './globals.css';
+import '../styles/globals.css';
+import { ThemeProvider } from '@/components/theme-provider';
 import { Inter as FontSans } from 'next/font/google';
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 
 const defaultUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
@@ -24,16 +24,21 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang='en' className={GeistSans.className}>
+		<html lang='en'>
 			<body
 				className={cn(
 					'min-h-screen bg-background font-sans antialiased',
 					fontSans.variable
 				)}
 			>
-				<main className='min-h-screen flex flex-col items-center'>
+				<ThemeProvider
+					attribute='class'
+					defaultTheme='system'
+					enableSystem
+					disableTransitionOnChange
+				>
 					{children}
-				</main>
+				</ThemeProvider>
 			</body>
 		</html>
 	);
