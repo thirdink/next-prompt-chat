@@ -54,6 +54,9 @@ export const createClient = (request: NextRequest) => {
 					});
 				},
 			},
+			// auth: {
+			// 	debug: true,
+			// },
 		}
 	);
 
