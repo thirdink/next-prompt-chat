@@ -1,6 +1,6 @@
 import AuthButton from '../components/ui/AuthButton';
 import { createClient } from '@/lib/supabase/server';
-import Header from '@/components/ui/Header';
+
 import { cookies } from 'next/headers';
 
 export default async function Index() {
@@ -27,20 +27,18 @@ export default async function Index() {
 				</div>
 			</nav>
 
-			<div className='animate-in flex-1 flex flex-col gap-20 px-3 items-center'>
-				<Header />
-			</div>
+			<div className='animate-in flex-1 flex flex-col gap-20 px-3 items-center'></div>
 
 			<footer className='w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs'>
 				<p>
-					Powered by{' '}
+					Made by{' '}
 					<a
-						href='https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs'
+						href='https://rumitt.net'
 						target='_blank'
 						className='font-bold hover:underline'
 						rel='noreferrer'
 					>
-						Supabase
+						rumitt.net
 					</a>
 				</p>
 			</footer>
