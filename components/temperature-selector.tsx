@@ -33,6 +33,7 @@ export function TemperatureSelector({
 						</div>
 						<Slider
 							id='temperature'
+							name='temperature'
 							max={1}
 							defaultValue={value}
 							step={0.1}

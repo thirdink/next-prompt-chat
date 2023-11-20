@@ -58,6 +58,7 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
 			<Popover open={open} onOpenChange={setOpen} {...props}>
 				<PopoverTrigger asChild>
 					<Button
+					id='model'
 						variant='outline'
 						role='combobox'
 						aria-expanded={open}
