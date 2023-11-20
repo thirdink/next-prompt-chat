@@ -1,7 +1,4 @@
 import { Metadata } from 'next';
-import Image from 'next/image';
-
-import { Separator } from '@/components/ui/separator';
 import { SidebarNav } from '@/components/side-bar';
 import TopBar from '@/components/Top-Bar';
 
@@ -33,24 +30,24 @@ const sidebarNavItems = [
 	},
 ];
 
-interface SettingsLayoutProps {
+interface DashboardLayoutProps {
 	children: React.ReactNode;
 }
 
-export default function SettingsLayout({ children }: SettingsLayoutProps) {
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
 	return (
 		<>
 			<div className='space-y-6 md:block min-h-screen'>
 				<div className='space-y-0.5'>
-					<p className='text-muted-foreground'>
+					<div className='text-muted-foreground'>
 						<TopBar />
-					</p>
+					</div>
 				</div>
 				<div className='flex flex-col pl-10 space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>
 					<aside className='-mx-4 lg:w-1/5'>
 						<SidebarNav items={sidebarNavItems} />
 					</aside>
-					<div className='flex-1 lg:max-w-2xl h-fit'>{children}</div>
+					<div className='flex-1  h-fit'>{children}</div>
 				</div>
 				<footer className='w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs align-bottom'>
 					<p>
