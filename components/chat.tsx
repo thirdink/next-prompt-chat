@@ -83,7 +83,7 @@ export default function ChatPage() {
 										<div className='grid h-full grid-rows-2 gap-6 lg:grid-cols-2 lg:grid-rows-1'>
 											<Textarea
 												placeholder="We're writing to [inset]. Congrats from OpenAI!"
-												className='h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[500px]'
+												className='h-full min-h-[300px] lg:min-h-[500px] xl:min-h-[500px]'
 											/>
 											<div className='rounded-md border bg-muted'></div>
 										</div>
@@ -112,7 +112,7 @@ export default function ChatPage() {
 													<Textarea
 														id='input'
 														placeholder='We is going to the market.'
-														className='flex-1 lg:min-h-[580px]'
+														className='flex-1 lg:min-h-[381px]'
 													/>
 												</div>
 												<div className='flex flex-col space-y-2'>
