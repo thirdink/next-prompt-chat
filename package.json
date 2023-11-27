@@ -26,6 +26,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "geist": "^1.0.0",
+    "langchain": "^0.0.197-rc.1",
     "lucide-react": "^0.292.0",
     "next": "latest",
     "next-themes": "^0.2.1",

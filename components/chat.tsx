@@ -186,7 +186,7 @@ export default function ChatPage() {
 					</div>
 				</div>
 				<Separator />
-				<Tabs defaultValue='complete' className='flex-1'>
+				<Tabs defaultValue='edit' className='flex-1'>
 					<div className='container h-full py-6 w-10/12'>
 						<div className='grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]'>
 							<div className='hidden flex-col space-y-4 sm:flex md:order-2'>
@@ -197,6 +197,46 @@ export default function ChatPage() {
 								<TopPSelector defaultValue={[0.9]} />
 							</div>
 							<div className='md:order-1'>
+								<TabsContent
+									value='edit'
+									className='mt-0 border-0 p-0'
+								>
+									<div className='flex flex-col space-y-4'>
+										<div className='grid h-full gap-6 lg:grid-cols-2'>
+											<div className='flex flex-col space-y-4'>
+												<div className='flex flex-1 flex-col space-y-2'>
+													<Label htmlFor='input'>
+														Input
+													</Label>
+													<Textarea
+														id='input'
+														placeholder='We is going to the market.'
+														className='flex-1 lg:min-h-[381px]'
+													/>
+												</div>
+												<div className='flex flex-col space-y-2'>
+													<Label htmlFor='instructions'>
+														Instructions
+													</Label>
+													<Textarea
+														id='instructions'
+														placeholder='Fix the grammar.'
+													/>
+												</div>
+											</div>
+											<div className='mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px]' />
+										</div>
+										<div className='flex items-center space-x-2'>
+											<Button>Submit</Button>
+											<Button variant='secondary'>
+												<span className='sr-only'>
+													Show history
+												</span>
+												<CounterClockwiseClockIcon className='h-4 w-4' />
+											</Button>
+										</div>
+									</div>
+								</TabsContent>
 								<TabsContent
 									value='complete'
 									className='mt-0 border-0 p-0'
@@ -228,46 +268,6 @@ export default function ChatPage() {
 												className='h-full min-h-[300px] lg:min-h-[500px] xl:min-h-[500px]'
 											/>
 											<div className='rounded-md border bg-muted'></div>
-										</div>
-										<div className='flex items-center space-x-2'>
-											<Button>Submit</Button>
-											<Button variant='secondary'>
-												<span className='sr-only'>
-													Show history
-												</span>
-												<CounterClockwiseClockIcon className='h-4 w-4' />
-											</Button>
-										</div>
-									</div>
-								</TabsContent>
-								<TabsContent
-									value='edit'
-									className='mt-0 border-0 p-0'
-								>
-									<div className='flex flex-col space-y-4'>
-										<div className='grid h-full gap-6 lg:grid-cols-2'>
-											<div className='flex flex-col space-y-4'>
-												<div className='flex flex-1 flex-col space-y-2'>
-													<Label htmlFor='input'>
-														Input
-													</Label>
-													<Textarea
-														id='input'
-														placeholder='We is going to the market.'
-														className='flex-1 lg:min-h-[381px]'
-													/>
-												</div>
-												<div className='flex flex-col space-y-2'>
-													<Label htmlFor='instructions'>
-														Instructions
-													</Label>
-													<Textarea
-														id='instructions'
-														placeholder='Fix the grammar.'
-													/>
-												</div>
-											</div>
-											<div className='mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px]' />
 										</div>
 										<div className='flex items-center space-x-2'>
 											<Button>Submit</Button>
