@@ -38,7 +38,7 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
 	return (
 		<>
-			<div className='min-h-screen flex flex-col'>
+			<div className='min-h-screen flex flex-col m-auto p-auto w-full'>
 				<div className='space-y-0.5'>
 					<div className='text-muted-foreground'>
 						<TopBar />
@@ -48,7 +48,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 					<aside className='-mx-4 lg:w-1/8 pt-3'>
 						<SidebarNav items={sidebarNavItems} />
 					</aside>
-					<div className='flex-1  h-fit -mx-5'>{children}</div>
+					<div className='flex-1  h-fit -mx-5 w-fill-available'>
+						{children}
+					</div>
 				</div>
 				<Footer />
 			</div>
