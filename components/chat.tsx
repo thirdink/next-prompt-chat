@@ -187,7 +187,7 @@ export default function ChatPage() {
 				</div>
 				<Separator />
 				<Tabs defaultValue='complete' className='flex-1'>
-					<div className='container h-full py-6 w-11/12'>
+					<div className='container h-full py-6 w-10/12'>
 						<div className='grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]'>
 							<div className='hidden flex-col space-y-4 sm:flex md:order-2'>
 								<ChatTab />
