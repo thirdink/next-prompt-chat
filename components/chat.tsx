@@ -1,5 +1,7 @@
+'use client';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
+import { useChat } from 'ai/react';
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -19,149 +21,27 @@ import { TopPSelector } from '@/components/top-p-selector';
 import { models, types } from '@/data/models';
 import { presets } from '@/data/presets';
 import ChatTab from './ui/chat-tab';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { DrawingPinOutline } from './ui/svg';
+import PromptTopbar from './PromptTopBar';
 
 export const metadata: Metadata = {
 	title: 'Playground',
 	description: 'The OpenAI Playground built using the components.',
 };
 
-type promptType = {
-	key: string;
-	title: string;
-	body: string;
-	footer: string;
-};
-
 export default function ChatPage() {
-	const PromptData: Array<promptType> = [
-		{
-			key: '1',
-			title: 'Prompt Title 1',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
+	const { messages, input, handleInputChange, handleSubmit } = useChat({
+		sendExtraMessageFields: true,
+		body: {
+			model: 'davinci',
+			max_tokens: 5,
+			temperature: 0.5,
+			top_p: 1,
+			n: 1,
 		},
-		{
-			key: '2',
-			title: 'Prompt Title 2',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
+		onError: (error) => {
+			console.error(error);
 		},
-		{
-			key: '3',
-			title: 'Prompt Title 3',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '4',
-			title: 'Prompt Title 4',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '5',
-			title: 'Prompt Title 5',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '6',
-			title: 'Prompt Title 6',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '7',
-			title: 'Prompt Title 7',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '8',
-			title: 'Prompt Title 8',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '9',
-			title: 'Prompt Title 9',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '10',
-			title: 'Prompt Title 10',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '11',
-			title: 'Prompt Title 11',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '12',
-			title: 'Prompt Title 12',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '13',
-			title: 'Prompt Title 13',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '14',
-			title: 'Prompt Title 14',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '15',
-			title: 'Prompt Title 15',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-		{
-			key: '16',
-			title: 'Prompt Title 16',
-			body: 'Prompt Body',
-			footer: 'Prompt Footer',
-		},
-	];
-
-	const PromptTopbar = () => {
-		return (
-			<>
-				{PromptData.map((prompt) => {
-					return (
-						<div className='inline-block px-3' key={prompt.key}>
-							<Card className='max-w-xs overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out'>
-								<CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-									<CardTitle className='text-sm font-medium'>
-										{prompt.title}
-									</CardTitle>
-									<DrawingPinOutline />
-								</CardHeader>
-								<CardContent>
-									<div className='text-2xl font-bold'>
-										{prompt.body}
-									</div>
-									<p className='text-xs text-muted-foreground'>
-										{prompt.footer}
-									</p>
-								</CardContent>
-							</Card>
-						</div>
-					);
-				})}
-			</>
-		);
-	};
+	});
 	return (
 		<>
 			<div className='h-full flex-col flex m-auto p-auto'>
@@ -201,41 +81,62 @@ export default function ChatPage() {
 									value='edit'
 									className='mt-0 border-0 p-0'
 								>
-									<div className='flex flex-col space-y-4'>
-										<div className='grid h-full gap-6 lg:grid-cols-2'>
-											<div className='flex flex-col space-y-4'>
-												<div className='flex flex-1 flex-col space-y-2'>
-													<Label htmlFor='input'>
-														Input
-													</Label>
-													<Textarea
-														id='input'
-														placeholder='We is going to the market.'
-														className='flex-1 lg:min-h-[381px]'
-													/>
+									<form onSubmit={handleSubmit}>
+										<div className='flex flex-col space-y-4'>
+											<div className='grid h-full gap-6 lg:grid-cols-2'>
+												<div className='flex flex-col space-y-4'>
+													<div className='flex flex-1 flex-col space-y-2'>
+														<Label htmlFor='input'>
+															Input
+														</Label>
+														<Textarea
+															id='input'
+															placeholder='We is going to the market.'
+															className='flex-1 lg:min-h-[381px]'
+															value={input}
+															onChange={
+																handleInputChange
+															}
+														/>
+													</div>
+													<div className='flex flex-col space-y-2'>
+														<Label htmlFor='instructions'>
+															Instructions
+														</Label>
+														<Textarea
+															id='instructions'
+															placeholder='Fix the grammar.'
+														/>
+													</div>
 												</div>
-												<div className='flex flex-col space-y-2'>
-													<Label htmlFor='instructions'>
-														Instructions
-													</Label>
-													<Textarea
-														id='instructions'
-														placeholder='Fix the grammar.'
-													/>
+												<div className='mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px] max-h-[700px] overflow-auto'>
+													{messages.map((message) => (
+														<div
+															key={message.id}
+															className='p-4'
+														>
+															{message.role ===
+															'user'
+																? 'User: '
+																: 'AI: '}
+															{message.content}
+														</div>
+													))}
 												</div>
 											</div>
-											<div className='mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px]' />
+											<div className='flex items-center space-x-2'>
+												<Button type='submit'>
+													Submit
+												</Button>
+												<Button variant='secondary'>
+													<span className='sr-only'>
+														Show history
+													</span>
+													<CounterClockwiseClockIcon className='h-4 w-4' />
+												</Button>
+											</div>
 										</div>
-										<div className='flex items-center space-x-2'>
-											<Button>Submit</Button>
-											<Button variant='secondary'>
-												<span className='sr-only'>
-													Show history
-												</span>
-												<CounterClockwiseClockIcon className='h-4 w-4' />
-											</Button>
-										</div>
-									</div>
+									</form>
 								</TabsContent>
 								<TabsContent
 									value='complete'
@@ -270,7 +171,9 @@ export default function ChatPage() {
 											<div className='rounded-md border bg-muted'></div>
 										</div>
 										<div className='flex items-center space-x-2'>
-											<Button>Submit</Button>
+											<Button type='submit'>
+												Submit
+											</Button>
 											<Button variant='secondary'>
 												<span className='sr-only'>
 													Show history

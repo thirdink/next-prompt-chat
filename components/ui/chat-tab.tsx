@@ -76,7 +76,7 @@ const ChatTab = () => {
 						></path>
 					</svg>
 				</TabsTrigger>
-				<TabsTrigger value='insert'>
+				<TabsTrigger value='insert' disabled>
 					<span className='sr-only'>Insert</span>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
@@ -116,7 +116,7 @@ const ChatTab = () => {
 						></rect>
 					</svg>
 				</TabsTrigger>
-				<TabsTrigger value='complete'>
+				<TabsTrigger value='complete' disabled>
 					<span className='sr-only'>Complete</span>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
