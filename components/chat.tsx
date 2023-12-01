@@ -1,4 +1,5 @@
 'use client';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { useChat } from 'ai/react';
@@ -21,6 +22,7 @@ import { TopPSelector } from '@/components/top-p-selector';
 import { models, types } from '@/data/models';
 import { presets } from '@/data/presets';
 import ChatTab from './ui/chat-tab';
+import { Model } from '../data/models';
 import PromptTopbar from './PromptTopBar';
 
 export const metadata: Metadata = {
@@ -29,19 +31,43 @@ export const metadata: Metadata = {
 };
 
 export default function ChatPage() {
-	const { messages, input, handleInputChange, handleSubmit } = useChat({
-		sendExtraMessageFields: true,
-		body: {
-			model: 'davinci',
-			max_tokens: 5,
-			temperature: 0.5,
-			top_p: 1,
-			n: 1,
-		},
-		onError: (error) => {
-			console.error(error);
-		},
-	});
+	const [temperature, setTemperature] = useState([0.56]);
+	const [topP, setTopP] = useState([0.9]);
+	const [maxLength, setMaxLength] = useState([256]);
+	const [selectedModel, setSelectedModel] = React.useState<Model>(models[0]);
+	// const { messages, input, handleInputChange, handleSubmit, error } = useChat(
+	// 	{
+	// 		sendExtraMessageFields: true,
+	// 	}
+	// );
+	const chatOptions = useChat({ sendExtraMessageFields: true });
+
+	const handleChatOptions = () => {
+		console.log('Chat options');
+	};
+
+	// const handleChatForm = (e: FormEvent<HTMLFormElement>) => {
+	// 	handleSubmit(
+	// 		e,
+	// 		{},
+	// 		{
+	// 			body: {
+	// 				model,
+	// 			},
+	// 		}
+	// 	);
+	// };
+	// useEffect(() => {
+	// 	chatOptions.append({
+	// 		id: 'fsdfasdfsadf',
+	// 		temperature: temperature[0],
+	// 		top_p: topP[0],
+	// 		max_length: maxLength[0],
+	// 		selectedModel: selectedModel
+	// 	})
+	// 	console.log(chatOptions.data);
+	// }, [chatOptions]);
+
 	return (
 		<>
 			<div className='h-full flex-col flex m-auto p-auto'>
@@ -71,17 +97,24 @@ export default function ChatPage() {
 						<div className='grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]'>
 							<div className='hidden flex-col space-y-4 sm:flex md:order-2'>
 								<ChatTab />
-								<ModelSelector types={types} models={models} />
-								<TemperatureSelector defaultValue={[0.56]} />
-								<MaxLengthSelector defaultValue={[256]} />
-								<TopPSelector defaultValue={[0.9]} />
+								<ModelSelector
+									types={types}
+									models={models}
+									selectedModel={selectedModel}
+									setSelectedModel={setSelectedModel}
+								/>
+								<TemperatureSelector
+									defaultValue={temperature}
+								/>
+								<MaxLengthSelector defaultValue={maxLength} />
+								<TopPSelector defaultValue={topP} />
 							</div>
 							<div className='md:order-1'>
 								<TabsContent
 									value='edit'
 									className='mt-0 border-0 p-0'
 								>
-									<form onSubmit={handleSubmit}>
+									<form onSubmit={chatOptions.handleSubmit}>
 										<div className='flex flex-col space-y-4'>
 											<div className='grid h-full gap-6 lg:grid-cols-2'>
 												<div className='flex flex-col space-y-4'>
@@ -93,9 +126,11 @@ export default function ChatPage() {
 															id='input'
 															placeholder='We is going to the market.'
 															className='flex-1 lg:min-h-[381px]'
-															value={input}
+															value={
+																chatOptions.input
+															}
 															onChange={
-																handleInputChange
+																chatOptions.handleInputChange
 															}
 														/>
 													</div>
@@ -110,25 +145,32 @@ export default function ChatPage() {
 													</div>
 												</div>
 												<div className='mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px] max-h-[700px] overflow-auto'>
-													{messages.map((message) => (
-														<div
-															key={message.id}
-															className='p-4'
-														>
-															{message.role ===
-															'user'
-																? 'User: '
-																: 'AI: '}
-															{message.content}
-														</div>
-													))}
+													{chatOptions.messages.map(
+														(message) => (
+															<div
+																key={message.id}
+																className='p-4'
+															>
+																{message.role ===
+																'user'
+																	? 'User: '
+																	: 'AI: '}
+																{
+																	message.content
+																}
+															</div>
+														)
+													)}
 												</div>
 											</div>
 											<div className='flex items-center space-x-2'>
 												<Button type='submit'>
 													Submit
 												</Button>
-												<Button variant='secondary'>
+												<Button
+													variant='secondary'
+													disabled
+												>
 													<span className='sr-only'>
 														Show history
 													</span>
