@@ -88,10 +88,10 @@ export async function POST(req: NextRequest) {
 		}));
 
 		const response = await openai.chat.completions.create({
-			model: 'gpt-4',
+			model: 'gpt-3.5-turbo',
 			stream: true,
 			messages: allowedMessages,
-			temperature: 0.2,
+			temperature: 0.8,
 			top_p: 1.0,
 			n: 1,
 			presence_penalty: 0.0,
