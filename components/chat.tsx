@@ -57,16 +57,16 @@ export default function ChatPage() {
 	// 		}
 	// 	);
 	// };
-	useEffect(() => {
-		chatOptions.append({
-			id: 'fsdfasdfsadf',
-			temperature: temperature[0],
-			top_p: topP[0],
-			max_length: maxLength[0],
-			selectedModel: selectedModel,
-		});
-		console.log(chatOptions.data);
-	}, [chatOptions]);
+	// useEffect(() => {
+	// 	chatOptions.append({
+	// 		id: 'fsdfasdfsadf',
+	// 		temperature: temperature[0],
+	// 		top_p: topP[0],
+	// 		max_length: maxLength[0],
+	// 		selectedModel: selectedModel,
+	// 	});
+	// 	console.log(chatOptions.data);
+	// }, [chatOptions]);
 
 	return (
 		<>
