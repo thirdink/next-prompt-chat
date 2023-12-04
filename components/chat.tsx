@@ -48,10 +48,10 @@ export default function ChatPage() {
 		}
 	);
 
-	const handleInstructionsChange = (e: {
-		target: { value: React.SetStateAction<string> };
-	}) => {
-		setInstructions(e.target.value);
+	const handleInstructionsChange = (
+		event: React.ChangeEvent<HTMLTextAreaElement>
+	) => {
+		setInstructions(event.target.value);
 	};
 
 	useEffect(() => {
@@ -99,7 +99,7 @@ export default function ChatPage() {
 									defaultValue={temperature}
 									setTemperature={setTemperature}
 								/>
-								<MaxLengthSelector defaultValue={maxLength} />
+								<MaxLengthSelector defaultValue={maxLength} disabled/>
 								<TopPSelector
 									defaultValue={topP}
 									setTopP={setTopP}
