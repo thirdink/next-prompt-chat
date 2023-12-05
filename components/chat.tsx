@@ -34,39 +34,31 @@ export default function ChatPage() {
 	const [temperature, setTemperature] = useState([0.56]);
 	const [topP, setTopP] = useState([0.9]);
 	const [maxLength, setMaxLength] = useState([256]);
+	const [instructions, setInstructions] = useState('');
 	const [selectedModel, setSelectedModel] = React.useState<Model>(models[0]);
-	// const { messages, input, handleInputChange, handleSubmit, error } = useChat(
-	// 	{
-	// 		sendExtraMessageFields: true,
-	// 	}
-	// );
-	const chatOptions = useChat({ sendExtraMessageFields: true });
+	const { messages, input, handleInputChange, handleSubmit, error } = useChat(
+		{
+			sendExtraMessageFields: true,
+			body: {
+				temperature: temperature[0],
+				instructions,
+				topP: topP[0],
+				modelName: selectedModel.name,
+			},
+		}
+	);
 
-	const handleChatOptions = () => {
-		console.log('Chat options');
+	const handleInstructionsChange = (
+		event: React.ChangeEvent<HTMLTextAreaElement>
+	) => {
+		setInstructions(event.target.value);
 	};
 
-	// const handleChatForm = (e: FormEvent<HTMLFormElement>) => {
-	// 	handleSubmit(
-	// 		e,
-	// 		{},
-	// 		{
-	// 			body: {
-	// 				model,
-	// 			},
-	// 		}
-	// 	);
-	// };
-	// useEffect(() => {
-	// 	chatOptions.append({
-	// 		id: 'fsdfasdfsadf',
-	// 		temperature: temperature[0],
-	// 		top_p: topP[0],
-	// 		max_length: maxLength[0],
-	// 		selectedModel: selectedModel,
-	// 	});
-	// 	console.log(chatOptions.data);
-	// }, [chatOptions]);
+	useEffect(() => {
+		setInstructions(
+			'you are a pirate named patchy, all responses must be extremely verbose and in pirate dialect'
+		);
+	}, []);
 
 	return (
 		<>
@@ -105,16 +97,20 @@ export default function ChatPage() {
 								/>
 								<TemperatureSelector
 									defaultValue={temperature}
+									setTemperature={setTemperature}
 								/>
-								<MaxLengthSelector defaultValue={maxLength} />
-								<TopPSelector defaultValue={topP} />
+								<MaxLengthSelector defaultValue={maxLength} disabled/>
+								<TopPSelector
+									defaultValue={topP}
+									setTopP={setTopP}
+								/>
 							</div>
 							<div className='md:order-1'>
 								<TabsContent
 									value='edit'
 									className='mt-0 border-0 p-0'
 								>
-									<form onSubmit={chatOptions.handleSubmit}>
+									<form onSubmit={handleSubmit}>
 										<div className='flex flex-col space-y-4'>
 											<div className='grid h-full gap-6 lg:grid-cols-2'>
 												<div className='flex flex-col space-y-4'>
@@ -124,13 +120,11 @@ export default function ChatPage() {
 														</Label>
 														<Textarea
 															id='input'
-															placeholder='We is going to the market.'
+															placeholder='Create a paragraph on samurai in Japan in the 1800s.'
 															className='flex-1 lg:min-h-[381px]'
-															value={
-																chatOptions.input
-															}
+															value={input}
 															onChange={
-																chatOptions.handleInputChange
+																handleInputChange
 															}
 														/>
 													</div>
@@ -140,27 +134,29 @@ export default function ChatPage() {
 														</Label>
 														<Textarea
 															id='instructions'
-															placeholder='Fix the grammar.'
+															placeholder={
+																instructions
+															}
+															value={instructions}
+															onChange={
+																handleInstructionsChange
+															}
 														/>
 													</div>
 												</div>
 												<div className='mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px] max-h-[700px] overflow-auto'>
-													{chatOptions.messages.map(
-														(message) => (
-															<div
-																key={message.id}
-																className='p-4'
-															>
-																{message.role ===
-																'user'
-																	? 'User: '
-																	: 'AI: '}
-																{
-																	message.content
-																}
-															</div>
-														)
-													)}
+													{messages.map((message) => (
+														<div
+															key={message.id}
+															className='p-4'
+														>
+															{message.role ===
+															'user'
+																? 'User: '
+																: 'AI: '}
+															{message.content}
+														</div>
+													))}
 												</div>
 											</div>
 											<div className='flex items-center space-x-2'>

@@ -13,9 +13,13 @@ import { Slider } from '@/components/ui/slider';
 
 interface MaxLengthSelectorProps {
 	defaultValue: SliderProps['defaultValue'];
+	disabled: boolean;
 }
 
-export function MaxLengthSelector({ defaultValue }: MaxLengthSelectorProps) {
+export function MaxLengthSelector({
+	defaultValue,
+	disabled,
+}: MaxLengthSelectorProps) {
 	const [value, setValue] = React.useState(defaultValue);
 
 	return (
@@ -37,6 +41,7 @@ export function MaxLengthSelector({ defaultValue }: MaxLengthSelectorProps) {
 							onValueChange={setValue}
 							className='[&_[role=slider]]:h-4 [&_[role=slider]]:w-4'
 							aria-label='Maximum Length'
+							disabled={disabled}
 						/>
 					</div>
 				</HoverCardTrigger>
