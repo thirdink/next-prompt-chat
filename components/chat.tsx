@@ -62,7 +62,7 @@ export default function ChatPage() {
 
 	return (
 		<>
-			<div className='h-full flex-col flex m-auto p-auto'>
+			<div className='flex-col flex m-auto p-auto'>
 				<div className='flex overflow-x-scroll p-5 hide-scroll-bar'>
 					<div className='flex flex-nowrap ml-10 '>
 						<PromptTopbar />
@@ -85,8 +85,8 @@ export default function ChatPage() {
 				</div>
 				<Separator />
 				<Tabs defaultValue='edit' className='flex-1'>
-					<div className='container h-full py-6 w-10/12'>
-						<div className='grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]'>
+					<div className='container  py-6 w-10/12'>
+						<div className='grid items-stretch gap-6 md:grid-cols-[1fr_200px]'>
 							<div className='hidden flex-col space-y-4 sm:flex md:order-2'>
 								<ChatTab />
 								<ModelSelector
@@ -99,7 +99,10 @@ export default function ChatPage() {
 									defaultValue={temperature}
 									setTemperature={setTemperature}
 								/>
-								<MaxLengthSelector defaultValue={maxLength} disabled/>
+								<MaxLengthSelector
+									defaultValue={maxLength}
+									disabled
+								/>
 								<TopPSelector
 									defaultValue={topP}
 									setTopP={setTopP}
@@ -112,7 +115,7 @@ export default function ChatPage() {
 								>
 									<form onSubmit={handleSubmit}>
 										<div className='flex flex-col space-y-4'>
-											<div className='grid h-full gap-6 lg:grid-cols-2'>
+											<div className='grid gap-6 lg:grid-cols-2'>
 												<div className='flex flex-col space-y-4'>
 													<div className='flex flex-1 flex-col space-y-2'>
 														<Label htmlFor='input'>
@@ -180,7 +183,7 @@ export default function ChatPage() {
 									value='complete'
 									className='mt-0 border-0 p-0'
 								>
-									<div className='flex h-full flex-col space-y-4'>
+									<div className='flex flex-col space-y-4'>
 										<Textarea
 											placeholder='Write a tagline for an ice cream shop'
 											className='min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:min-h-[500px]'
@@ -201,10 +204,10 @@ export default function ChatPage() {
 									className='mt-0 border-0 p-0'
 								>
 									<div className='flex flex-col space-y-4'>
-										<div className='grid h-full grid-rows-2 gap-6 lg:grid-cols-2 lg:grid-rows-1'>
+										<div className='grid grid-rows-2 gap-6 lg:grid-cols-2 lg:grid-rows-1'>
 											<Textarea
 												placeholder="We're writing to [inset]. Congrats from OpenAI!"
-												className='h-full min-h-[300px] lg:min-h-[500px] xl:min-h-[500px]'
+												className='  min-h-[300px] lg:min-h-[500px] xl:min-h-[500px]'
 											/>
 											<div className='rounded-md border bg-muted'></div>
 										</div>
