@@ -23,7 +23,8 @@ import { models, types } from '@/data/models';
 import { presets } from '@/data/presets';
 import ChatTab from './ui/chat-tab';
 import { Model } from '../data/models';
-import PromptTopbar from './PromptTopBar';
+import PromptTopbar from '@/components/prompt-top-bar';
+import { ChatList } from '@/components/chat-list';
 
 export const metadata: Metadata = {
 	title: 'Playground',
@@ -85,7 +86,7 @@ export default function ChatPage() {
 				</div>
 				<Separator />
 				<Tabs defaultValue='edit' className='flex-1'>
-					<div className='container  py-6 w-10/12'>
+					<div className='container  py-6  w-10/12'>
 						<div className='grid items-stretch gap-6 md:grid-cols-[1fr_200px]'>
 							<div className='hidden flex-col space-y-4 sm:flex md:order-2'>
 								<ChatTab />
@@ -148,18 +149,15 @@ export default function ChatPage() {
 													</div>
 												</div>
 												<div className='mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px] max-h-[700px] overflow-auto'>
-													{messages.map((message) => (
-														<div
-															key={message.id}
-															className='p-4'
-														>
-															{message.role ===
-															'user'
-																? 'User: '
-																: 'AI: '}
-															{message.content}
-														</div>
-													))}
+													{messages.length ? (
+														<>
+															<ChatList
+																messages={
+																	messages
+																}
+															/>
+														</>
+													) : null}
 												</div>
 											</div>
 											<div className='flex items-center space-x-2'>
