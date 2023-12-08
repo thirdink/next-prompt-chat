@@ -7,7 +7,7 @@ const defaultUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
 	: 'http://localhost:3000';
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
 	subsets: ['latin'],
 	variable: '--font-sans',
 });

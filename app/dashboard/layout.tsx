@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { SidebarNav } from '@/components/side-bar';
-import TopBar from '@/components/Top-Bar';
+import TopBar from '@/components/top-bar';
 import Footer from '@/components/footer';
 
 export const metadata: Metadata = {
