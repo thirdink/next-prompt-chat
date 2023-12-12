@@ -67,6 +67,10 @@ export default function ChatPage() {
 			'you are a pirate named patchy, all responses must be extremely verbose and in pirate dialect'
 		);
 	}, []);
+
+	useEffect(() => {
+		console.log(messages);
+	},[messages])
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
