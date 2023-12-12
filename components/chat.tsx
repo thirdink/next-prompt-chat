@@ -25,6 +25,7 @@ import ChatTab from './ui/chat-tab';
 import { Model } from '../data/models';
 import PromptTopbar from '@/components/prompt-top-bar';
 import { ChatList } from '@/components/chat-list';
+import { useToast } from '@/components/ui/use-toast';
 
 export const metadata: Metadata = {
 	title: 'Playground',
@@ -32,22 +33,28 @@ export const metadata: Metadata = {
 };
 
 export default function ChatPage() {
+	const { toast } = useToast();
 	const [temperature, setTemperature] = useState([0.56]);
 	const [topP, setTopP] = useState([0.9]);
 	const [maxLength, setMaxLength] = useState([256]);
 	const [instructions, setInstructions] = useState('');
 	const [selectedModel, setSelectedModel] = React.useState<Model>(models[0]);
-	const { messages, input, handleInputChange, handleSubmit, error } = useChat(
-		{
-			sendExtraMessageFields: true,
-			body: {
-				temperature: temperature[0],
-				instructions,
-				topP: topP[0],
-				modelName: selectedModel.name,
-			},
-		}
-	);
+	const { messages, input, handleInputChange, handleSubmit } = useChat({
+		sendExtraMessageFields: true,
+		onError: (error) => {
+			toast({
+				variant: 'destructive',
+				title: 'Uh oh! Something went wrong.',
+				description: error.message,
+			});
+		},
+		body: {
+			temperature: temperature[0],
+			instructions,
+			topP: topP[0],
+			modelName: selectedModel.name,
+		},
+	});
 
 	const handleInstructionsChange = (
 		event: React.ChangeEvent<HTMLTextAreaElement>
@@ -60,7 +67,6 @@ export default function ChatPage() {
 			'you are a pirate named patchy, all responses must be extremely verbose and in pirate dialect'
 		);
 	}, []);
-
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
