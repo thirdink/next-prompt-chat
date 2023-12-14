@@ -1,8 +1,10 @@
 'use client';
+import { v4 as uuidv4 } from 'uuid';
 import React, { useState, useEffect, FormEvent } from 'react';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { useChat } from 'ai/react';
+import { createClient } from '@/lib/supabase/client';
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -33,12 +35,15 @@ export const metadata: Metadata = {
 };
 
 export default function ChatPage() {
+	const supabase = createClient();
 	const { toast } = useToast();
+	const [chatId, setChatId] = useState(uuidv4());
 	const [temperature, setTemperature] = useState([0.56]);
 	const [topP, setTopP] = useState([0.9]);
 	const [maxLength, setMaxLength] = useState([256]);
 	const [instructions, setInstructions] = useState('');
-	const [selectedModel, setSelectedModel] = React.useState<Model>(models[0]);
+	const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
+
 	const { messages, input, handleInputChange, handleSubmit } = useChat({
 		sendExtraMessageFields: true,
 		onError: (error) => {
@@ -53,6 +58,7 @@ export default function ChatPage() {
 			instructions,
 			topP: topP[0],
 			modelName: selectedModel.name,
+			chatId,
 		},
 	});
 
@@ -70,7 +76,7 @@ export default function ChatPage() {
 
 	useEffect(() => {
 		console.log(messages);
-	},[messages])
+	}, [messages]);
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
