@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import React, { useState, useEffect, FormEvent } from 'react';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
-import { useChat } from 'ai/react';
+import { useChat, Message } from 'ai/react';
 import { createClient } from '@/lib/supabase/client';
 
 import { Button } from '@/components/ui/button';
@@ -40,27 +40,80 @@ export default function ChatPage() {
 	const [chatId, setChatId] = useState(uuidv4());
 	const [temperature, setTemperature] = useState([0.56]);
 	const [topP, setTopP] = useState([0.9]);
+	const [prompt, setPrompt] = useState('');
+	const [output, setOutput] = useState<Array<Message>>([]);
 	const [maxLength, setMaxLength] = useState([256]);
+	const [history, setHistory] = useState([]);
 	const [instructions, setInstructions] = useState('');
 	const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
 
-	const { messages, input, handleInputChange, handleSubmit } = useChat({
-		sendExtraMessageFields: true,
-		onError: (error) => {
-			toast({
-				variant: 'destructive',
-				title: 'Uh oh! Something went wrong.',
-				description: error.message,
-			});
-		},
-		body: {
-			temperature: temperature[0],
-			instructions,
-			topP: topP[0],
-			modelName: selectedModel.name,
-			chatId,
-		},
-	});
+	const { messages, input, handleInputChange, handleSubmit, setInput } =
+		useChat({
+			sendExtraMessageFields: true,
+			onFinish: async (message) => {
+				const { data } = await supabase
+					.from('chats')
+					.upsert(
+						{
+							chat_id: chatId,
+							max_length_tokens: 256,
+							temp: temperature[0],
+							top_p: topP[0],
+						},
+						{ onConflict: 'chat_id' }
+					)
+					.select();
+				const { error } = await supabase.from('messages').insert([
+					{
+						chat_id: chatId,
+						message_content: message.content,
+						role: message.role,
+					},
+				]);
+				// const { data, error } = await supabase.rpc(
+				// 	'insert_chat_messages',
+				// 	{
+				// 		chat_id: chatId,
+				// 		max_length_tokens: 256,
+				// 		message_content: message.content,
+				// 		role: message.role,
+				// 		temp: temperature[0],
+				// 		top_p: topP[0],
+				// 	}
+				// );
+				if (error) {
+					console.error('error', error);
+					toast({
+						variant: 'destructive',
+						title: 'Uh oh! Something went wrong with supabase',
+						description: error.message,
+					});
+				}
+
+				console.log('message: ', message);
+				setOutput((oldArray) => [...oldArray, message]);
+			},
+			onError: (error) => {
+				console.error('error', error);
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: error.message,
+				});
+			},
+
+			body: {
+				temperature: temperature[0],
+				instructions,
+				topP: topP[0],
+				modelName: selectedModel.name,
+				chatId,
+			},
+		});
+	const handleSetInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setPrompt(event.target.value);
+		setInput(event.target.value);
+	};
 
 	const handleInstructionsChange = (
 		event: React.ChangeEvent<HTMLTextAreaElement>
@@ -77,6 +130,9 @@ export default function ChatPage() {
 	useEffect(() => {
 		console.log(messages);
 	}, [messages]);
+	useEffect(() => {
+		console.log('output ', output);
+	}, [output]);
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
@@ -142,9 +198,9 @@ export default function ChatPage() {
 															id='input'
 															placeholder='Create a paragraph on samurai in Japan in the 1800s.'
 															className='flex-1 lg:min-h-[381px]'
-															value={input}
+															value={prompt}
 															onChange={
-																handleInputChange
+																handleSetInput
 															}
 														/>
 													</div>
