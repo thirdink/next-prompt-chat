@@ -40,25 +40,14 @@ export async function POST(req: NextRequest) {
 		const currentMessageContent = messages[messages.length - 1].content;
 		const currentMessageRole = messages[messages.length - 1].role;
 		const prompt = PromptTemplate.fromTemplate(TEMPLATE(instructions));
-		const { data } = await supabase
-			.from('chats')
-			.upsert(
-				{
-					chat_id: chatId,
-					max_length_tokens: 256,
-					temp: temperature,
-					top_p: topP,
-				},
-				{ onConflict: 'chat_id' }
-			)
-			.select();
-		const { error } = await supabase.from('messages').insert([
-			{
-				chat_id: chatId,
-				message_content: currentMessageContent,
-				role: currentMessageRole,
-			},
-		]);
+		const { data, error } = await supabase.rpc('insert_chat_messages', {
+			p_chat_id: chatId,
+			max_length_tokens: 256,
+			message_content: currentMessageContent,
+			role: currentMessageRole,
+			temp: temperature[0],
+			top_p: topP[0],
+		});
 
 		/**
 		 * You can also try e.g.:

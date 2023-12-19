@@ -51,36 +51,36 @@ export default function ChatPage() {
 		useChat({
 			sendExtraMessageFields: true,
 			onFinish: async (message) => {
-				const { data } = await supabase
-					.from('chats')
-					.upsert(
-						{
-							chat_id: chatId,
-							max_length_tokens: 256,
-							temp: temperature[0],
-							top_p: topP[0],
-						},
-						{ onConflict: 'chat_id' }
-					)
-					.select();
-				const { error } = await supabase.from('messages').insert([
-					{
-						chat_id: chatId,
-						message_content: message.content,
-						role: message.role,
-					},
-				]);
-				// const { data, error } = await supabase.rpc(
-				// 	'insert_chat_messages',
+				// const { data } = await supabase
+				// 	.from('chats')
+				// 	.upsert(
+				// 		{
+				// 			chat_id: chatId,
+				// 			max_length_tokens: 256,
+				// 			temp: temperature[0],
+				// 			top_p: topP[0],
+				// 		},
+				// 		{ onConflict: 'chat_id' }
+				// 	)
+				// 	.select();
+				// const { error } = await supabase.from('messages').insert([
 				// 	{
 				// 		chat_id: chatId,
-				// 		max_length_tokens: 256,
 				// 		message_content: message.content,
 				// 		role: message.role,
-				// 		temp: temperature[0],
-				// 		top_p: topP[0],
-				// 	}
-				// );
+				// 	},
+				// ]);
+				const { data, error } = await supabase.rpc(
+					'insert_chat_messages',
+					{
+						p_chat_id: chatId,
+						max_length_tokens: 256,
+						message_content: message.content,
+						role: message.role,
+						temp: temperature[0],
+						top_p: topP[0],
+					}
+				);
 				if (error) {
 					console.error('error', error);
 					toast({
