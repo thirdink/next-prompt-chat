@@ -76,6 +76,20 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      get_user_chats: {
+        Args: {
+          p_user_id: string
+        }
+        Returns: {
+          chat_id: string
+          chat_created_at: string
+          user_id: string
+          temp: number
+          max_length_tokens: number
+          top_p: number
+          messages: Json
+        }[]
+      }
       hello: {
         Args: Record<PropertyKey, never>
         Returns: string

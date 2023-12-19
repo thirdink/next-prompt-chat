@@ -36,6 +36,7 @@ export const metadata: Metadata = {
 
 export default function ChatPage() {
 	const supabase = createClient();
+
 	const { toast } = useToast();
 	const [chatId, setChatId] = useState(uuidv4());
 	const [temperature, setTemperature] = useState([0.56]);
@@ -47,45 +48,44 @@ export default function ChatPage() {
 	const [instructions, setInstructions] = useState('');
 	const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
 
-	const { messages, input, handleInputChange, handleSubmit, setInput } =
-		useChat({
-			sendExtraMessageFields: true,
-			onFinish: async (message) => {
-				const { error } = await supabase.rpc('insert_chat_messages', {
-					p_chat_id: chatId,
-					max_length_tokens: 256,
-					message_content: message.content,
-					role: message.role,
-					temp: temperature[0],
-					top_p: topP[0],
-				});
-				if (error) {
-					console.error('error', error);
-					toast({
-						variant: 'destructive',
-						title: 'Uh oh! Something went wrong with supabase',
-						description: error.message,
-					});
-				}
-				setOutput((oldArray) => [...oldArray, message]);
-			},
-			onError: (error) => {
-				console.error('error', error);
+	const { messages, handleSubmit, setInput } = useChat({
+		sendExtraMessageFields: true,
+		onFinish: async (message) => {
+			const { error } = await supabase.rpc('insert_chat_messages', {
+				p_chat_id: chatId,
+				max_length_tokens: 256,
+				message_content: message.content,
+				role: message.role,
+				temp: temperature[0],
+				top_p: topP[0],
+			});
+			if (error) {
+				console.error('supabase error', error);
 				toast({
 					variant: 'destructive',
-					title: 'Uh oh! Something went wrong.',
+					title: 'Uh oh! Something went wrong with supabase',
 					description: error.message,
 				});
-			},
+			}
+			setOutput((oldArray) => [...oldArray, message]);
+		},
+		onError: (error) => {
+			console.error('streaming routes error', error);
+			toast({
+				variant: 'destructive',
+				title: 'Uh oh! Something went wrong.',
+				description: error.message,
+			});
+		},
 
-			body: {
-				temperature: temperature[0],
-				instructions,
-				topP: topP[0],
-				modelName: selectedModel.name,
-				chatId,
-			},
-		});
+		body: {
+			temperature: temperature[0],
+			instructions,
+			topP: topP[0],
+			modelName: selectedModel.name,
+			chatId,
+		},
+	});
 	const handleSetInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setPrompt(event.target.value);
 		setInput(event.target.value);
@@ -103,12 +103,45 @@ export default function ChatPage() {
 		);
 	}, []);
 
-	// useEffect(() => {
-	// 	console.log(messages);
-	// }, [messages]);
-	// useEffect(() => {
-	// 	console.log('output ', output);
-	// }, [output]);
+	useEffect(() => {
+		console.log(messages);
+	}, [messages]);
+	useEffect(() => {
+		console.log('output ', output);
+	}, [output]);
+	const getUserData = async () => {
+		const {
+			data: { user },
+		} = await supabase.auth.getUser();
+
+		const { data, error } = await supabase.rpc('get_user_chats', {
+			p_user_id: user?.id!,
+		});
+		if (error) {
+			console.error('supabase error', error);
+			toast({
+				variant: 'destructive',
+				title: 'Uh oh! Something went wrong with supabase',
+				description: error.message,
+			});
+		}
+		console.log('data ', data);
+	};
+	useEffect(() => {
+		getUserData();
+
+		// 	const { error } = await supabase.rpc('get_user_chats', {
+		// 		p_user_id:
+		// 	});
+		// 	if (error) {
+		// 		console.error('supabase error', error);
+		// 		toast({
+		// 			variant: 'destructive',
+		// 			title: 'Uh oh! Something went wrong with supabase',
+		// 			description: error.message,
+		// 		});
+		// 	}
+	}, []);
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
