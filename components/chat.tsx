@@ -51,36 +51,14 @@ export default function ChatPage() {
 		useChat({
 			sendExtraMessageFields: true,
 			onFinish: async (message) => {
-				// const { data } = await supabase
-				// 	.from('chats')
-				// 	.upsert(
-				// 		{
-				// 			chat_id: chatId,
-				// 			max_length_tokens: 256,
-				// 			temp: temperature[0],
-				// 			top_p: topP[0],
-				// 		},
-				// 		{ onConflict: 'chat_id' }
-				// 	)
-				// 	.select();
-				// const { error } = await supabase.from('messages').insert([
-				// 	{
-				// 		chat_id: chatId,
-				// 		message_content: message.content,
-				// 		role: message.role,
-				// 	},
-				// ]);
-				const { data, error } = await supabase.rpc(
-					'insert_chat_messages',
-					{
-						p_chat_id: chatId,
-						max_length_tokens: 256,
-						message_content: message.content,
-						role: message.role,
-						temp: temperature[0],
-						top_p: topP[0],
-					}
-				);
+				const { error } = await supabase.rpc('insert_chat_messages', {
+					p_chat_id: chatId,
+					max_length_tokens: 256,
+					message_content: message.content,
+					role: message.role,
+					temp: temperature[0],
+					top_p: topP[0],
+				});
 				if (error) {
 					console.error('error', error);
 					toast({
@@ -89,8 +67,6 @@ export default function ChatPage() {
 						description: error.message,
 					});
 				}
-
-				console.log('message: ', message);
 				setOutput((oldArray) => [...oldArray, message]);
 			},
 			onError: (error) => {
@@ -127,12 +103,12 @@ export default function ChatPage() {
 		);
 	}, []);
 
-	useEffect(() => {
-		console.log(messages);
-	}, [messages]);
-	useEffect(() => {
-		console.log('output ', output);
-	}, [output]);
+	// useEffect(() => {
+	// 	console.log(messages);
+	// }, [messages]);
+	// useEffect(() => {
+	// 	console.log('output ', output);
+	// }, [output]);
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
