@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
+import { cookies } from 'next/headers';
 import { Message as VercelChatMessage, StreamingTextResponse } from 'ai';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { BytesOutputParser } from 'langchain/schema/output_parser';
@@ -18,7 +20,6 @@ const TEMPLATE = (instructions: string) => {
 	User: {input}
 	AI:`;
 };
-
 /**
  * This handler initializes and calls a simple chain with a prompt,
  * chat model, and output parser. See the docs for more information:
@@ -28,15 +29,25 @@ const TEMPLATE = (instructions: string) => {
 
 export async function POST(req: NextRequest) {
 	try {
-		const { temperature, messages, instructions, topP, modelName } =
+		const cookieStore = cookies();
+		const supabase = createClient(cookieStore);
+		const { temperature, messages, instructions, topP, modelName, chatId } =
 			await req.json();
-
 		const Messages = messages ?? [];
 		const formatedPreviousMessages = Messages.slice(0, -1).map(
 			formatMessage
 		);
 		const currentMessageContent = messages[messages.length - 1].content;
+		const currentMessageRole = messages[messages.length - 1].role;
 		const prompt = PromptTemplate.fromTemplate(TEMPLATE(instructions));
+		const { data, error } = await supabase.rpc('insert_chat_messages', {
+			p_chat_id: chatId,
+			max_length_tokens: 256,
+			message_content: currentMessageContent,
+			role: currentMessageRole,
+			temp: temperature[0],
+			top_p: topP[0],
+		});
 
 		/**
 		 * You can also try e.g.:
@@ -74,44 +85,8 @@ export async function POST(req: NextRequest) {
 		});
 
 		return new StreamingTextResponse(stream);
-
-		// const { messages } = await req.json();
-
-		// // Clean up the messages to only include role and content
-		// const allowedMessages = messages.map((message: any) => ({
-		// 	role: message.role,
-		// 	content: message.content,
-		// }));
-
-		// const response = await openai.chat.completions.create({
-		// 	model: 'gpt-3.5-turbo',
-		// 	stream: true,
-		// 	messages: allowedMessages,
-		// 	temperature: 0.8,
-		// 	top_p: 1.0,
-		// 	n: 1,
-		// 	presence_penalty: 0.0,
-		// 	frequency_penalty: 0.0,
-		// 	logit_bias: {},
-		// });
-
-		// // Instantiate the data
-		// const data = new experimental_StreamData();
-
-		// // Convert the response into a friendly text-stream
-		// const stream = OpenAIStream(response, {
-		// 	experimental_streamData: true, // Enables streaming data
-		// });
-
-		// // Append only the last message
-		// const lastMessage = messages[messages.length - 1];
-		// data.append(lastMessage);
-
-		// data.close();
-
-		// // Respond with the stream
-		// return new StreamingTextResponse(stream, {}, data);
 	} catch (e: any) {
+		console.error(e.message);
 		return NextResponse.json({ error: e.message }, { status: 500 });
 	}
 }
