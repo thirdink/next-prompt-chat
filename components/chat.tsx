@@ -106,17 +106,22 @@ export default function ChatPage() {
 	useEffect(() => {
 		console.log(messages);
 	}, [messages]);
+
 	useEffect(() => {
 		console.log('output ', output);
 	}, [output]);
+
 	const getUserData = async () => {
 		const {
 			data: { user },
 		} = await supabase.auth.getUser();
 
-		const { data, error } = await supabase.rpc('get_user_chats', {
-			p_user_id: user?.id!,
-		});
+		const { data, error } = await supabase.rpc(
+			'get_all_chat_messages_for_user',
+			{
+				p_user_id: user?.id!,
+			}
+		);
 		if (error) {
 			console.error('supabase error', error);
 			toast({
@@ -129,18 +134,6 @@ export default function ChatPage() {
 	};
 	useEffect(() => {
 		getUserData();
-
-		// 	const { error } = await supabase.rpc('get_user_chats', {
-		// 		p_user_id:
-		// 	});
-		// 	if (error) {
-		// 		console.error('supabase error', error);
-		// 		toast({
-		// 			variant: 'destructive',
-		// 			title: 'Uh oh! Something went wrong with supabase',
-		// 			description: error.message,
-		// 		});
-		// 	}
 	}, []);
 	return (
 		<>

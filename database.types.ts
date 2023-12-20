@@ -76,7 +76,7 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      get_user_chats: {
+      get_all_chat_messages_for_user: {
         Args: {
           p_user_id: string
         }
