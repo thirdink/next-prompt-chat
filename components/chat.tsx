@@ -28,6 +28,7 @@ import { Model } from '../data/models';
 import PromptTopbar from '@/components/prompt-top-bar';
 import { ChatList } from '@/components/chat-list';
 import { useToast } from '@/components/ui/use-toast';
+import EditTabs from './edit-tabs-chat';
 
 export const metadata: Metadata = {
 	title: 'Playground',
@@ -51,10 +52,11 @@ export default function ChatPage() {
 	const { messages, handleSubmit, setInput } = useChat({
 		sendExtraMessageFields: true,
 		onFinish: async (message) => {
-			const { error } = await supabase.rpc('insert_chat_messages', {
+			const { error } = await supabase.rpc('insert_chat_message', {
 				p_chat_id: chatId,
 				max_length_tokens: 256,
 				message_content: message.content,
+				instructions,
 				role: message.role,
 				temp: temperature[0],
 				top_p: topP[0],
@@ -67,7 +69,6 @@ export default function ChatPage() {
 					description: error.message,
 				});
 			}
-			setOutput((oldArray) => [...oldArray, message]);
 		},
 		onError: (error) => {
 			console.error('streaming routes error', error);
@@ -103,13 +104,13 @@ export default function ChatPage() {
 		);
 	}, []);
 
-	useEffect(() => {
-		console.log(messages);
-	}, [messages]);
+	// useEffect(() => {
+	// 	console.log(messages);
+	// }, [messages]);
 
-	useEffect(() => {
-		console.log('output ', output);
-	}, [output]);
+	// useEffect(() => {
+	// 	console.log('output ', output);
+	// }, [output]);
 
 	const getUserData = async () => {
 		const {
@@ -188,68 +189,16 @@ export default function ChatPage() {
 									value='edit'
 									className='mt-0 border-0 p-0'
 								>
-									<form onSubmit={handleSubmit}>
-										<div className='flex flex-col space-y-4'>
-											<div className='grid gap-6 lg:grid-cols-2'>
-												<div className='flex flex-col space-y-4'>
-													<div className='flex flex-1 flex-col space-y-2'>
-														<Label htmlFor='input'>
-															Input
-														</Label>
-														<Textarea
-															id='input'
-															placeholder='Create a paragraph on samurai in Japan in the 1800s.'
-															className='flex-1 lg:min-h-[381px]'
-															value={prompt}
-															onChange={
-																handleSetInput
-															}
-														/>
-													</div>
-													<div className='flex flex-col space-y-2'>
-														<Label htmlFor='instructions'>
-															Instructions
-														</Label>
-														<Textarea
-															id='instructions'
-															placeholder={
-																instructions
-															}
-															value={instructions}
-															onChange={
-																handleInstructionsChange
-															}
-														/>
-													</div>
-												</div>
-												<div className='mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px] max-h-[700px] overflow-auto'>
-													{messages.length ? (
-														<>
-															<ChatList
-																messages={
-																	messages
-																}
-															/>
-														</>
-													) : null}
-												</div>
-											</div>
-											<div className='flex items-center space-x-2'>
-												<Button type='submit'>
-													Submit
-												</Button>
-												<Button
-													variant='secondary'
-													disabled
-												>
-													<span className='sr-only'>
-														Show history
-													</span>
-													<CounterClockwiseClockIcon className='h-4 w-4' />
-												</Button>
-											</div>
-										</div>
-									</form>
+									<EditTabs
+										handleSubmit={handleSubmit}
+										prompt={prompt}
+										handleSetInput={handleSetInput}
+										instructions={instructions}
+										handleInstructionsChange={
+											handleInstructionsChange
+										}
+										messages={messages}
+									/>
 								</TabsContent>
 								<TabsContent
 									value='complete'
