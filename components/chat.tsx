@@ -51,7 +51,7 @@ export default function ChatPage() {
 	const { messages, handleSubmit, setInput } = useChat({
 		sendExtraMessageFields: true,
 		onFinish: async (message) => {
-			const { error } = await supabase.rpc('insert_chat_message', {
+			const { error } = await supabase.rpc('insert_chat_messages', {
 				p_chat_id: chatId,
 				max_length_tokens: 256,
 				message_content: message.content,
