@@ -7,7 +7,6 @@ import { useChat, Message } from 'ai/react';
 import { createClient } from '@/lib/supabase/client';
 
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
@@ -26,7 +25,6 @@ import { presets } from '@/data/presets';
 import ChatTab from './ui/chat-tab';
 import { Model } from '../data/models';
 import PromptTopbar from '@/components/prompt-top-bar';
-import { ChatList } from '@/components/chat-list';
 import { useToast } from '@/components/ui/use-toast';
 import EditTabs from './edit-tabs-chat';
 
@@ -123,6 +121,9 @@ export default function ChatPage() {
 				p_user_id: user?.id!,
 			}
 		);
+
+		type chatMessagesForUser = typeof data;
+
 		if (error) {
 			console.error('supabase error', error);
 			toast({
@@ -131,11 +132,16 @@ export default function ChatPage() {
 				description: error.message,
 			});
 		}
-		console.log('data ', data);
+		if (data) {
+			setHistory(data as never[]);
+		}
 	};
 	useEffect(() => {
 		getUserData();
 	}, []);
+	useEffect(() => {
+		console.log('history ', history);
+	}, [history]);
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
