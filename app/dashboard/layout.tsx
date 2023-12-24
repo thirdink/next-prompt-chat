@@ -20,6 +20,7 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+	
 	return (
 		<>
 			<div className='min-h-screen flex flex-col m-auto p-auto w-full'>

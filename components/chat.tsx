@@ -44,7 +44,7 @@ export default function ChatPage() {
 	const [prompt, setPrompt] = useState('');
 	const [output, setOutput] = useState<Array<Message>>([]);
 	const [maxLength, setMaxLength] = useState([256]);
-	const [history, setHistory] = useState([]);
+
 	const [instructions, setInstructions] = useState('');
 	const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
 
@@ -113,26 +113,24 @@ export default function ChatPage() {
 	// 	console.log('output ', output);
 	// }, [output]);
 
-	const getAllUserChatData = async () => {
-		const { data, error } = await chatService.getUserData();
-		if (error) {
-			console.error('supabase error', error);
-			toast({
-				variant: 'destructive',
-				title: 'Uh oh! Something went wrong with supabase',
-				description: error.message,
-			});
-		}
-		if (data) {
-			setHistory(data as never[]);
-		}
-	};
-	useEffect(() => {
-		getAllUserChatData();
-	}, []);
-	useEffect(() => {
-		console.log('history ', history);
-	}, [history]);
+	// const getAllUserChatData = async () => {
+	// 	const { chatMessages, error } = await chatService.getUserData();
+	// 	if (error) {
+	// 		console.error('supabase error', error);
+	// 		toast({
+	// 			variant: 'destructive',
+	// 			title: 'Uh oh! Something went wrong with supabase',
+	// 			description: error.message,
+	// 		});
+	// 	}
+	// 	if (chatMessages) {
+	// 		setHistory(chatMessages as never[]);
+	// 	}
+	// };
+	// useEffect(() => {
+	// 	getAllUserChatData();
+	// }, []);
+
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>

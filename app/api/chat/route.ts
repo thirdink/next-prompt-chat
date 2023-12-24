@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
 			role: currentMessageRole,
 			temp: temperature[0],
 			top_p: topP[0],
+			instructions,
 		});
 
 		/**

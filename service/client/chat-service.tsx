@@ -23,11 +23,13 @@ const getUserData = async () => {
 		}
 	);
 
-	type ChatMessage = QueryData<typeof getAllChatMessagesForUser>;
+	type ChatMessagesFromUser = QueryData<typeof getAllChatMessagesForUser>;
 
 	const { data, error } = await getAllChatMessagesForUser;
 
-	return { data, error };
+	const chatMessages: ChatMessagesFromUser = data || [];
+
+	return { chatMessages, error };
 };
 
 export const chatService = {
