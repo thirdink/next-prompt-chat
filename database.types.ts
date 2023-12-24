@@ -97,29 +97,11 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: string
       }
-      insert_chat_message: {
-        Args: {
-          p_chat_id: string
-          message_content: string
-          instructions: string
-          role: Database["public"]["Enums"]["role"]
-          temp: number
-          max_length_tokens: number
-          top_p: number
-        }
-        Returns: {
-          chat_id: string
-          created_at: string
-          max_length_tokens: number | null
-          temp: number | null
-          top_p: number | null
-          user_id: string
-        }[]
-      }
       insert_chat_messages: {
         Args: {
           p_chat_id: string
           message_content: string
+          instructions: string
           role: Database["public"]["Enums"]["role"]
           temp: number
           max_length_tokens: number
