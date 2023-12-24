@@ -4,8 +4,8 @@ import TopBar from '@/components/top-bar';
 import Footer from '@/components/footer';
 
 export const metadata: Metadata = {
-	title: 'Forms',
-	description: 'Advanced form example using react-hook-form and Zod.',
+	title: 'prompt lib',
+	description: 'create and store your prompts',
 };
 
 const sidebarNavItems = [

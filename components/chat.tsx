@@ -26,6 +26,7 @@ import ChatTab from './ui/chat-tab';
 import { Model } from '../data/models';
 import PromptTopbar from '@/components/prompt-top-bar';
 import { useToast } from '@/components/ui/use-toast';
+import { chatService } from '@/service/client/chat-service';
 import EditTabs from './edit-tabs-chat';
 
 export const metadata: Metadata = {
@@ -68,6 +69,7 @@ export default function ChatPage() {
 				});
 			}
 		},
+
 		onError: (error) => {
 			console.error('streaming routes error', error);
 			toast({
@@ -85,6 +87,7 @@ export default function ChatPage() {
 			chatId,
 		},
 	});
+
 	const handleSetInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setPrompt(event.target.value);
 		setInput(event.target.value);
@@ -110,20 +113,8 @@ export default function ChatPage() {
 	// 	console.log('output ', output);
 	// }, [output]);
 
-	const getUserData = async () => {
-		const {
-			data: { user },
-		} = await supabase.auth.getUser();
-
-		const { data, error } = await supabase.rpc(
-			'get_all_chat_messages_for_user',
-			{
-				p_user_id: user?.id!,
-			}
-		);
-
-		type chatMessagesForUser = typeof data;
-
+	const getAllUserChatData = async () => {
+		const { data, error } = await chatService.getUserData();
 		if (error) {
 			console.error('supabase error', error);
 			toast({
@@ -137,7 +128,7 @@ export default function ChatPage() {
 		}
 	};
 	useEffect(() => {
-		getUserData();
+		getAllUserChatData();
 	}, []);
 	useEffect(() => {
 		console.log('history ', history);
