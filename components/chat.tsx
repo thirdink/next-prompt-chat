@@ -1,6 +1,6 @@
 'use client';
 import { v4 as uuidv4 } from 'uuid';
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { useChat, Message } from 'ai/react';
