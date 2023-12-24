@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 		const currentMessageRole = messages[messages.length - 1].role;
 		const prompt = PromptTemplate.fromTemplate(TEMPLATE(instructions));
 
-		const { data, error } = await supabase.rpc('insert_chat_messages', {
+		await supabase.rpc('insert_chat_messages', {
 			p_chat_id: chatId,
 			max_length_tokens: 256,
 			message_content: currentMessageContent,
