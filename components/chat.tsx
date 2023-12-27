@@ -28,25 +28,49 @@ import PromptTopbar from '@/components/prompt-top-bar';
 import { useToast } from '@/components/ui/use-toast';
 import { chatService } from '@/service/client/chat-service';
 import EditTabs from './edit-tabs-chat';
+import { handleMessageForTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {
 	title: 'Playground',
 	description: 'The OpenAI Playground built using the components.',
 };
+interface ChatProps {
+	chatId: string;
+	temperature: number[];
+	setTemperature: React.Dispatch<React.SetStateAction<number[]>>;
+	topP: number[];
+	setTopP: React.Dispatch<React.SetStateAction<number[]>>;
+	prompt: string;
+	setPrompt: React.Dispatch<React.SetStateAction<string>>;
+	output: Message[];
+	setOutput: React.Dispatch<React.SetStateAction<Message[]>>;
+	maxLength: number[];
+	setMaxLength: React.Dispatch<React.SetStateAction<number[]>>;
+	instructions: string;
+	setInstructions: React.Dispatch<React.SetStateAction<string>>;
+	selectedModel: Model;
+	setSelectedModel: React.Dispatch<React.SetStateAction<Model>>;
+}
 
-export default function ChatPage() {
+export default function ChatPage({
+	chatId,
+	temperature,
+	setTemperature,
+	topP,
+	setTopP,
+	prompt,
+	setPrompt,
+	output,
+	setOutput,
+	maxLength,
+	setMaxLength,
+	instructions,
+	setInstructions,
+	selectedModel,
+	setSelectedModel,
+}: ChatProps) {
 	const supabase = createClient();
-
 	const { toast } = useToast();
-	const [chatId, setChatId] = useState(uuidv4());
-	const [temperature, setTemperature] = useState([0.56]);
-	const [topP, setTopP] = useState([0.9]);
-	const [prompt, setPrompt] = useState('');
-	const [output, setOutput] = useState<Array<Message>>([]);
-	const [maxLength, setMaxLength] = useState([256]);
-
-	const [instructions, setInstructions] = useState('');
-	const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
 
 	const { messages, handleSubmit, setInput } = useChat({
 		sendExtraMessageFields: true,
@@ -59,6 +83,7 @@ export default function ChatPage() {
 				role: message.role,
 				temp: temperature[0],
 				top_p: topP[0],
+				title: handleMessageForTitle(message.content),
 			});
 			if (error) {
 				console.error('supabase error', error);
@@ -104,32 +129,6 @@ export default function ChatPage() {
 			'you are a pirate named patchy, all responses must be extremely verbose and in pirate dialect'
 		);
 	}, []);
-
-	// useEffect(() => {
-	// 	console.log(messages);
-	// }, [messages]);
-
-	// useEffect(() => {
-	// 	console.log('output ', output);
-	// }, [output]);
-
-	// const getAllUserChatData = async () => {
-	// 	const { chatMessages, error } = await chatService.getUserData();
-	// 	if (error) {
-	// 		console.error('supabase error', error);
-	// 		toast({
-	// 			variant: 'destructive',
-	// 			title: 'Uh oh! Something went wrong with supabase',
-	// 			description: error.message,
-	// 		});
-	// 	}
-	// 	if (chatMessages) {
-	// 		setHistory(chatMessages as never[]);
-	// 	}
-	// };
-	// useEffect(() => {
-	// 	getAllUserChatData();
-	// }, []);
 
 	return (
 		<>

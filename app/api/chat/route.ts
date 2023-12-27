@@ -6,6 +6,7 @@ import { Message as VercelChatMessage, StreamingTextResponse } from 'ai';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { BytesOutputParser } from 'langchain/schema/output_parser';
 import { PromptTemplate } from 'langchain/prompts';
+import { handleMessageForTitle } from '@/lib/utils';
 
 const formatMessage = (message: VercelChatMessage) => {
 	return `${message.role}: ${message.content}`;
@@ -21,6 +22,7 @@ const TEMPLATE = (instructions: string) => {
 	User: {input}
 	AI:`;
 };
+
 /**
  * This handler initializes and calls a simple chain with a prompt,
  * chat model, and output parser. See the docs for more information:
@@ -34,24 +36,32 @@ export async function POST(req: NextRequest) {
 		const supabase = createClient(cookieStore);
 		const { temperature, messages, instructions, topP, modelName, chatId } =
 			await req.json();
+
 		const Messages = messages ?? [];
 		const formatedPreviousMessages = Messages.slice(0, -1).map(
 			formatMessage
 		);
 		const currentMessageContent = messages[messages.length - 1].content;
+
 		const currentMessageRole = messages[messages.length - 1].role;
+
 		const prompt = PromptTemplate.fromTemplate(TEMPLATE(instructions));
 
-		await supabase.rpc('insert_chat_messages', {
+		const titleForChat = handleMessageForTitle(currentMessageContent);
+
+		const { error } = await supabase.rpc('insert_chat_messages', {
 			p_chat_id: chatId,
 			max_length_tokens: 256,
 			message_content: currentMessageContent,
 			role: currentMessageRole,
-			temp: temperature[0],
-			top_p: topP[0],
+			temp: temperature,
+			top_p: topP,
 			instructions,
+			title: titleForChat,
 		});
-
+		if (error) {
+			throw error;
+		}
 		/**
 		 * You can also try e.g.:
 		 *

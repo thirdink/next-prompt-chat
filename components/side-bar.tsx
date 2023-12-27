@@ -18,21 +18,39 @@ type ChatMessagesFromUser = {
 	top_p: number;
 	messages: Json;
 }[];
-interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
+interface SidebarNavProps {
 	items: {
 		href: string;
 		title: string;
 	}[];
 }
+const sidebarNavItems = [
+	{
+		title: 'Profile',
+		href: '/profile',
+	},
+	{
+		title: 'Chat History',
+		href: '/chat-history',
+	},
+	{
+		title: 'Prompt Library',
+		href: '/prompt-library',
+	},
+];
 
-export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
+export function SidebarNav({
+	className,
+	...props
+}: React.HTMLAttributes<HTMLElement>) {
 	const pathname = usePathname();
+	const [items, setItems] = useState(sidebarNavItems);
 
 	const [history, setHistory] = useState<ChatMessagesFromUser>();
 
-	const { messages, handleSubmit, setInput, append } = useChat({
-		api: '/api/chat/chat-title',
-	});
+	// const { messages, handleSubmit, setInput, append } = useChat({
+	// 	api: '/api/chat/chat-title',
+	// });
 
 	const getAllUserChatData = async () => {
 		const { chatMessages, error } = await chatService.getUserData();
@@ -45,23 +63,24 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
 			});
 		}
 		if (chatMessages) {
-			const check = await append({
-				role: 'user',
-				content: JSON.stringify(chatMessages?.[0].messages),
-			});
-			return check;
+			console.log('chatMessages: ', chatMessages);
+			// const check = await append({
+			// 	role: 'user',
+			// 	content: JSON.stringify(chatMessages?.[0].messages),
+			// });
+			// return check;
 		}
 	};
 	useEffect(() => {
 		getAllUserChatData();
 	}, []);
-	useEffect(() => {
-		messages.forEach((message) => {
-			if (message.role === 'assistant') {
-				console.log('messages', JSON.parse(message.content).title);
-			}
-		});
-	}, [messages]);
+	// useEffect(() => {
+	// 	messages?.forEach((message) => {
+	// 		if (message.role === 'assistant') {
+	// 			console.log('messages', JSON.parse(message.content).title);
+	// 		}
+	// 	});
+	// }, [messages]);
 
 	// use useChat from  ai/react to get the messages
 	// use the messages to populate the sidebar
@@ -74,21 +93,24 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
 			)}
 			{...props}
 		>
-			{items.map((item) => (
-				<Link
-					key={item.href}
-					href={item.href}
-					className={cn(
-						buttonVariants({ variant: 'ghost' }),
-						pathname === item.href
-							? 'bg-muted hover:bg-muted'
-							: 'hover:bg-transparent hover:underline',
-						'justify-start'
-					)}
-				>
-					{item.title}
-				</Link>
-			))}
+			{items.length > 0 &&
+				items.map((item) => (
+					<>
+						<Link
+							key={item.href}
+							href={item.href}
+							className={cn(
+								buttonVariants({ variant: 'ghost' }),
+								pathname === item.href
+									? 'bg-muted hover:bg-muted'
+									: 'hover:bg-transparent hover:underline',
+								'justify-start'
+							)}
+						>
+							{item.title}
+						</Link>
+					</>
+				))}
 		</nav>
 	);
 }

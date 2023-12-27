@@ -15,6 +15,7 @@ export interface Database {
           created_at: string
           max_length_tokens: number | null
           temp: number | null
+          title: string | null
           top_p: number | null
           user_id: string
         }
@@ -23,6 +24,7 @@ export interface Database {
           created_at?: string
           max_length_tokens?: number | null
           temp?: number | null
+          title?: string | null
           top_p?: number | null
           user_id?: string
         }
@@ -31,6 +33,7 @@ export interface Database {
           created_at?: string
           max_length_tokens?: number | null
           temp?: number | null
+          title?: string | null
           top_p?: number | null
           user_id?: string
         }
@@ -90,6 +93,7 @@ export interface Database {
           temp: number
           max_length_tokens: number
           top_p: number
+          title: string
           messages: Json
         }[]
       }
@@ -106,12 +110,14 @@ export interface Database {
           temp: number
           max_length_tokens: number
           top_p: number
+          title: string
         }
         Returns: {
           chat_id: string
           created_at: string
           max_length_tokens: number | null
           temp: number | null
+          title: string | null
           top_p: number | null
           user_id: string
         }[]
