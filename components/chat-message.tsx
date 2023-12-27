@@ -15,7 +15,7 @@ export interface ChatMessageProps {
 export function ChatMessage({ message, ...props }: ChatMessageProps) {
 	return (
 		<div
-			className={cn('group relative mb-4 flex items-start md:-ml-12')}
+			className={cn('group relative mb-4 flex items-start md:-ml-2')}
 			{...props}
 		>
 			<div

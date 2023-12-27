@@ -143,7 +143,7 @@ export default function ChatPage({
 					<h2 className='text-lg font-semibold whitespace-nowrap'>
 						Prompt Playground
 					</h2>
-					<div className='ml-auto flex w-full space-x-2 sm:justify-end'>
+					<div className='ml-auto flex w-full space-x-2 pl-20'>
 						<PresetSelector presets={presets} />
 						<PresetSave />
 						<div className='hidden space-x-2 md:flex'>
@@ -155,9 +155,9 @@ export default function ChatPage({
 				</div>
 				<Separator />
 				<Tabs defaultValue='edit' className='flex-1'>
-					<div className='container  py-6  w-10/12'>
+					<div className='p-6 w-auto'>
 						<div className='grid items-stretch gap-6 md:grid-cols-[1fr_200px]'>
-							<div className='hidden flex-col space-y-4 sm:flex md:order-2'>
+							<div className='hidden flex-col space-y-4 sm:flex md:order-2 p-3'>
 								<ChatTab />
 								<ModelSelector
 									types={types}
@@ -178,7 +178,7 @@ export default function ChatPage({
 									setTopP={setTopP}
 								/>
 							</div>
-							<div className='md:order-1'>
+							<div className='md:order-1 p-2'>
 								<TabsContent
 									value='edit'
 									className='mt-0 border-0 p-0'

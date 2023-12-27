@@ -27,15 +27,19 @@ interface SidebarNavProps {
 const sidebarNavItems = [
 	{
 		title: 'Profile',
-		href: '/profile',
+		href: '/dashboard/profile',
+	},
+	{
+		title: 'Chat',
+		href: '/dashboard',
 	},
 	{
 		title: 'Chat History',
-		href: '/chat-history',
+		href: '/dashboard/chat-history',
 	},
 	{
 		title: 'Prompt Library',
-		href: '/prompt-library',
+		href: '/dashboard/prompt-library',
 	},
 ];
 
