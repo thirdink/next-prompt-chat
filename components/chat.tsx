@@ -1,6 +1,6 @@
 'use client';
-import { v4 as uuidv4 } from 'uuid';
-import React, { useState, useEffect } from 'react';
+
+import React, { useEffect } from 'react';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { useChat, Message } from 'ai/react';
@@ -26,7 +26,7 @@ import ChatTab from './ui/chat-tab';
 import { Model } from '../data/models';
 import PromptTopbar from '@/components/prompt-top-bar';
 import { useToast } from '@/components/ui/use-toast';
-import { chatService } from '@/service/client/chat-service';
+// import { chatService } from '@/service/client/chat-service';
 import EditTabs from './edit-tabs-chat';
 import { handleMessageForTitle } from '@/lib/utils';
 

@@ -6,7 +6,7 @@ import { Message } from 'ai/react';
 import { Model } from '@/data/models';
 import { models, types } from '@/data/models';
 
-const page = () => {
+const Page = () => {
 	const [chatId, setChatId] = useState(uuidv4());
 	const [temperature, setTemperature] = useState([0.56]);
 	const [topP, setTopP] = useState([0.9]);
@@ -39,4 +39,4 @@ const page = () => {
 	);
 };
 
-export default page;
+export default Page;
