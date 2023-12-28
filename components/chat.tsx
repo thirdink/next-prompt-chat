@@ -1,6 +1,6 @@
 'use client';
-import { v4 as uuidv4 } from 'uuid';
-import React, { useState, useEffect, FormEvent } from 'react';
+
+import React, { useEffect } from 'react';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { useChat, Message } from 'ai/react';
@@ -26,31 +26,56 @@ import ChatTab from './ui/chat-tab';
 import { Model } from '../data/models';
 import PromptTopbar from '@/components/prompt-top-bar';
 import { useToast } from '@/components/ui/use-toast';
+// import { chatService } from '@/service/client/chat-service';
 import EditTabs from './edit-tabs-chat';
+import { handleMessageForTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {
 	title: 'Playground',
 	description: 'The OpenAI Playground built using the components.',
 };
+interface ChatProps {
+	chatId: string;
+	temperature: number[];
+	setTemperature: React.Dispatch<React.SetStateAction<number[]>>;
+	topP: number[];
+	setTopP: React.Dispatch<React.SetStateAction<number[]>>;
+	prompt: string;
+	setPrompt: React.Dispatch<React.SetStateAction<string>>;
+	output: Message[];
+	setOutput: React.Dispatch<React.SetStateAction<Message[]>>;
+	maxLength: number[];
+	setMaxLength: React.Dispatch<React.SetStateAction<number[]>>;
+	instructions: string;
+	setInstructions: React.Dispatch<React.SetStateAction<string>>;
+	selectedModel: Model;
+	setSelectedModel: React.Dispatch<React.SetStateAction<Model>>;
+}
 
-export default function ChatPage() {
+export default function ChatPage({
+	chatId,
+	temperature,
+	setTemperature,
+	topP,
+	setTopP,
+	prompt,
+	setPrompt,
+	output,
+	setOutput,
+	maxLength,
+	setMaxLength,
+	instructions,
+	setInstructions,
+	selectedModel,
+	setSelectedModel,
+}: ChatProps) {
 	const supabase = createClient();
-
 	const { toast } = useToast();
-	const [chatId, setChatId] = useState(uuidv4());
-	const [temperature, setTemperature] = useState([0.56]);
-	const [topP, setTopP] = useState([0.9]);
-	const [prompt, setPrompt] = useState('');
-	const [output, setOutput] = useState<Array<Message>>([]);
-	const [maxLength, setMaxLength] = useState([256]);
-	const [history, setHistory] = useState([]);
-	const [instructions, setInstructions] = useState('');
-	const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
 
 	const { messages, handleSubmit, setInput } = useChat({
 		sendExtraMessageFields: true,
 		onFinish: async (message) => {
-			const { error } = await supabase.rpc('insert_chat_message', {
+			const { error } = await supabase.rpc('insert_chat_messages', {
 				p_chat_id: chatId,
 				max_length_tokens: 256,
 				message_content: message.content,
@@ -58,6 +83,7 @@ export default function ChatPage() {
 				role: message.role,
 				temp: temperature[0],
 				top_p: topP[0],
+				title: handleMessageForTitle(message.content),
 			});
 			if (error) {
 				console.error('supabase error', error);
@@ -68,6 +94,7 @@ export default function ChatPage() {
 				});
 			}
 		},
+
 		onError: (error) => {
 			console.error('streaming routes error', error);
 			toast({
@@ -85,6 +112,7 @@ export default function ChatPage() {
 			chatId,
 		},
 	});
+
 	const handleSetInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setPrompt(event.target.value);
 		setInput(event.target.value);
@@ -102,46 +130,6 @@ export default function ChatPage() {
 		);
 	}, []);
 
-	// useEffect(() => {
-	// 	console.log(messages);
-	// }, [messages]);
-
-	// useEffect(() => {
-	// 	console.log('output ', output);
-	// }, [output]);
-
-	const getUserData = async () => {
-		const {
-			data: { user },
-		} = await supabase.auth.getUser();
-
-		const { data, error } = await supabase.rpc(
-			'get_all_chat_messages_for_user',
-			{
-				p_user_id: user?.id!,
-			}
-		);
-
-		type chatMessagesForUser = typeof data;
-
-		if (error) {
-			console.error('supabase error', error);
-			toast({
-				variant: 'destructive',
-				title: 'Uh oh! Something went wrong with supabase',
-				description: error.message,
-			});
-		}
-		if (data) {
-			setHistory(data as never[]);
-		}
-	};
-	useEffect(() => {
-		getUserData();
-	}, []);
-	useEffect(() => {
-		console.log('history ', history);
-	}, [history]);
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
@@ -155,7 +143,7 @@ export default function ChatPage() {
 					<h2 className='text-lg font-semibold whitespace-nowrap'>
 						Prompt Playground
 					</h2>
-					<div className='ml-auto flex w-full space-x-2 sm:justify-end'>
+					<div className='ml-auto flex w-full space-x-2 pl-20'>
 						<PresetSelector presets={presets} />
 						<PresetSave />
 						<div className='hidden space-x-2 md:flex'>
@@ -167,9 +155,9 @@ export default function ChatPage() {
 				</div>
 				<Separator />
 				<Tabs defaultValue='edit' className='flex-1'>
-					<div className='container  py-6  w-10/12'>
+					<div className='p-6 w-auto'>
 						<div className='grid items-stretch gap-6 md:grid-cols-[1fr_200px]'>
-							<div className='hidden flex-col space-y-4 sm:flex md:order-2'>
+							<div className='hidden flex-col space-y-4 sm:flex md:order-2 p-3'>
 								<ChatTab />
 								<ModelSelector
 									types={types}
@@ -190,7 +178,7 @@ export default function ChatPage() {
 									setTopP={setTopP}
 								/>
 							</div>
-							<div className='md:order-1'>
+							<div className='md:order-1 p-2'>
 								<TabsContent
 									value='edit'
 									className='mt-0 border-0 p-0'

@@ -28,20 +28,6 @@ export default async function Index() {
 			</nav>
 
 			<div className='animate-in flex-1 flex flex-col gap-20 px-3 items-center'></div>
-
-			<footer className='w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs'>
-				<p>
-					Made by{' '}
-					<a
-						href='https://rumitt.net'
-						target='_blank'
-						className='font-bold hover:underline'
-						rel='noreferrer'
-					>
-						rumitt.net
-					</a>
-				</p>
-			</footer>
 		</div>
 	);
 }

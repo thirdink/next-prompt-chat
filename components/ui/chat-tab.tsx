@@ -116,7 +116,7 @@ const ChatTab = () => {
 						></rect>
 					</svg>
 				</TabsTrigger>
-				<TabsTrigger value='complete' disabled>
+				{/* <TabsTrigger value='complete'>
 					<span className='sr-only'>Complete</span>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
@@ -181,7 +181,7 @@ const ChatTab = () => {
 							fill='currentColor'
 						></rect>
 					</svg>
-				</TabsTrigger>
+				</TabsTrigger> */}
 			</TabsList>
 		</div>
 	);

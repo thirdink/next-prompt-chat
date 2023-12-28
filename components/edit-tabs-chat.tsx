@@ -30,8 +30,8 @@ const EditTabs: React.FC<EditTabsProps> = ({
 	return (
 		<form onSubmit={handleSubmit}>
 			<div className='flex flex-col space-y-4'>
-				<div className='grid gap-6 lg:grid-cols-2'>
-					<div className='flex flex-col space-y-4'>
+				<div className='grid gap-6 lg:grid-cols-2 '>
+					<div className='flex flex-col space-y-4 '>
 						<div className='flex flex-1 flex-col space-y-2'>
 							<Label htmlFor='input'>Input</Label>
 							<Textarea
@@ -52,7 +52,7 @@ const EditTabs: React.FC<EditTabsProps> = ({
 							/>
 						</div>
 					</div>
-					<div className='mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px] max-h-[700px] overflow-auto'>
+					<div className='flex mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px] max-h-[700px] overflow-auto'>
 						{messages.length ? (
 							<>
 								<ChatList messages={messages} />

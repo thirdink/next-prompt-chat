@@ -4,16 +4,9 @@ import TopBar from '@/components/top-bar';
 import Footer from '@/components/footer';
 
 export const metadata: Metadata = {
-	title: 'Forms',
-	description: 'Advanced form example using react-hook-form and Zod.',
+	title: 'prompt lib',
+	description: 'create and store your prompts',
 };
-
-const sidebarNavItems = [
-	{
-		title: 'Profile',
-		href: '/profile',
-	},
-];
 
 interface DashboardLayoutProps {
 	children: React.ReactNode;
@@ -28,11 +21,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 						<TopBar />
 					</div>
 				</div>
-				<div className='flex flex-col pl-10 space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>
-					<aside className='-mx-4 lg:w-1/8 pt-3'>
-						<SidebarNav items={sidebarNavItems} />
+				<div className='flex flex-col space-y-8 lg:flex-row lg:space-x-1 lg:space-y-0'>
+					<aside className='-mx-4 lg:w-1/8 p-5'>
+						<SidebarNav />
 					</aside>
-					<div className='flex-1  h-fit -mx-5 w-fill-available'>
+					<div className='flex-1  h-fit -mx-5 lg:w-4/5'>
 						{children}
 					</div>
 				</div>
