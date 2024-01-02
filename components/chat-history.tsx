@@ -63,7 +63,7 @@ const chatHistory: React.FC = () => {
 	// use the messages to populate the sidebar
 	return (
 		<ScrollArea className='h-screen'>
-			<div className='flex flex-col gap-2 p-4 pt-0'>
+			<div className='flex flex-col gap-2 p-4'>
 				{history &&
 					history.map((chat) => (
 						<button
