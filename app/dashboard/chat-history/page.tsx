@@ -1,5 +1,10 @@
-export default function Page(){
-    return (
-        <div> chat-history </div>
-    )
-}
+import ChatHistory from '@/components/chat-history';
+
+const Page = () => {
+	return (
+		<>
+			<ChatHistory />
+		</>
+	);
+};
+export default Page;
