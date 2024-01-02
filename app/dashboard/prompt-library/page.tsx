@@ -1,3 +1,4 @@
+'use client'
 import { protectedComponent } from '@/service/client/auth-service';
 function Page() {
     return (
