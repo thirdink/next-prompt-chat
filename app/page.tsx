@@ -1,3 +1,4 @@
+import TopBar from '@/components/top-bar';
 import AuthButton from '../components/ui/AuthButton';
 import { createClient } from '@/lib/supabase/server';
 
@@ -20,13 +21,12 @@ export default async function Index() {
 	const isSupabaseConnected = canInitSupabaseClient();
 
 	return (
-		<div className=' flex-col md:flex'>
-			<nav className='border-b'>
-				<div className='flex h-16 items-center px-4 justify-end'>
-					{isSupabaseConnected && <AuthButton />}
+		<div className='flex-col md:flex'>
+			<div className='space-y-0.5'>
+				<div className='text-muted-foreground'>
+					<TopBar />
 				</div>
-			</nav>
-
+			</div>
 			<div className='animate-in flex-1 flex flex-col gap-20 px-3 items-center'></div>
 		</div>
 	);
