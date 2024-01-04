@@ -9,6 +9,24 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       chats: {
         Row: {
           chat_id: string
@@ -74,6 +92,73 @@ export interface Database {
             isOneToOne: false
             referencedRelation: "chats"
             referencedColumns: ["chat_id"]
+          }
+        ]
+      }
+      prompt: {
+        Row: {
+          categories_id: string | null
+          created_at: string
+          id: string
+          input: string | null
+          instructions: string | null
+          message_content: string | null
+          user_id: string | null
+        }
+        Insert: {
+          categories_id?: string | null
+          created_at?: string
+          id?: string
+          input?: string | null
+          instructions?: string | null
+          message_content?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          categories_id?: string | null
+          created_at?: string
+          id?: string
+          input?: string | null
+          instructions?: string | null
+          message_content?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prompt_categories_id_fkey"
+            columns: ["categories_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      tags: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          prompt_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          prompt_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          prompt_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tags_prompt_id_fkey"
+            columns: ["prompt_id"]
+            isOneToOne: false
+            referencedRelation: "prompt"
+            referencedColumns: ["id"]
           }
         ]
       }
