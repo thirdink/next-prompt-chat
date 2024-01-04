@@ -1,8 +1,8 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
- 
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+	return twMerge(clsx(inputs));
 }
 
 export const handleMessageForTitle = (currentMessage: string): string => {
@@ -13,3 +13,18 @@ export const handleMessageForTitle = (currentMessage: string): string => {
 	}
 	return currentMessage;
 };
+
+export function LibContainer({
+	className,
+	...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+	return (
+		<div
+			className={cn(
+				'flex items-center justify-center [&>div]:w-full',
+				className
+			)}
+			{...props}
+		/>
+	);
+}

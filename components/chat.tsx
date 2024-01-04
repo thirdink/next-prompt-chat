@@ -26,7 +26,7 @@ import ChatTab from './ui/chat-tab';
 import { Model } from '../data/models';
 import PromptTopbar from '@/components/prompt-top-bar';
 import { useToast } from '@/components/ui/use-toast';
-// import { chatService } from '@/service/client/chat-service';
+import { chatService } from '@/service/client/chat-service';
 import EditTabs from './edit-tabs-chat';
 import { handleMessageForTitle } from '@/lib/utils';
 
@@ -75,14 +75,12 @@ export default function ChatPage({
 	const { messages, handleSubmit, setInput } = useChat({
 		sendExtraMessageFields: true,
 		onFinish: async (message) => {
-			const { error } = await supabase.rpc('insert_chat_messages', {
-				p_chat_id: chatId,
-				max_length_tokens: 256,
-				message_content: message.content,
+			const { error } = await chatService.insertChatMessages({
+				chatId,
+				message,
+				temperature,
+				topP,
 				instructions,
-				role: message.role,
-				temp: temperature[0],
-				top_p: topP[0],
 				title: handleMessageForTitle(message.content),
 			});
 			if (error) {
@@ -124,11 +122,11 @@ export default function ChatPage({
 		setInstructions(event.target.value);
 	};
 
-	useEffect(() => {
-		setInstructions(
-			'you are a pirate named patchy, all responses must be extremely verbose and in pirate dialect'
-		);
-	}, []);
+	// useEffect(() => {
+	// 	setInstructions(
+	// 		'you are a pirate named patchy, all responses must be extremely verbose and in pirate dialect'
+	// 	);
+	// }, []);
 
 	return (
 		<>
