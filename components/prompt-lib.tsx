@@ -77,6 +77,7 @@ const PromptLib = () => {
 												<FormControl>
 													<Textarea
 														placeholder='Create a paragraph on samurai in Japan in the 1800s.'
+														className='flex-1 lg:min-h-[381px]'
 														{...field}
 													/>
 												</FormControl>
