@@ -1,10 +1,11 @@
 'use client';
 
+import React from 'react';
 import { FormEventHandler } from 'react';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { ChatList } from './chat-list';
-import { Button } from './ui/button';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { ChatList } from '@/components/chat-list';
+import { Button } from '@/components/ui/button';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { Message } from 'ai';
 

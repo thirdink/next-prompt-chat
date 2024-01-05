@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { ModeToggle } from '../theme-toggle';
+import { ModeToggle } from '@/components/theme-toggle';
 
 export default async function AuthButton() {
 	const cookieStore = cookies();

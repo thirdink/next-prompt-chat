@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { LibContainer } from '@/lib/utils';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import {
 	Form,
 	FormControl,
@@ -22,19 +22,20 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from './ui/dialog';
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
-	username: z.string().min(2, {
-		message: 'Username must be at least 2 characters.',
-	}),
+	input: z.string(),
+	categories: z.string(),
 });
 
 const PromptLib = () => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			username: '',
+			input: '',
+			categories: '',
 		},
 	});
 
@@ -56,9 +57,7 @@ const PromptLib = () => {
 						<DialogHeader>
 							<DialogTitle>Create Prompt</DialogTitle>
 							<DialogDescription>
-								You can use the following code to start
-								integrating your current prompt and settings
-								into your application.
+								you can paste your prompt here
 							</DialogDescription>
 						</DialogHeader>
 						<div className='grid gap-4'>
@@ -69,13 +68,15 @@ const PromptLib = () => {
 								>
 									<FormField
 										control={form.control}
-										name='username'
+										name='input'
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Username</FormLabel>
+												<FormLabel>
+													Prompt Input
+												</FormLabel>
 												<FormControl>
-													<Input
-														placeholder='shadcn'
+													<Textarea
+														placeholder='Create a paragraph on samurai in Japan in the 1800s.'
 														{...field}
 													/>
 												</FormControl>

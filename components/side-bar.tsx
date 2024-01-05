@@ -6,7 +6,7 @@ import { useChat } from 'ai/react';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { chatService } from '@/service/client/chat-service';
-import { toast } from './ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { Json } from '@/database.types';
 
 type ChatMessagesFromUser = {

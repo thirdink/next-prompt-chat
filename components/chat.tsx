@@ -22,12 +22,12 @@ import { TemperatureSelector } from '@/components/temperature-selector';
 import { TopPSelector } from '@/components/top-p-selector';
 import { models, types } from '@/data/models';
 import { presets } from '@/data/presets';
-import ChatTab from './ui/chat-tab';
-import { Model } from '../data/models';
+import ChatTab from '@/components/ui/chat-tab';
+import { Model } from '@/data/models';
 import PromptTopbar from '@/components/prompt-top-bar';
 import { useToast } from '@/components/ui/use-toast';
 import { chatService } from '@/service/client/chat-service';
-import EditTabs from './edit-tabs-chat';
+import EditTabs from '@/components/edit-tabs-chat';
 import { handleMessageForTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {

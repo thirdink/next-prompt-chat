@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { DrawingPinOutline } from './ui/icons';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DrawingPinOutline } from '@/components/ui/icons';
 
 type promptType = {
 	key: string;
