@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import z from 'zod';
 import { LibContainer } from '@/lib/utils';
+import { promptSchema } from '@/lib/types/prompt/prompt-lib';
 import { promptService } from '@/service/client/prompt-service';
 import { Button } from '@/components/ui/button';
 import {
@@ -34,27 +35,16 @@ import {
 
 import { Textarea } from '@/components/ui/textarea';
 
-const formSchema = z.object({
-	title: z.string(),
-	input: z.string(),
-	instructions: z.string(),
-	categories: z.string(),
-});
+const promptFormSchema = promptSchema.promptFormSchema;
 
-const categoriesSchemaObj = z.object({
-	created_at: z.string(),
-	id: z.string(),
-	name: z.string(),
-});
-
-const categoriesSchemaArray = z.array(categoriesSchemaObj);
+const categoriesSchemaArray = promptSchema.categoriesSchemaArray;
 
 const PromptLib = () => {
 	const [categories, setCategories] = useState<
 		z.infer<typeof categoriesSchemaArray>
 	>([]);
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
+	const form = useForm<z.infer<typeof promptFormSchema>>({
+		resolver: zodResolver(promptFormSchema),
 		defaultValues: {
 			title: '',
 			input: '',
@@ -63,32 +53,33 @@ const PromptLib = () => {
 		},
 	});
 
-	const handlePromptSubmit = async (values: z.infer<typeof formSchema>) => {
+	const handlePromptSubmit = async (
+		values: z.infer<typeof promptFormSchema>
+	) => {
 		// post request to 'api/prompt'
-		const response = await fetch('/api/prompt', {
-			method: 'POST',
-			body: JSON.stringify(values),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
+		const postPrompt = await promptService.postPrompt(values);
 	};
 
 	// 2. Define a submit handler.
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
+	function onSubmit(values: z.infer<typeof promptFormSchema>) {
 		// create an api call to create a prompt at api/prompt
 		handlePromptSubmit(values);
 	}
+
 	const getCategories = async () => {
 		const getPromptCategories = await promptService.getPromptCategories();
 		setCategories(getPromptCategories.promptCategories);
 	};
 
+	const getPrompts = async () => {
+		const getPrompt = await promptService.getAllPrompts();
+		// const allUserPrompts = await getPrompt?.json();
+		console.log('getPrompt', getPrompt);
+	};
+
 	useEffect(() => {
 		getCategories();
+		getPrompts();
 	}, []);
 
 	const handleCreatePrompt = () => {};
