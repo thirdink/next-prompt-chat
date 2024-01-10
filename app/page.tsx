@@ -1,4 +1,4 @@
-import TopBar from '@/components/top-bar';
+import TopBar from '@/components/header/top-bar';
 import AuthButton from '@/components/ui/AuthButton';
 import { createClient } from '@/lib/supabase/server';
 

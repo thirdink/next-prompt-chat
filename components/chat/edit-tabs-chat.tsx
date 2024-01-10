@@ -4,7 +4,7 @@ import React from 'react';
 import { FormEventHandler } from 'react';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ChatList } from '@/components/chat-list';
+import { ChatList } from '@/components/chat/chat-list';
 import { Button } from '@/components/ui/button';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { Message } from 'ai';

@@ -1,5 +1,5 @@
 'use client';
-import PromptLib from '@/components/prompt-lib';
+import PromptLib from '@/components/prompt/prompt-lib';
 import { protectedComponent } from '@/service/client/auth-service';
 function Page() {
 	return <PromptLib />;

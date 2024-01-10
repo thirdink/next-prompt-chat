@@ -24,10 +24,10 @@ import { models, types } from '@/data/models';
 import { presets } from '@/data/presets';
 import ChatTab from '@/components/ui/chat-tab';
 import { Model } from '@/data/models';
-import PromptTopbar from '@/components/prompt-top-bar';
+import PromptTopbar from '@/components/prompt/prompt-top-bar';
 import { useToast } from '@/components/ui/use-toast';
 import { chatService } from '@/service/client/chat-service';
-import EditTabs from '@/components/edit-tabs-chat';
+import EditTabs from '@/components/chat/edit-tabs-chat';
 import { handleMessageForTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {

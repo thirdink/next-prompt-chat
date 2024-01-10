@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import Chat from '@/components/chat';
+import Chat from '@/components/chat/chat';
 import { v4 as uuidv4 } from 'uuid';
 import { Message } from 'ai/react';
 import { Model } from '@/data/models';

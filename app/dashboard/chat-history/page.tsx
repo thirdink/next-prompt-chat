@@ -1,4 +1,4 @@
-import ChatHistory from '@/components/chat-history';
+import ChatHistory from '@/components/chat/chat-history';
 
 const Page = () => {
 	return (
