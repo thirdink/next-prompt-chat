@@ -14,16 +14,19 @@ export interface Database {
           created_at: string
           id: string
           name: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
           name: string
+          user_id?: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -102,8 +105,8 @@ export interface Database {
           id: string
           input: string | null
           instructions: string | null
-          message_content: string | null
-          user_id: string | null
+          title: string | null
+          user_id: string
         }
         Insert: {
           categories_id?: string | null
@@ -111,8 +114,8 @@ export interface Database {
           id?: string
           input?: string | null
           instructions?: string | null
-          message_content?: string | null
-          user_id?: string | null
+          title?: string | null
+          user_id?: string
         }
         Update: {
           categories_id?: string | null
@@ -120,8 +123,8 @@ export interface Database {
           id?: string
           input?: string | null
           instructions?: string | null
-          message_content?: string | null
-          user_id?: string | null
+          title?: string | null
+          user_id?: string
         }
         Relationships: [
           {
