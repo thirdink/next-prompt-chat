@@ -28,7 +28,7 @@ import PromptTopbar from '@/components/prompt/prompt-top-bar';
 import { useToast } from '@/components/ui/use-toast';
 import { chatService } from '@/service/client/chat-service';
 import EditTabs from '@/components/chat/edit-tabs-chat';
-import { handleMessageForTitle } from '@/lib/utils';
+import { handleMessageShortener } from '@/lib/utils';
 
 export const metadata: Metadata = {
 	title: 'Playground',
@@ -81,7 +81,7 @@ export default function ChatPage({
 				temperature,
 				topP,
 				instructions,
-				title: handleMessageForTitle(message.content),
+				title: handleMessageShortener(message.content),
 			});
 			if (error) {
 				console.error('supabase error', error);

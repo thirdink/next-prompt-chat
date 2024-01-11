@@ -18,8 +18,9 @@ const fetchPrompts = async () => {
 	const { data, error } = await supabase
 		.from('prompt')
 		.select(
-			`id, title, input, instructions, categories (id, name, created_at)`
-		);
+			`id, title, input, instructions, created_at, categories (id, name, created_at)`
+		)
+		.order('created_at', { ascending: false });
 	return { data, error };
 };
 

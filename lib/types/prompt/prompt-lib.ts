@@ -1,4 +1,5 @@
 import z from 'zod';
+import { Tables } from '@/database.types';
 
 const promptFormSchema = z.object({
 	title: z.string(),
@@ -19,4 +20,13 @@ export const promptSchema = {
 	promptFormSchema,
 	categoriesSchemaObj,
 	categoriesSchemaArray,
+};
+
+
+export type PromptProps = Tables<'prompt'> & {
+	categories: {
+		created_at: string;
+		id: string;
+		name: string;
+	};
 };

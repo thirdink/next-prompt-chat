@@ -39,25 +39,12 @@ const chatHistory: React.FC = () => {
 			});
 		}
 		if (chatMessages) {
-			// console.log('chatMessages: ', chatMessages);
 			setHistory(chatMessages);
-			// const check = await append({
-			// 	role: 'user',
-			// 	content: JSON.stringify(chatMessages?.[0].messages),
-			// });
-			// return check;
 		}
 	};
 	useEffect(() => {
 		getAllUserChatData();
 	}, []);
-	// useEffect(() => {
-	// 	messages?.forEach((message) => {
-	// 		if (message.role === 'assistant') {
-	// 			console.log('messages', JSON.parse(message.content).title);
-	// 		}
-	// 	});
-	// }, [messages]);
 
 	// use useChat from  ai/react to get the messages
 	// use the messages to populate the sidebar
