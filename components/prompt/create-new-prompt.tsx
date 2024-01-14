@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
@@ -40,7 +41,9 @@ const promptFormSchema = promptSchema.promptFormSchema;
 
 const categoriesSchemaArray = promptSchema.categoriesSchemaArray;
 
-const CreateNewPrompt = () => {
+const CreateNewPrompt = (
+	{ getPrompts }: { getPrompts: () => void }
+) => {
 	const [categories, setCategories] = useState<
 		z.infer<typeof categoriesSchemaArray>
 	>([]);
@@ -72,6 +75,10 @@ const CreateNewPrompt = () => {
 	useEffect(() => {
 		getCategories();
 	}, []);
+	useEffect(() => {
+		form.reset();
+		getPrompts();
+	}, [form.formState.isSubmitSuccessful]);
 	return (
 		<div className='flex items-center space-x-2 justify-end p-10'>
 			<Dialog>
@@ -183,7 +190,9 @@ const CreateNewPrompt = () => {
 										</FormItem>
 									)}
 								/>
-								<Button type='submit'>Save</Button>
+								<DialogClose asChild>
+									<Button type='submit'>Save</Button>
+								</DialogClose>
 							</form>
 						</Form>
 					</div>
