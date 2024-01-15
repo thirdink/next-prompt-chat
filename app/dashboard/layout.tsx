@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { SidebarNav } from '@/components/sidebar/side-bar';
 import TopBar from '@/components/header/top-bar';
 import Footer from '@/components/footer';
-
+import { PromptProvider } from '@/data/context/PromptContext';
 export const metadata: Metadata = {
 	title: 'prompt lib',
 	description: 'create and store your prompts',
@@ -14,7 +14,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
 	return (
-		<>
+		<PromptProvider>
 			<div className='min-h-screen flex flex-col m-auto p-auto w-full'>
 				<div className='space-y-0.5'>
 					<div className='text-muted-foreground'>
@@ -31,6 +31,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 				</div>
 				<Footer />
 			</div>
-		</>
+		</PromptProvider>
 	);
 }

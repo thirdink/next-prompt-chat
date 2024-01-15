@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { useChat, Message } from 'ai/react';
-import { createClient } from '@/lib/supabase/client';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -12,16 +11,16 @@ import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
 import { CodeViewer } from '@/components/code-viewer';
-import { MaxLengthSelector } from '@/components/maxlength-selector';
-import { ModelSelector } from '@/components/model-selector';
 import { PresetActions } from '@/components/preset-actions';
 import { PresetSave } from '@/components/preset-save';
 import { PresetSelector } from '@/components/preset-selector';
 import { PresetShare } from '@/components/preset-share';
+import { presets } from '@/data/presets';
+import { MaxLengthSelector } from '@/components/maxlength-selector';
+import { ModelSelector } from '@/components/model-selector';
 import { TemperatureSelector } from '@/components/temperature-selector';
 import { TopPSelector } from '@/components/top-p-selector';
 import { models, types } from '@/data/models';
-import { presets } from '@/data/presets';
 import ChatTab from '@/components/ui/chat-tab';
 import { Model } from '@/data/models';
 import PromptTopbar from '@/components/prompt/prompt-top-bar';
@@ -29,6 +28,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { chatService } from '@/service/client/chat-service';
 import EditTabs from '@/components/chat/edit-tabs-chat';
 import { handleMessageShortener } from '@/lib/utils';
+import { promptService } from '@/service/client/prompt-service';
+import { PromptContext } from '@/data/context/PromptContext';
 
 export const metadata: Metadata = {
 	title: 'Playground',
@@ -69,9 +70,9 @@ export default function ChatPage({
 	selectedModel,
 	setSelectedModel,
 }: ChatProps) {
-	const supabase = createClient();
 	const { toast } = useToast();
-
+	const [loading, setLoading] = useState(false);
+	const [prompts, dispatch] = useContext(PromptContext);
 	const { messages, handleSubmit, setInput } = useChat({
 		sendExtraMessageFields: true,
 		onFinish: async (message) => {
@@ -121,13 +122,23 @@ export default function ChatPage({
 	) => {
 		setInstructions(event.target.value);
 	};
+	const getPrompts = async () => {
+		setLoading(true);
+		const getPrompt = await promptService.getAllPrompts();
+		dispatch({ type: 'SET_PROMPTS', payload: getPrompt });
+		setLoading(false);
+	};
+
+	useEffect(() => {
+		getPrompts();
+	}, []);
 
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
 				<div className='flex overflow-x-scroll p-5 hide-scroll-bar'>
-					<div className='flex flex-nowrap ml-10 '>
-						<PromptTopbar />
+					<div className='flex flex-nowrap ml-10 items-stretch'>
+						<PromptTopbar loading={loading} />
 					</div>
 				</div>
 				<Separator />

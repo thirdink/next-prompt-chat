@@ -1,16 +1,16 @@
 'use client';
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import { LibContainer } from '@/lib/utils';
 
 import SkeletonGrid from '@/components/skeleton-grid-ui';
 import { promptService } from '@/service/client/prompt-service';
 import PromptGrid from '@/components/prompt/prompt-grid';
-import { reducer } from '@/data/reducer';
+import { PromptContext } from '@/data/context/PromptContext';
 import CreateNewPrompt from '@/components/prompt/create-new-prompt';
 
 const PromptLib = () => {
-	const [prompts, dispatch] = useReducer(reducer, []);
+	const [prompts, dispatch] = useContext(PromptContext);
 	const [loading, setLoading] = useState(false);
 	const [skeletonItems] = useState([
 		{ id: 1 },
