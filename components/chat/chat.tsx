@@ -131,7 +131,7 @@ export default function ChatPage({
 					</div>
 				</div>
 				<Separator />
-				<div className='container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16 w-11/12'>
+				{/* <div className='container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16 w-11/12'>
 					<h2 className='text-lg font-semibold whitespace-nowrap'>
 						Prompt Playground
 					</h2>
@@ -144,7 +144,7 @@ export default function ChatPage({
 						</div>
 						<PresetActions />
 					</div>
-				</div>
+				</div> */}
 				<Separator />
 				<Tabs defaultValue='edit' className='flex-1'>
 					<div className='p-6 w-auto'>
