@@ -76,7 +76,12 @@ const ChatTab = () => {
 						></path>
 					</svg>
 				</TabsTrigger>
-				<TabsTrigger value='insert' disabled>
+				<TabsTrigger
+					value='insert'
+					disabled={
+						process.env.NODE_ENV === 'production' ? true : false
+					}
+				>
 					<span className='sr-only'>Insert</span>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
@@ -116,7 +121,12 @@ const ChatTab = () => {
 						></rect>
 					</svg>
 				</TabsTrigger>
-				{/* <TabsTrigger value='complete'>
+				<TabsTrigger
+					value='complete'
+					disabled={
+						process.env.NODE_ENV === 'production' ? true : false
+					}
+				>
 					<span className='sr-only'>Complete</span>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
@@ -181,7 +191,7 @@ const ChatTab = () => {
 							fill='currentColor'
 						></rect>
 					</svg>
-				</TabsTrigger> */}
+				</TabsTrigger>
 			</TabsList>
 		</div>
 	);

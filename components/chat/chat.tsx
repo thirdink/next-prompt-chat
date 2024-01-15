@@ -122,12 +122,6 @@ export default function ChatPage({
 		setInstructions(event.target.value);
 	};
 
-	// useEffect(() => {
-	// 	setInstructions(
-	// 		'you are a pirate named patchy, all responses must be extremely verbose and in pirate dialect'
-	// 	);
-	// }, []);
-
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>

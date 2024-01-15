@@ -44,7 +44,7 @@ const EditTabs: React.FC<EditTabsProps> = ({
 							/>
 						</div>
 						<div className='flex flex-col space-y-2'>
-							<Label htmlFor='instructions'>Instructions</Label>
+							<Label htmlFor='instructions'>Instructions (Optional)</Label>
 							<Textarea
 								id='instructions'
 								placeholder={instructions}
