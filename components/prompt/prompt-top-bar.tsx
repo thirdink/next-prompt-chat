@@ -17,10 +17,10 @@ const PromptTopBar: React.FC<PromptTopbarProps> = ({ loading }) => {
 				prompt.map((prompt) => {
 					return (
 						<div
-							className='inline-block px-3 w-2/5'
+							className='inline-block px-3 w-2/5 h-[300px]'
 							key={prompt.id}
 						>
-							<Card className='max-w-xs overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out'>
+							<Card className='max-w-xs overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out items-stretch h-[300px]'>
 								<CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
 									<CardTitle className='text-sm font-medium'>
 										{handleMessageShortener(prompt.title!)}
