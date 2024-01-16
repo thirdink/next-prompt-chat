@@ -30,6 +30,7 @@ import EditTabs from '@/components/chat/edit-tabs-chat';
 import { handleMessageShortener } from '@/lib/utils';
 import { promptService } from '@/service/client/prompt-service';
 import { PromptContext } from '@/data/context/PromptContext';
+import { PromptProps } from '@/lib/types/prompt/prompt-lib';
 
 export const metadata: Metadata = {
 	title: 'Playground',
@@ -73,6 +74,7 @@ export default function ChatPage({
 	const { toast } = useToast();
 	const [loading, setLoading] = useState(false);
 	const [prompts, dispatch] = useContext(PromptContext);
+	const [selectedPrompt, setSelectedPrompt] = useState<PromptProps>();
 	const { messages, handleSubmit, setInput } = useChat({
 		sendExtraMessageFields: true,
 		onFinish: async (message) => {
@@ -128,17 +130,27 @@ export default function ChatPage({
 		dispatch({ type: 'SET_PROMPTS', payload: getPrompt });
 		setLoading(false);
 	};
+	const handlePromptTopBar = async (prompt: PromptProps) => {
+		setSelectedPrompt(prompt);
+	};
 
 	useEffect(() => {
 		getPrompts();
 	}, []);
 
+	useEffect(() => {
+		console.log('clicked selectedPrompts', selectedPrompt);
+	}, [selectedPrompt]);
+
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
 				<div className='flex overflow-x-scroll p-5 hide-scroll-bar'>
-					<div className='flex flex-nowrap ml-10 items-stretch'>
-						<PromptTopbar loading={loading} />
+					<div className='flex flex-nowrap ml-10 items-center'>
+						<PromptTopbar
+							loading={loading}
+							handlePromptTopBar={handlePromptTopBar}
+						/>
 					</div>
 				</div>
 				<Separator />
