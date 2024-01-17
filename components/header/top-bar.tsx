@@ -18,7 +18,7 @@ const TopBar = () => {
 
 	const isSupabaseConnected = canInitSupabaseClient();
 	return (
-		<nav className='border-b'>
+		<nav className='border-b sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
 			<div className='flex h-16 items-center px-4 lg:justify-end sm:justify-end'>
 				{isSupabaseConnected && <AuthButton />}
 			</div>

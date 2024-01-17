@@ -4,8 +4,8 @@ import { chatService } from '@/service/client/chat-service';
 import { toast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
 import { protectedComponent } from '@/service/client/auth-service';
-import { ScrollArea } from './ui/scroll-area';
-import { Badge } from './ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 type chatMessages = {
 	chat_id: string;
@@ -39,25 +39,12 @@ const chatHistory: React.FC = () => {
 			});
 		}
 		if (chatMessages) {
-			// console.log('chatMessages: ', chatMessages);
 			setHistory(chatMessages);
-			// const check = await append({
-			// 	role: 'user',
-			// 	content: JSON.stringify(chatMessages?.[0].messages),
-			// });
-			// return check;
 		}
 	};
 	useEffect(() => {
 		getAllUserChatData();
 	}, []);
-	// useEffect(() => {
-	// 	messages?.forEach((message) => {
-	// 		if (message.role === 'assistant') {
-	// 			console.log('messages', JSON.parse(message.content).title);
-	// 		}
-	// 	});
-	// }, [messages]);
 
 	// use useChat from  ai/react to get the messages
 	// use the messages to populate the sidebar

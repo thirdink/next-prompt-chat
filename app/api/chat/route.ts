@@ -6,7 +6,7 @@ import { Message as VercelChatMessage, StreamingTextResponse } from 'ai';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { BytesOutputParser } from 'langchain/schema/output_parser';
 import { PromptTemplate } from 'langchain/prompts';
-import { handleMessageForTitle } from '@/lib/utils';
+import { handleMessageShortener } from '@/lib/utils';
 
 const formatMessage = (message: VercelChatMessage) => {
 	return `${message.role}: ${message.content}`;
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
 
 		const prompt = PromptTemplate.fromTemplate(TEMPLATE(instructions));
 
-		const titleForChat = handleMessageForTitle(currentMessageContent);
+		const titleForChat = handleMessageShortener(currentMessageContent);
 
 		const { error } = await supabase.rpc('insert_chat_messages', {
 			p_chat_id: chatId,

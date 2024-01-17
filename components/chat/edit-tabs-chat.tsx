@@ -1,10 +1,11 @@
 'use client';
 
+import React from 'react';
 import { FormEventHandler } from 'react';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { ChatList } from './chat-list';
-import { Button } from './ui/button';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { ChatList } from '@/components/chat/chat-list';
+import { Button } from '@/components/ui/button';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { Message } from 'ai';
 
@@ -31,6 +32,13 @@ const EditTabs: React.FC<EditTabsProps> = ({
 		<form onSubmit={handleSubmit}>
 			<div className='flex flex-col space-y-4'>
 				<div className='grid gap-6 lg:grid-cols-2 '>
+					<div className='flex mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px] max-h-[700px] overflow-auto'>
+						{messages.length ? (
+							<>
+								<ChatList messages={messages} />
+							</>
+						) : null}
+					</div>
 					<div className='flex flex-col space-y-4 '>
 						<div className='flex flex-1 flex-col space-y-2'>
 							<Label htmlFor='input'>Input</Label>
@@ -43,7 +51,9 @@ const EditTabs: React.FC<EditTabsProps> = ({
 							/>
 						</div>
 						<div className='flex flex-col space-y-2'>
-							<Label htmlFor='instructions'>Instructions</Label>
+							<Label htmlFor='instructions'>
+								Instructions (Optional)
+							</Label>
 							<Textarea
 								id='instructions'
 								placeholder={instructions}
@@ -51,21 +61,14 @@ const EditTabs: React.FC<EditTabsProps> = ({
 								onChange={handleInstructionsChange}
 							/>
 						</div>
+						<div className='flex items-center space-x-2'>
+							<Button type='submit'>Submit</Button>
+							<Button variant='secondary' disabled>
+								<span className='sr-only'>Show history</span>
+								<CounterClockwiseClockIcon className='h-4 w-4' />
+							</Button>
+						</div>
 					</div>
-					<div className='flex mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[500px] max-h-[700px] overflow-auto'>
-						{messages.length ? (
-							<>
-								<ChatList messages={messages} />
-							</>
-						) : null}
-					</div>
-				</div>
-				<div className='flex items-center space-x-2'>
-					<Button type='submit'>Submit</Button>
-					<Button variant='secondary' disabled>
-						<span className='sr-only'>Show history</span>
-						<CounterClockwiseClockIcon className='h-4 w-4' />
-					</Button>
 				</div>
 			</div>
 		</form>

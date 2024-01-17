@@ -1,34 +1,36 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { useChat, Message } from 'ai/react';
-import { createClient } from '@/lib/supabase/client';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
-import { CodeViewer } from '@/components/code-viewer';
+// import { CodeViewer } from '@/components/code-viewer';
+// import { PresetActions } from '@/components/preset-actions';
+// import { PresetSave } from '@/components/preset-save';
+// import { PresetSelector } from '@/components/preset-selector';
+// import { PresetShare } from '@/components/preset-share';
+// import { presets } from '@/data/presets';
 import { MaxLengthSelector } from '@/components/maxlength-selector';
 import { ModelSelector } from '@/components/model-selector';
-import { PresetActions } from '@/components/preset-actions';
-import { PresetSave } from '@/components/preset-save';
-import { PresetSelector } from '@/components/preset-selector';
-import { PresetShare } from '@/components/preset-share';
 import { TemperatureSelector } from '@/components/temperature-selector';
 import { TopPSelector } from '@/components/top-p-selector';
 import { models, types } from '@/data/models';
-import { presets } from '@/data/presets';
-import ChatTab from './ui/chat-tab';
-import { Model } from '../data/models';
-import PromptTopbar from '@/components/prompt-top-bar';
+import ChatTab from '@/components/ui/chat-tab';
+import { Model } from '@/data/models';
+import PromptTopbar from '@/components/prompt/prompt-top-bar';
 import { useToast } from '@/components/ui/use-toast';
-// import { chatService } from '@/service/client/chat-service';
-import EditTabs from './edit-tabs-chat';
-import { handleMessageForTitle } from '@/lib/utils';
+import { chatService } from '@/service/client/chat-service';
+import EditTabs from '@/components/chat/edit-tabs-chat';
+import { handleMessageShortener } from '@/lib/utils';
+import { promptService } from '@/service/client/prompt-service';
+import { PromptContext } from '@/data/context/PromptContext';
+import { PromptProps } from '@/lib/types/prompt/prompt-lib';
 
 export const metadata: Metadata = {
 	title: 'Playground',
@@ -69,21 +71,20 @@ export default function ChatPage({
 	selectedModel,
 	setSelectedModel,
 }: ChatProps) {
-	const supabase = createClient();
 	const { toast } = useToast();
-
+	const [loading, setLoading] = useState(false);
+	const [prompts, dispatch] = useContext(PromptContext);
+	const [selectedPrompt, setSelectedPrompt] = useState<PromptProps>();
 	const { messages, handleSubmit, setInput } = useChat({
 		sendExtraMessageFields: true,
 		onFinish: async (message) => {
-			const { error } = await supabase.rpc('insert_chat_messages', {
-				p_chat_id: chatId,
-				max_length_tokens: 256,
-				message_content: message.content,
+			const { error } = await chatService.insertChatMessages({
+				chatId,
+				message,
+				temperature,
+				topP,
 				instructions,
-				role: message.role,
-				temp: temperature[0],
-				top_p: topP[0],
-				title: handleMessageForTitle(message.content),
+				title: handleMessageShortener(message.content),
 			});
 			if (error) {
 				console.error('supabase error', error);
@@ -123,23 +124,45 @@ export default function ChatPage({
 	) => {
 		setInstructions(event.target.value);
 	};
+	const getPrompts = async () => {
+		setLoading(true);
+		const getPrompt = await promptService.getAllPrompts();
+		dispatch({ type: 'SET_PROMPTS', payload: getPrompt });
+		setLoading(false);
+	};
+	const handlePromptTopBar = async (prompt: PromptProps) => {
+		setSelectedPrompt(prompt);
+	};
 
 	useEffect(() => {
-		setInstructions(
-			'you are a pirate named patchy, all responses must be extremely verbose and in pirate dialect'
-		);
+		getPrompts();
 	}, []);
+
+	useEffect(() => {
+		if (selectedPrompt) {
+			if(selectedPrompt.input){
+				setPrompt(selectedPrompt.input!);
+			}
+			if(selectedPrompt.instructions){
+				setInstructions(selectedPrompt.instructions!);
+			}
+			console.log('clicked selectedPrompts', selectedPrompt);
+		}
+	}, [selectedPrompt]);
 
 	return (
 		<>
 			<div className='flex-col flex m-auto p-auto'>
 				<div className='flex overflow-x-scroll p-5 hide-scroll-bar'>
-					<div className='flex flex-nowrap ml-10 '>
-						<PromptTopbar />
+					<div className='flex flex-nowrap ml-10 items-center'>
+						<PromptTopbar
+							loading={loading}
+							handlePromptTopBar={handlePromptTopBar}
+						/>
 					</div>
 				</div>
 				<Separator />
-				<div className='container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16 w-11/12'>
+				{/* <div className='container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16 w-11/12'>
 					<h2 className='text-lg font-semibold whitespace-nowrap'>
 						Prompt Playground
 					</h2>
@@ -152,7 +175,7 @@ export default function ChatPage({
 						</div>
 						<PresetActions />
 					</div>
-				</div>
+				</div> */}
 				<Separator />
 				<Tabs defaultValue='edit' className='flex-1'>
 					<div className='p-6 w-auto'>
