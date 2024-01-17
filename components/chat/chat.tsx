@@ -10,12 +10,12 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
-import { CodeViewer } from '@/components/code-viewer';
-import { PresetActions } from '@/components/preset-actions';
-import { PresetSave } from '@/components/preset-save';
-import { PresetSelector } from '@/components/preset-selector';
-import { PresetShare } from '@/components/preset-share';
-import { presets } from '@/data/presets';
+// import { CodeViewer } from '@/components/code-viewer';
+// import { PresetActions } from '@/components/preset-actions';
+// import { PresetSave } from '@/components/preset-save';
+// import { PresetSelector } from '@/components/preset-selector';
+// import { PresetShare } from '@/components/preset-share';
+// import { presets } from '@/data/presets';
 import { MaxLengthSelector } from '@/components/maxlength-selector';
 import { ModelSelector } from '@/components/model-selector';
 import { TemperatureSelector } from '@/components/temperature-selector';
@@ -139,6 +139,9 @@ export default function ChatPage({
 	}, []);
 
 	useEffect(() => {
+		// selectedPrompt && selectedPrompt.input
+		setPrompt(selectedPrompt!.input!);
+		setInstructions(selectedPrompt!.instructions!);
 		console.log('clicked selectedPrompts', selectedPrompt);
 	}, [selectedPrompt]);
 
