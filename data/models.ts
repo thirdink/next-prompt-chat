@@ -13,7 +13,7 @@ export interface Model<Type = string> {
 export const models: Model<ModelType>[] = [
 	{
 		id: ' be638fb1-973b-4471-a49c-290325085802',
-		name: 'GPT-4',
+		name: 'gpt-4',
 		description:
 			'Capable of very simple tasks, usually the fastest model in the GPT-3 series, and lowest cost.',
 		type: 'GPT',
