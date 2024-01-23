@@ -30,7 +30,7 @@ const getAllPrompts = async () => {
 		});
 		return getPrompts.json();
 	} catch (e: any) {
-		console.error('getAllPrompts', e);
+		console.error('getAllPrompts Error', e);
 	}
 };
 
@@ -45,7 +45,7 @@ const postPrompt = async (promptInput: z.infer<typeof promptFormSchema>) => {
 		});
 		return postPrompt;
 	} catch (e: any) {
-		console.error('postPrompt', e);
+		console.error('postPrompt Error', e);
 	}
 };
 
