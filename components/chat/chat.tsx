@@ -140,10 +140,11 @@ export default function ChatPage({
 
 	useEffect(() => {
 		if (selectedPrompt) {
-			if(selectedPrompt.input){
+			if (selectedPrompt.input) {
 				setPrompt(selectedPrompt.input!);
+				setInput(selectedPrompt.input!);
 			}
-			if(selectedPrompt.instructions){
+			if (selectedPrompt.instructions) {
 				setInstructions(selectedPrompt.instructions!);
 			}
 			console.log('clicked selectedPrompts', selectedPrompt);
