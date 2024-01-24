@@ -27,8 +27,12 @@ const PromptGrid = ({ prompt }: { prompt: PromptProps }) => {
 			<CardContent>
 				<div className='flex space-x-4 text-sm text-muted-foreground'>
 					<div className='flex items-center'>
-						<CircleIcon className='mr-1 h-3 w-3 fill-sky-400 text-sky-400' />
-						{prompt.categories.name}
+						{prompt.categories ? (
+							<>
+								<CircleIcon className='mr-1 h-3 w-3 fill-sky-400 text-sky-400' />
+								{prompt.categories.name}
+							</>
+						) : null}
 					</div>
 					{/* <div className='flex items-center'>
 						<StarIcon className='mr-1 h-3 w-3' />

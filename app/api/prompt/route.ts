@@ -4,7 +4,10 @@ import { cookies } from 'next/headers';
 import { promptService } from '@/service/server/prompt-service';
 export async function POST(req: NextRequest) {
 	try {
-		const { input, instructions, categories, title } = await req.json();
+		let { input, instructions, categories, title } = await req.json();
+		if(categories===''){
+			categories=null;
+		}
 
 		const { data, error } = await promptService.insertPrompt({
 			input,

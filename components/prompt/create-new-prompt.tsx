@@ -36,14 +36,13 @@ import {
 
 import { Textarea } from '@/components/ui/textarea';
 import { promptService } from '@/service/client/prompt-service';
+import { toast } from '@/components/ui/use-toast';
 
 const promptFormSchema = promptSchema.promptFormSchema;
 
 const categoriesSchemaArray = promptSchema.categoriesSchemaArray;
 
-const CreateNewPrompt = (
-	{ getPrompts }: { getPrompts: () => void }
-) => {
+const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 	const [categories, setCategories] = useState<
 		z.infer<typeof categoriesSchemaArray>
 	>([]);
@@ -60,7 +59,15 @@ const CreateNewPrompt = (
 		values: z.infer<typeof promptFormSchema>
 	) => {
 		// post request to 'api/prompt'
-		const postPrompt = await promptService.postPrompt(values);
+		try {
+			await promptService.postPrompt(values);
+		} catch (error) {
+			toast({
+				variant: 'destructive',
+				title: 'Uh oh! Something went wrong with creating the prompt.',
+				description: (error as Error).message,
+			});
+		}
 	};
 	// 2. Define a submit handler.
 	function onSubmit(values: z.infer<typeof promptFormSchema>) {
