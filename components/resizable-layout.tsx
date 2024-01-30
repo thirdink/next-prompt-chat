@@ -29,7 +29,7 @@ const ResizableLayout = ({
 					sizes
 				)}`;
 			}}
-			className=' items-stretch'
+			className='h-full items-stretch'
 		>
 			<div className='flex flex-col space-y-8 lg:flex-row lg:space-x-1 lg:space-y-0'>
 				<aside className='-mx-4 lg:w-1/8 p-5'>

@@ -181,7 +181,7 @@ export default function ChatPage({
 									setTopP={setTopP}
 								/>
 							</div>
-							<div className='md:order-1 p-2 min-w-[73vw]'>
+							<div className='md:order-1 p-2 min-w-[60vw]'>
 								<TabsContent
 									value='edit'
 									className='mt-0 border-0 p-0'

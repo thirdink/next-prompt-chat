@@ -4,7 +4,7 @@ import Chat from '@/components/chat/chat';
 import { v4 as uuidv4 } from 'uuid';
 import { Message } from 'ai/react';
 import { Model } from '@/data/models';
-import { models, types } from '@/data/models';
+import { models } from '@/data/models';
 
 const Page = () => {
 	const [chatId, setChatId] = useState(uuidv4());
