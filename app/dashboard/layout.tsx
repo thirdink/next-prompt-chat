@@ -1,8 +1,12 @@
 import { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import { SidebarNav } from '@/components/sidebar/side-bar';
 import TopBar from '@/components/header/top-bar';
 import Footer from '@/components/footer';
 import { PromptProvider } from '@/data/context/PromptContext';
+
+import ResizableLayout from '@/components/resizable-layout';
+import { TooltipProvider } from '@/components/ui/tooltip';
 export const metadata: Metadata = {
 	title: 'prompt lib',
 	description: 'create and store your prompts',
@@ -13,24 +17,31 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+	const layout = cookies().get('react-resizable-panels:layout');
+	const collapsed = cookies().get('react-resizable-panels:collapsed');
+	const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
+	const defaultCollapsed = collapsed
+		? JSON.parse(collapsed.value)
+		: undefined;
+
 	return (
 		<PromptProvider>
-			<div className='min-h-screen flex flex-col m-auto p-auto w-full'>
-				<div className='space-y-0.5'>
-					<div className='text-muted-foreground'>
-						<TopBar />
+			<TooltipProvider delayDuration={0}>
+				<div className='min-h-screen flex flex-col m-auto p-auto w-full'>
+					<div className='space-y-0.5'>
+						<div className='text-muted-foreground'>
+							<TopBar />
+						</div>
 					</div>
+					<ResizableLayout
+						children={children}
+						defaultLayout={defaultLayout}
+						defaultCollapsed={defaultCollapsed}
+					/>
+
+					<Footer />
 				</div>
-				<div className='flex flex-col space-y-8 lg:flex-row lg:space-x-1 lg:space-y-0'>
-					<aside className='-mx-4 lg:w-1/8 p-5'>
-						<SidebarNav />
-					</aside>
-					<div className='flex-1  h-fit -mx-5 lg:w-4/5'>
-						{children}
-					</div>
-				</div>
-				<Footer />
-			</div>
+			</TooltipProvider>
 		</PromptProvider>
 	);
 }

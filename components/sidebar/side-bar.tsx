@@ -1,13 +1,22 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { LucideIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import {
+	ResizableHandle,
+	ResizablePanel,
+	ResizablePanelGroup,
+} from '@/components/ui/resizable';
+import { Bot, FolderClock, User, MessageSquareCode } from 'lucide-react';
+// import { MessageSquareCode } from '@/components/ui/icons';
 import { useChat } from 'ai/react';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { chatService } from '@/service/client/chat-service';
 import { toast } from '@/components/ui/use-toast';
 import { Json } from '@/database.types';
+import { Nav } from '@/components/sidebar/nav';
 
 type ChatMessagesFromUser = {
 	chat_id: string;
@@ -18,66 +27,80 @@ type ChatMessagesFromUser = {
 	top_p: number;
 	messages: Json;
 }[];
-interface SidebarNavProps {
-	items: {
-		href: string;
-		title: string;
-	}[];
-}
-const sidebarNavItems = [
-	{
-		title: 'Chat',
-		href: '/dashboard',
-	},
-	{
-		title: 'Prompt Library',
-		href: '/dashboard/prompt-library',
-	},
-	{
-		title: 'Chat History',
-		href: '/dashboard/chat-history',
-	},
-	{
-		title: 'Profile',
-		href: '/dashboard/profile',
-	},
-];
 
+type NavProps = {
+	isCollapsed: boolean;
+	links: {
+		title: string;
+		href?: string;
+		icon: LucideIcon;
+		variant: 'default' | 'ghost';
+	}[];
+};
+interface SidebarNavProps {
+	className?: string;
+	defaultLayout: number[] | undefined;
+	defaultCollapsed?: boolean;
+	navCollapsedSize?: number;
+}
 export function SidebarNav({
 	className,
+	defaultCollapsed,
+	navCollapsedSize,
+	defaultLayout = [265, 440, 655],
 	...props
-}: React.HTMLAttributes<HTMLElement>) {
+}: SidebarNavProps) {
 	const pathname = usePathname();
+	const sidebarNavItems: NavProps['links'] = [
+		{
+			title: 'Chat',
+			href: '/dashboard',
+			icon: Bot,
+			variant: 'default',
+		},
+		{
+			title: 'Prompt Library',
+			href: '/dashboard/prompt-library',
+			icon: MessageSquareCode,
+			variant: 'ghost',
+		},
+		{
+			title: 'Chat History',
+			href: '/dashboard/chat-history',
+			icon: FolderClock,
+			variant: 'ghost',
+		},
+		{
+			title: 'Profile',
+			href: '/dashboard/profile',
+			icon: User,
+			variant: 'ghost',
+		},
+	];
 	const [items, setItems] = useState(sidebarNavItems);
-
-	// const { messages, handleSubmit, setInput, append } = useChat({
-	// 	api: '/api/chat/chat-title',
-	// });
+	const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
 
 	return (
-		<nav
+		<ResizablePanel
+			defaultSize={defaultLayout[0]}
+			collapsedSize={navCollapsedSize}
+			collapsible={true}
+			minSize={15}
+			maxSize={20}
+			onCollapse={() => {
+				setIsCollapsed(true);
+				document.cookie = 'react-resizable-panels:collapsed=true';
+			}}
+			onExpand={() => {
+				setIsCollapsed(false);
+				document.cookie = 'react-resizable-panels:collapsed=false';
+			}}
 			className={cn(
-				'flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1',
-				className
+				isCollapsed &&
+					'min-w-[50px] transition-all duration-300 ease-in-out'
 			)}
-			{...props}
 		>
-			{items.length > 0 &&
-				items.map((item) => (
-					<Link
-						key={item.href}
-						href={item.href}
-						className={cn(
-							buttonVariants({ variant: 'ghost' }),
-							pathname === item.href
-								? 'bg-muted hover:bg-muted'
-								: 'hover:bg-transparent hover:underline',
-							'justify-start'
-						)}
-					>
-						{item.title}
-					</Link>
-				))}
-		</nav>
+			<Nav isCollapsed={isCollapsed!} links={items} />
+		</ResizablePanel>
 	);
 }

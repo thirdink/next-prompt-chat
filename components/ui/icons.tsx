@@ -1,9 +1,10 @@
 'use client';
 
 import * as React from 'react';
-type IconProps = React.HTMLAttributes<SVGElement>;
 
+import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+type IconProps = React.HTMLAttributes<SVGElement>;
 
 function IconNextChat({
 	className,
