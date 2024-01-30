@@ -1,15 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useState } from 'react';
+
 import { LucideIcon } from 'lucide-react';
-import { usePathname } from 'next/navigation';
-import {
-	ResizableHandle,
-	ResizablePanel,
-	ResizablePanelGroup,
-} from '@/components/ui/resizable';
+
+import { ResizablePanel } from '@/components/ui/resizable';
 import { Bot, FolderClock, User, MessageSquareCode } from 'lucide-react';
-// import { MessageSquareCode } from '@/components/ui/icons';
 import { useChat } from 'ai/react';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
@@ -48,9 +43,7 @@ export function SidebarNav({
 	defaultCollapsed,
 	navCollapsedSize,
 	defaultLayout = [265, 440, 655],
-	...props
 }: SidebarNavProps) {
-	const pathname = usePathname();
 	const sidebarNavItems: NavProps['links'] = [
 		{
 			title: 'Chat',

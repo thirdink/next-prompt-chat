@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { LucideIcon } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
@@ -22,6 +23,7 @@ interface NavProps {
 }
 
 export function Nav({ links, isCollapsed }: NavProps) {
+	const pathname = usePathname();
 	return (
 		<div
 			data-collapsed={isCollapsed}
@@ -36,12 +38,13 @@ export function Nav({ links, isCollapsed }: NavProps) {
 									href={link.href || '#'}
 									className={cn(
 										buttonVariants({
-											variant: link.variant,
+											variant: 'ghost',
 											size: 'icon',
 										}),
 										'h-9 w-9',
-										link.variant === 'default' &&
-											'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
+										pathname === link.href
+											? 'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
+											: 'hover:bg-transparent hover:underline'
 									)}
 								>
 									<link.icon className='h-4 w-4' />
@@ -63,10 +66,10 @@ export function Nav({ links, isCollapsed }: NavProps) {
 							href={link.href || '#'}
 							className={cn(
 								buttonVariants({
-									variant: link.variant,
+									variant: 'ghost',
 									size: 'sm',
 								}),
-								link.variant === 'default' &&
+								pathname === link.href &&
 									'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
 								'justify-start'
 							)}
