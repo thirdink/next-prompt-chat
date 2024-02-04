@@ -1,43 +1,13 @@
 'use client';
 import { useState } from 'react';
 
-import { LucideIcon } from 'lucide-react';
-
 import { ResizablePanel } from '@/components/ui/resizable';
 import { Bot, FolderClock, User, MessageSquareCode } from 'lucide-react';
-import { useChat } from 'ai/react';
+
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
-import { chatService } from '@/service/client/chat-service';
-import { toast } from '@/components/ui/use-toast';
-import { Json } from '@/database.types';
+
 import { Nav } from '@/components/sidebar/nav';
-
-type ChatMessagesFromUser = {
-	chat_id: string;
-	chat_created_at: string;
-	user_id: string;
-	temp: number;
-	max_length_tokens: number;
-	top_p: number;
-	messages: Json;
-}[];
-
-type NavProps = {
-	isCollapsed: boolean;
-	links: {
-		title: string;
-		href?: string;
-		icon: LucideIcon;
-		variant: 'default' | 'ghost';
-	}[];
-};
-interface SidebarNavProps {
-	className?: string;
-	defaultLayout: number[] | undefined;
-	defaultCollapsed?: boolean;
-	navCollapsedSize?: number;
-}
+import { NavProps, SidebarNavProps } from '@/lib/types/sidebar/side-bar';
 export function SidebarNav({
 	className,
 	defaultCollapsed,

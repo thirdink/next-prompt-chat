@@ -1,21 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
 	ResizableHandle,
 	ResizablePanel,
 	ResizablePanelGroup,
 } from '@/components/ui/resizable';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
+
 import { SidebarNav } from '@/components/sidebar/side-bar';
-import { Bot, FolderClock, User, MessageSquareCode } from 'lucide-react';
-import {
-	ChatMessagesFromUser,
-	NavProps,
-	SidebarNavProps,
-} from '@/lib/types/sidebar/side-bar';
-import { Nav } from '@/components/sidebar/nav';
 
 interface ResizableLayoutProps {
 	children: React.ReactNode;
@@ -30,40 +23,7 @@ const ResizableLayout = ({
 	defaultCollapsed = false,
 	navCollapsedSize,
 }: ResizableLayoutProps) => {
-	const sidebarNavItems: NavProps['links'] = [
-		{
-			title: 'Chat',
-			href: '/dashboard',
-			icon: Bot,
-			variant: 'default',
-		},
-		{
-			title: 'Prompt Library',
-			href: '/dashboard/prompt-library',
-			icon: MessageSquareCode,
-			variant: 'ghost',
-		},
-		{
-			title: 'Chat History',
-			href: '/dashboard/chat-history',
-			icon: FolderClock,
-			variant: 'ghost',
-		},
-		{
-			title: 'Profile',
-			href: '/dashboard/profile',
-			icon: User,
-			variant: 'ghost',
-		},
-	];
 	const pathname = usePathname();
-	const [items, setItems] = useState(sidebarNavItems);
-	const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-
-	const isResizablePanel = () => {
-		// if()
-		return false;
-	};
 
 	return (
 		<ResizablePanelGroup
@@ -82,29 +42,6 @@ const ResizableLayout = ({
 						defaultLayout={defaultLayout}
 						navCollapsedSize={navCollapsedSize}
 					/>
-					{/* <ResizablePanel
-						defaultSize={defaultLayout[0]}
-						collapsedSize={navCollapsedSize}
-						collapsible={true}
-						minSize={15}
-						maxSize={20}
-						onCollapse={() => {
-							setIsCollapsed(true);
-							document.cookie =
-								'react-resizable-panels:collapsed=true';
-						}}
-						onExpand={() => {
-							setIsCollapsed(false);
-							document.cookie =
-								'react-resizable-panels:collapsed=false';
-						}}
-						className={cn(
-							isCollapsed &&
-								'min-w-[50px] transition-all duration-300 ease-in-out'
-						)}
-					>
-						<Nav isCollapsed={isCollapsed!} links={items} />
-					</ResizablePanel> */}
 				</aside>
 				<ResizableHandle withHandle />
 				<ResizablePanel
@@ -115,14 +52,14 @@ const ResizableLayout = ({
 					<div className='flex-1  h-fit -mx-5'>{children}</div>
 				</ResizablePanel>
 				{pathname === '/dashboard/chat-history' ||
-					(pathname === '/dashboard/prompt-library' && (
-						<>
-							<ResizableHandle withHandle />
-							<ResizablePanel
-								defaultSize={defaultLayout[2]}
-							></ResizablePanel>
-						</>
-					))}
+				pathname === '/dashboard/prompt-library' ? (
+					<>
+						<ResizableHandle withHandle />
+						<ResizablePanel
+							defaultSize={defaultLayout[2]}
+						></ResizablePanel>
+					</>
+				) : null}
 			</div>
 		</ResizablePanelGroup>
 	);
