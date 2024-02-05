@@ -76,6 +76,7 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 	}
 	const getCategories = async () => {
 		const getPromptCategories = await promptService.getPromptCategories();
+		console.info(getPromptCategories.promptCategories);
 		setCategories(getPromptCategories.promptCategories);
 	};
 

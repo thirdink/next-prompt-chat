@@ -21,10 +21,8 @@ export function reducer(state: State, action: Action): State {
 	}
 }
 
-export const PromptContext = createContext<[State, Dispatch<Action>]>([
-	initialState,
-	() => {},
-]);
+export const PromptContext: React.Context<[State, Dispatch<Action>]> =
+	createContext<[State, Dispatch<Action>]>([initialState, () => {}]);
 
 export const PromptProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
