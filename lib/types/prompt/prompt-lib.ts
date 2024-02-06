@@ -2,8 +2,12 @@ import z from 'zod';
 import { Tables } from '@/database.types';
 
 const promptFormSchema = z.object({
-	title: z.string(),
-	input: z.string(),
+	title: z
+		.string()
+		.min(5, { message: 'Title must be at least 5 character long' }),
+	input: z
+		.string()
+		.min(5, { message: 'Input must be at least 5 character long' }),
 	instructions: z.string(),
 	categories: z.string(),
 });
@@ -21,7 +25,6 @@ export const promptSchema = {
 	categoriesSchemaObj,
 	categoriesSchemaArray,
 };
-
 
 export type PromptProps = Tables<'prompt'> & {
 	categories: {

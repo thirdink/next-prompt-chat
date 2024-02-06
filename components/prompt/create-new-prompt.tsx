@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { promptSchema } from '@/lib/types/prompt/prompt-lib';
-import { useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import {
 	Form,
@@ -43,6 +43,9 @@ const promptFormSchema = promptSchema.promptFormSchema;
 const categoriesSchemaArray = promptSchema.categoriesSchemaArray;
 
 const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
+	const { handleSubmit } = useForm();
+	const [isAddCategories, setIsAddCategoriesInput] = useState(false);
+	const [addNewCategory, setAddNewCategory] = useState<string>('');
 	const [categories, setCategories] = useState<
 		z.infer<typeof categoriesSchemaArray>
 	>([]);
@@ -56,11 +59,11 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 		},
 	});
 	const handlePromptSubmit = async (
-		values: z.infer<typeof promptFormSchema>
+		data: z.infer<typeof promptFormSchema>
 	) => {
 		// post request to 'api/prompt'
 		try {
-			await promptService.postPrompt(values);
+			await promptService.postPrompt(data);
 		} catch (error) {
 			toast({
 				variant: 'destructive',
@@ -70,14 +73,22 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 		}
 	};
 	// 2. Define a submit handler.
-	function onSubmit(values: z.infer<typeof promptFormSchema>) {
+	function onSubmit(
+		data: z.infer<typeof promptFormSchema>,
+		e: React.FormEvent<HTMLFormElement>
+	) {
 		// create an api call to create a prompt at api/prompt
-		handlePromptSubmit(values);
+		e.preventDefault();
+		handlePromptSubmit(data);
 	}
 	const getCategories = async () => {
 		const getPromptCategories = await promptService.getPromptCategories();
-		console.info(getPromptCategories.promptCategories);
 		setCategories(getPromptCategories.promptCategories);
+	};
+	const handleNewCategoryChange = (
+		e: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setAddNewCategory(e.target.value);
 	};
 
 	useEffect(() => {
@@ -102,10 +113,7 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 					</DialogHeader>
 					<div className='grid gap-4'>
 						<Form {...form}>
-							<form
-								onSubmit={form.handleSubmit(onSubmit)}
-								className='space-y-8'
-							>
+							<div className='space-y-8'>
 								<FormField
 									control={form.control}
 									name='title'
@@ -122,38 +130,112 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 										</FormItem>
 									)}
 								/>
+
 								<FormField
 									control={form.control}
 									name='categories'
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel>Categories</FormLabel>
-											<Select
-												onValueChange={field.onChange}
-												defaultValue={field.value}
-											>
-												<FormControl>
-													<SelectTrigger className='w-[180px]'>
-														<SelectValue placeholder='select a category' />
-													</SelectTrigger>
-												</FormControl>
-												<SelectContent>
-													{categories.map(
-														(category) => (
-															<SelectItem
-																key={
-																	category.id
-																}
-																value={
-																	category.id
-																}
+											<div className='grid max-w-md grid-cols-2 gap-8 pt-2'>
+												<FormItem>
+													<Select
+														onValueChange={
+															field.onChange
+														}
+														defaultValue={
+															field.value
+														}
+													>
+														<FormControl>
+															<SelectTrigger className='w-[180px]'>
+																<SelectValue placeholder='select a category' />
+															</SelectTrigger>
+														</FormControl>
+														<SelectContent>
+															{categories.map(
+																(category) => (
+																	<SelectItem
+																		key={
+																			category.id
+																		}
+																		value={
+																			category.id
+																		}
+																	>
+																		{
+																			category.name
+																		}
+																	</SelectItem>
+																)
+															)}
+														</SelectContent>
+													</Select>
+												</FormItem>
+												<FormItem>
+													{isAddCategories ===
+													false ? (
+														<>
+															<Button
+																size='sm'
+																variant='outline'
+																onClick={() => {
+																	setIsAddCategoriesInput(
+																		true
+																	);
+																}}
 															>
-																{category.name}
-															</SelectItem>
-														)
-													)}
-												</SelectContent>
-											</Select>
+																Add Category
+															</Button>
+														</>
+													) : null}
+													{isAddCategories ? (
+														<div className='grid w-[335px] grid-cols-2 gap-2'>
+															<FormControl>
+																<Input
+																	placeholder='Enter category here.'
+																	onChange={
+																		handleNewCategoryChange
+																	}
+																/>
+															</FormControl>
+															{addNewCategory.length >
+															0 ? (
+																<Button
+																	size='sm'
+																	variant='outline'
+																	onClick={() => {
+																		console.log(
+																			addNewCategory
+																		);
+																	}}
+																>
+																	Add
+																</Button>
+															) : (
+																<Button
+																	size='sm'
+																	variant='outline'
+																	onClick={(
+																		event
+																	) => {
+																		event.preventDefault();
+																		setIsAddCategoriesInput(
+																			false
+																		);
+																	}}
+																>
+																	Cancel
+																</Button>
+															)}
+															<FormDescription>
+																Provide new
+																Category here.
+															</FormDescription>
+														</div>
+													) : null}
+												</FormItem>
+											</div>
 											<FormMessage />
 										</FormItem>
 									)}
@@ -199,9 +281,16 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 									)}
 								/>
 								<DialogClose asChild>
-									<Button type='submit'>Save</Button>
+									<Button
+										type='submit'
+										onClick={handleSubmit(
+											onSubmit as SubmitHandler<FieldValues>
+										)}
+									>
+										Save
+									</Button>
 								</DialogClose>
-							</form>
+							</div>
 						</Form>
 					</div>
 				</DialogContent>
