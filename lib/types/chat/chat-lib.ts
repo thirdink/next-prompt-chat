@@ -1,3 +1,4 @@
+import type { PromptProps } from '@/lib/types/prompt/prompt-lib';
 export type chatMessages = {
 	chat_id: string;
 	chat_created_at: string;
@@ -11,7 +12,7 @@ export type chatMessages = {
 
 export type selectedChat = {
 	selectedId: string;
-	chatMessages: chatMessages;
+	chatMessages: chatMessages | PromptProps;
 };
 
 export type ChatMessagesFromUser = chatMessages[];

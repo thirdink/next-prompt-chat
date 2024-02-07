@@ -29,21 +29,12 @@ const chatHistory: React.FC = () => {
 		getAllUserChatData();
 	}, []);
 
-	// use useChat from  ai/react to get the messages
-	// use the messages to populate the sidebar
 	return (
-		// <ResizablePanel
-		// 	defaultSize={500}
-		// 	minSize={15}
-		// 	maxSize={20}
-		// 	className='items-stretch'
-		// >
 		<List
-			history={history}
+			items={history}
 			chatSelected={chatSelected}
 			setChatSelected={setChatSelected}
 		/>
-		// </ResizablePanel>
 	);
 };
 
