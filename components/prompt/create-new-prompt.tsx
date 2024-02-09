@@ -2,7 +2,14 @@ import React, { useEffect, useState } from 'react';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { promptSchema } from '@/lib/types/prompt/prompt-lib';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { categoriesSchema } from '@/lib/types/categories/categories-lib';
+import {
+	FieldValues,
+	SubmitErrorHandler,
+	SubmitHandler,
+	useForm,
+	FieldError,
+} from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import {
 	Form,
@@ -40,16 +47,17 @@ import { toast } from '@/components/ui/use-toast';
 
 const promptFormSchema = promptSchema.promptFormSchema;
 
-const categoriesSchemaArray = promptSchema.categoriesSchemaArray;
+const categoriesSchemaArray = categoriesSchema.categoriesSchemaArray;
+
+type PromptForm = z.infer<typeof promptFormSchema>;
 
 const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
-	const { handleSubmit } = useForm();
 	const [isAddCategories, setIsAddCategoriesInput] = useState(false);
 	const [addNewCategory, setAddNewCategory] = useState<string>('');
 	const [categories, setCategories] = useState<
 		z.infer<typeof categoriesSchemaArray>
 	>([]);
-	const form = useForm<z.infer<typeof promptFormSchema>>({
+	const form = useForm<PromptForm>({
 		resolver: zodResolver(promptFormSchema),
 		defaultValues: {
 			title: '',
@@ -58,9 +66,8 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 			categories: '',
 		},
 	});
-	const handlePromptSubmit = async (
-		data: z.infer<typeof promptFormSchema>
-	) => {
+	const handlePromptSubmit = async (data: PromptForm) => {
+		console.info(' handlePromptSubmit data', data);
 		// post request to 'api/prompt'
 		try {
 			await promptService.postPrompt(data);
@@ -72,15 +79,45 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 			});
 		}
 	};
+
+	const handleAddCategorySubmit = async (newCategory: string) => {
+		try {
+			await promptService.insertPromptCategory({
+				category: { name: newCategory },
+			});
+			toast({
+				title: 'Category added successfully.',
+				description: `The category ${newCategory} has been added.`,
+			});
+			setIsAddCategoriesInput(false);
+			setAddNewCategory('');
+			getCategories();
+		} catch (e: any) {
+			toast({
+				variant: 'destructive',
+				title: 'Uh oh! Something went wrong with creating the category.',
+				description: e.message,
+			});
+		}
+	};
+
 	// 2. Define a submit handler.
-	function onSubmit(
-		data: z.infer<typeof promptFormSchema>,
-		e: React.FormEvent<HTMLFormElement>
-	) {
+	function onSubmit(data: PromptForm, e: React.FormEvent<HTMLFormElement>) {
 		// create an api call to create a prompt at api/prompt
 		e.preventDefault();
 		handlePromptSubmit(data);
+		toast({
+			title: 'You submitted the following values:',
+			description: (
+				<pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+					<code className='text-white'>
+						{JSON.stringify(data, null, 2)}
+					</code>
+				</pre>
+			),
+		});
 	}
+
 	const getCategories = async () => {
 		const getPromptCategories = await promptService.getPromptCategories();
 		setCategories(getPromptCategories.promptCategories);
@@ -143,9 +180,7 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 														onValueChange={
 															field.onChange
 														}
-														defaultValue={
-															field.value
-														}
+														defaultValue={field.value?.toString()}
 													>
 														<FormControl>
 															<SelectTrigger className='w-[180px]'>
@@ -205,7 +240,7 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 																	size='sm'
 																	variant='outline'
 																	onClick={() => {
-																		console.log(
+																		handleAddCategorySubmit(
 																			addNewCategory
 																		);
 																	}}
@@ -283,7 +318,7 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 								<DialogClose asChild>
 									<Button
 										type='submit'
-										onClick={handleSubmit(
+										onClick={form.handleSubmit(
 											onSubmit as SubmitHandler<FieldValues>
 										)}
 									>

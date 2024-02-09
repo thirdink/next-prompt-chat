@@ -6,7 +6,6 @@ import { protectedComponent } from '@/service/client/auth-service';
 
 import type { chatMessages, selectedChat } from '@/lib/types/chat/chat-lib';
 import List from '@/components/list';
-import { ResizablePanel } from '@/components/ui/resizable';
 
 const chatHistory: React.FC = () => {
 	const [history, setHistory] = useState<chatMessages[]>();

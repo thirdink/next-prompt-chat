@@ -1,7 +1,7 @@
 'use client'
 import { protectedComponent } from '@/service/client/auth-service';
 function Page() {
-	return <div>prompt-library</div>;
+	return <div>Profile</div>;
 }
 
 export default protectedComponent(Page);

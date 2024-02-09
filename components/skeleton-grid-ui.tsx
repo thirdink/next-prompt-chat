@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { LibContainer } from '@/lib/utils';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
-const SkeletonGrid = (item: { id: number }) => {
+const SkeletonGrid = (item: { id: string }) => {
 	return (
 		<div
 			key={item.id}

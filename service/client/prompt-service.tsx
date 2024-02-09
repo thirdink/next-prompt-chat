@@ -1,4 +1,4 @@
-import z from 'zod';
+import z, { string } from 'zod';
 import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
 import { promptSchema } from '@/lib/types/prompt/prompt-lib';
@@ -49,8 +49,30 @@ const postPrompt = async (promptInput: z.infer<typeof promptFormSchema>) => {
 	}
 };
 
+type category = {
+	category: {
+		name: string;
+	};
+};
+
+const insertPromptCategory = async ({ category }: category) => {
+	try {
+		const response = await fetch('/api/categories', {
+			method: 'POST',
+			body: JSON.stringify(category),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		return response;
+	} catch (e: any) {
+		console.error('insertPromptCategory Error', e);
+	}
+};
+
 export const promptService = {
 	getPromptCategories,
 	getAllPrompts,
 	postPrompt,
+	insertPromptCategory,
 };

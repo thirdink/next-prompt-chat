@@ -1,11 +1,11 @@
 'use client';
 import React, { useEffect, useState, useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { LibContainer } from '@/lib/utils';
 
 import SkeletonGrid from '@/components/skeleton-grid-ui';
 import { promptService } from '@/service/client/prompt-service';
-import PromptGrid from '@/components/prompt/prompt-grid';
 import { PromptContext } from '@/data/context/PromptContext';
 import type { chatMessages, selectedChat } from '@/lib/types/chat/chat-lib';
 import List from '@/components/list';
@@ -16,12 +16,12 @@ const PromptLib = () => {
 	const [loading, setLoading] = useState(false);
 	const [chatSelected, setChatSelected] = useState<selectedChat>();
 	const [skeletonItems] = useState([
-		{ id: 1 },
-		{ id: 2 },
-		{ id: 3 },
-		{ id: 4 },
-		{ id: 5 },
-		{ id: 6 },
+		{ id: uuidv4() },
+		{ id: uuidv4() },
+		{ id: uuidv4() },
+		{ id: uuidv4() },
+		{ id: uuidv4() },
+		{ id: uuidv4() },
 	]);
 
 	const getPrompts = async () => {
@@ -38,17 +38,17 @@ const PromptLib = () => {
 	return (
 		<>
 			<CreateNewPrompt getPrompts={getPrompts} />
-			<div className=''>
-				{loading ? (
-					skeletonItems.map((item) => <SkeletonGrid {...item} />)
-				) : (
-					<List
-						items={prompts}
-						chatSelected={chatSelected}
-						setChatSelected={setChatSelected}
-					/>
-				)}
-			</div>
+			{loading ? (
+				skeletonItems.map((item) => (
+					<SkeletonGrid key={item.id} {...item} />
+				))
+			) : (
+				<List
+					items={prompts}
+					chatSelected={chatSelected}
+					setChatSelected={setChatSelected}
+				/>
+			)}
 		</>
 	);
 };

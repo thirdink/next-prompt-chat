@@ -1,5 +1,6 @@
 import z from 'zod';
 import { Tables } from '@/database.types';
+import { categoriesProps } from '@/lib/types/categories/categories-lib';
 
 const promptFormSchema = z.object({
 	title: z
@@ -9,27 +10,14 @@ const promptFormSchema = z.object({
 		.string()
 		.min(5, { message: 'Input must be at least 5 character long' }),
 	instructions: z.string(),
-	categories: z.string(),
+	categories: z.string().nullable(),
 });
 
-const categoriesSchemaObj = z.object({
-	created_at: z.string(),
-	id: z.string(),
-	name: z.string(),
-});
-
-const categoriesSchemaArray = z.array(categoriesSchemaObj);
-
+type categoriesType = {
+	categories: categoriesProps;
+};
 export const promptSchema = {
 	promptFormSchema,
-	categoriesSchemaObj,
-	categoriesSchemaArray,
 };
 
-export type PromptProps = Tables<'prompt'> & {
-	categories: {
-		created_at: string;
-		id: string;
-		name: string;
-	};
-};
+export type PromptProps = Tables<'prompt'> & categoriesType;

@@ -93,6 +93,7 @@ const List: React.FC<ListProps> = ({
 							// Render chatMessage
 							return (
 								<ListInternal
+									key={item.chat_id}
 									item={item}
 									chatSelected={chatSelected}
 									setChatSelected={setChatSelected}
@@ -105,12 +106,15 @@ const List: React.FC<ListProps> = ({
 							// Render promptProp
 							return (
 								<ListInternal
+								key={item.id}
 									item={item}
 									chatSelected={chatSelected}
 									setChatSelected={setChatSelected}
 								/>
 							);
 						}
+
+						return null;
 					})}
 			</div>
 		</ScrollArea>
