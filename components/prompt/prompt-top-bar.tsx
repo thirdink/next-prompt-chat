@@ -20,9 +20,9 @@ const PromptTopBar: React.FC<PromptTopbarProps> = ({
 
 	return (
 		<>
-			{prompt && prompt.length === 0 ? (
+			{prompt.prompt && prompt.prompt.length === 0 ? (
 				<Link
-					href='/dashboard/prompt-library'
+					href='/dashboard/prompt.prompt-library'
 					className='flex flex-col items-start gap-2 rounded-lg p-3 text-left text-sm transition-all hover:bg-accent'
 				>
 					<div className='inline-block'>
@@ -34,14 +34,14 @@ const PromptTopBar: React.FC<PromptTopbarProps> = ({
 							</CardHeader>
 							<CardContent className='flex flex-row items-center justify-between space-y-0 overflow-auto'>
 								<p className='hyphens-auto whitespace-normal align-middle text-clip text-start antialiased overflow-hidden'>
-									click here! to add new prompt
+									click here! to add new prompt.prompt
 								</p>
 							</CardContent>
 						</Card>
 					</div>
 				</Link>
 			) : (
-				prompt.map((prompt) => {
+				prompt.prompt.map((prompt) => {
 					return (
 						<button
 							key={prompt.id}

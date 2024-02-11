@@ -37,7 +37,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 						children={children}
 						defaultLayout={defaultLayout}
 						defaultCollapsed={defaultCollapsed}
-						navCollapsedSize={2}
+						navCollapsedSize={4}
 					/>
 
 					<Footer />

@@ -2,20 +2,34 @@
 import React, { createContext, useReducer, Dispatch } from 'react';
 import { PromptProps } from '@/lib/types/prompt/prompt-lib';
 
-type State = PromptProps[];
+type State = {
+	prompt: PromptProps[];
+	selectedPrompt: PromptProps | null;
+};
 type Action = {
-	type: 'SET_PROMPTS' | 'ADD_PROMPT';
+	type:
+		| 'SET_PROMPTS'
+		| 'ADD_PROMPT'
+		| 'REMOVE_PROMPT'
+		| 'UPDATE_PROMPT'
+		| 'SELECTED_PROMPT';
 	payload: PromptProps | PromptProps[];
 };
 
-const initialState: State = [];
+const initialState: State = {
+	prompt: [],
+	selectedPrompt: null,
+};
 
 export function reducer(state: State, action: Action): State {
 	switch (action.type) {
 		case 'SET_PROMPTS':
-			return action.payload as PromptProps[];
+			return { ...state, prompt: action.payload as PromptProps[] };
 		case 'ADD_PROMPT':
-			return [...state, action.payload as PromptProps];
+			return {
+				...state,
+				prompt: [...state.prompt, action.payload as PromptProps],
+			};
 		default:
 			throw new Error('Unknown action: ' + action.type);
 	}

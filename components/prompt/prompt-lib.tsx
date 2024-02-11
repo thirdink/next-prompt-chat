@@ -44,7 +44,7 @@ const PromptLib = () => {
 				))
 			) : (
 				<List
-					items={prompts}
+					items={prompts.prompt}
 					chatSelected={chatSelected}
 					setChatSelected={setChatSelected}
 				/>

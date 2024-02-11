@@ -1,14 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
 	ResizableHandle,
 	ResizablePanel,
 	ResizablePanelGroup,
 } from '@/components/ui/resizable';
 import { usePathname } from 'next/navigation';
+import { PromptContext } from '@/data/context/PromptContext';
 
 import { SidebarNav } from '@/components/sidebar/side-bar';
+import { SelectedListDisplay } from '@/components/selected-list-display';
 
 interface ResizableLayoutProps {
 	children: React.ReactNode;
@@ -24,6 +26,10 @@ const ResizableLayout = ({
 	navCollapsedSize,
 }: ResizableLayoutProps) => {
 	const pathname = usePathname();
+	const [prompts, dispatch] = useContext(PromptContext);
+	useEffect(() => {
+		console.log(prompts);
+	});
 
 	return (
 		<ResizablePanelGroup
@@ -55,9 +61,9 @@ const ResizableLayout = ({
 				pathname === '/dashboard/prompt-library' ? (
 					<>
 						<ResizableHandle withHandle />
-						<ResizablePanel
-							defaultSize={defaultLayout[2]}
-						></ResizablePanel>
+						<ResizablePanel defaultSize={defaultLayout[2]}>
+							<SelectedListDisplay mail={null} />
+						</ResizablePanel>
 					</>
 				) : null}
 			</div>
