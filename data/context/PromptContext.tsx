@@ -1,10 +1,11 @@
 'use client';
 import React, { createContext, useReducer, Dispatch } from 'react';
 import { PromptProps } from '@/lib/types/prompt/prompt-lib';
+import { selectedChat } from '@/lib/types/chat/chat-lib';
 
-type State = {
+export type Store = {
 	prompt: PromptProps[];
-	selectedPrompt: PromptProps | null;
+	selectedPrompt: selectedChat | null;
 };
 type Action = {
 	type:
@@ -13,15 +14,15 @@ type Action = {
 		| 'REMOVE_PROMPT'
 		| 'UPDATE_PROMPT'
 		| 'SELECTED_PROMPT';
-	payload: PromptProps | PromptProps[];
+	payload: PromptProps | PromptProps[] | selectedChat | null;
 };
 
-const initialState: State = {
+const initialState: Store = {
 	prompt: [],
 	selectedPrompt: null,
 };
 
-export function reducer(state: State, action: Action): State {
+export function reducer(state: Store, action: Action): Store {
 	switch (action.type) {
 		case 'SET_PROMPTS':
 			return { ...state, prompt: action.payload as PromptProps[] };
@@ -30,13 +31,15 @@ export function reducer(state: State, action: Action): State {
 				...state,
 				prompt: [...state.prompt, action.payload as PromptProps],
 			};
+		case 'SELECTED_PROMPT':
+			return { ...state, selectedPrompt: action.payload as selectedChat };
 		default:
 			throw new Error('Unknown action: ' + action.type);
 	}
 }
 
-export const PromptContext: React.Context<[State, Dispatch<Action>]> =
-	createContext<[State, Dispatch<Action>]>([initialState, () => {}]);
+export const PromptContext: React.Context<[Store, Dispatch<Action>]> =
+	createContext<[Store, Dispatch<Action>]>([initialState, () => {}]);
 
 export const PromptProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,

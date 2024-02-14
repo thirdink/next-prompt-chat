@@ -27,9 +27,10 @@ const ResizableLayout = ({
 }: ResizableLayoutProps) => {
 	const pathname = usePathname();
 	const [prompts, dispatch] = useContext(PromptContext);
-	useEffect(() => {
-		console.log(prompts);
-	});
+	// // for debugging purposes
+	// useEffect(() => {
+	// 	console.log(prompts);
+	// });
 
 	return (
 		<ResizablePanelGroup
@@ -62,7 +63,9 @@ const ResizableLayout = ({
 					<>
 						<ResizableHandle withHandle />
 						<ResizablePanel defaultSize={defaultLayout[2]}>
-							<SelectedListDisplay mail={null} />
+							<SelectedListDisplay
+								item={prompts.selectedPrompt}
+							/>
 						</ResizablePanel>
 					</>
 				) : null}

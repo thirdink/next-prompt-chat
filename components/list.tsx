@@ -11,13 +11,13 @@ import type {
 } from '@/lib/types/chat/chat-lib';
 type ListProps = {
 	items?: chatMessages[] | PromptProps[] | undefined;
-	chatSelected: selectedChat | undefined;
-	setChatSelected: Dispatch<SetStateAction<selectedChat | undefined>>;
+	chatSelected: selectedChat | undefined | null;
+	setChatSelected: Dispatch<SetStateAction<selectedChat | null>>;
 };
 type ListInternal = {
 	item: chatMessages | PromptProps;
 	chatSelected: selectedChat | undefined;
-	setChatSelected: Dispatch<SetStateAction<selectedChat | undefined>>;
+	setChatSelected: Dispatch<SetStateAction<selectedChat | null>>;
 };
 
 const ListInternal: React.FC<ListInternal> = ({
@@ -95,7 +95,7 @@ const List: React.FC<ListProps> = ({
 								<ListInternal
 									key={item.chat_id}
 									item={item}
-									chatSelected={chatSelected}
+									chatSelected={chatSelected!}
 									setChatSelected={setChatSelected}
 								/>
 							);
@@ -106,9 +106,9 @@ const List: React.FC<ListProps> = ({
 							// Render promptProp
 							return (
 								<ListInternal
-								key={item.id}
+									key={item.id}
 									item={item}
-									chatSelected={chatSelected}
+									chatSelected={chatSelected!}
 									setChatSelected={setChatSelected}
 								/>
 							);

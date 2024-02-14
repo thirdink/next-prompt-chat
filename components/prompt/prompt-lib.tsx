@@ -14,7 +14,7 @@ import CreateNewPrompt from '@/components/prompt/create-new-prompt';
 const PromptLib = () => {
 	const [prompts, dispatch] = useContext(PromptContext);
 	const [loading, setLoading] = useState(false);
-	const [chatSelected, setChatSelected] = useState<selectedChat>();
+	const [chatSelected, setChatSelected] = useState<selectedChat | null>(null);
 	const [skeletonItems] = useState([
 		{ id: uuidv4() },
 		{ id: uuidv4() },
@@ -30,10 +30,17 @@ const PromptLib = () => {
 		dispatch({ type: 'SET_PROMPTS', payload: getPrompt });
 		setLoading(false);
 	};
+	const dispatchSelectedChat = () => {
+		dispatch({ type: 'SELECTED_PROMPT', payload: chatSelected });
+	};
 
 	useEffect(() => {
 		getPrompts();
 	}, []);
+
+	useEffect(() => {
+		dispatchSelectedChat();
+	}, [chatSelected]);
 
 	return (
 		<>
