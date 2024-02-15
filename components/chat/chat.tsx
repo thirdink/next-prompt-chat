@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useContext, useEffect, useState } from 'react';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';

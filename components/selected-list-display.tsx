@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { PromptContext } from '@/data/context/PromptContext';
-import { selectedChat } from '@/lib/types/chat/chat-lib';
+import { selectedChat, chatMessages } from '@/lib/types/chat/chat-lib';
 import { format } from 'date-fns/format';
 import nextSaturday from 'date-fns/nextSaturday';
 import {
@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { Button } from '@/components/ui/button';
-
+import { ChatList } from '@/components/chat/chat-list';
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
@@ -45,7 +45,7 @@ export function SelectedListDisplay({ item }: SelectedListDisplayProps) {
 	return (
 		<div className='flex h-full flex-col'>
 			<div className='flex items-center p-2'>
-				<div className='flex items-center gap-2'>
+				{/* <div className='flex items-center gap-2'>
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<Button
@@ -127,8 +127,8 @@ export function SelectedListDisplay({ item }: SelectedListDisplayProps) {
 						</TooltipTrigger>
 						<TooltipContent>Forward</TooltipContent>
 					</Tooltip>
-				</div>
-				<Separator orientation='vertical' className='mx-2 h-6' />
+				</div> */}
+				{/* <Separator orientation='vertical' className='mx-2 h-6' />
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button variant='ghost' size='icon' disabled={!item}>
@@ -142,7 +142,7 @@ export function SelectedListDisplay({ item }: SelectedListDisplayProps) {
 						<DropdownMenuItem>Add label</DropdownMenuItem>
 						<DropdownMenuItem>Mute thread</DropdownMenuItem>
 					</DropdownMenuContent>
-				</DropdownMenu>
+				</DropdownMenu> */}
 			</div>
 			<Separator />
 			{item ? (
@@ -181,7 +181,15 @@ export function SelectedListDisplay({ item }: SelectedListDisplayProps) {
 					<div className=' whitespace-pre-wrap p-4 text-sm'>
 						{item.chatMessages && 'id' in item.chatMessages
 							? item.chatMessages.input
-							: null}
+							: item.chatMessages.messages && (
+									<>
+										<ChatList
+											messages={
+												item.chatMessages.messages
+											}
+										/>
+									</>
+							  )}
 					</div>
 					{/* <Separator className='mt-auto' />
 					<div className='p-4'>

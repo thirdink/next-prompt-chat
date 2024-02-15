@@ -4,6 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { ChatMessage } from '@/components/chat/chat-message';
 
 export interface ChatList {
+	//TODO: Add type for chatHistory here
 	messages: Message[];
 }
 

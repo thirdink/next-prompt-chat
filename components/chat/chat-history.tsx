@@ -26,7 +26,7 @@ const chatHistory: React.FC = () => {
 			});
 		}
 		if (chatMessages) {
-			setHistory(chatMessages);
+			setHistory(chatMessages as chatMessages[]);
 		}
 	};
 	useEffect(() => {

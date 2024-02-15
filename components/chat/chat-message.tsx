@@ -75,7 +75,12 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
 						},
 					}}
 				>
-					{message.content}
+					{
+						('content' in message
+							? message.content
+							: // @ts-ignore this should be fixed in the future with TRPC
+							  message?.message_content) as any
+					}
 				</MemoizedReactMarkdown>
 				<ChatMessageActions message={message} />
 			</div>

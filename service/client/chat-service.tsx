@@ -1,5 +1,6 @@
 import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
+import type { ChatMessagesFromUser } from '@/lib/types/chat/chat-lib';
 
 import { Database } from '@/database.types';
 const supabase = createClient();

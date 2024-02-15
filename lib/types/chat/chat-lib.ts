@@ -1,4 +1,6 @@
 import type { PromptProps } from '@/lib/types/prompt/prompt-lib';
+import { Tables } from '@/database.types';
+export type Messages = Tables<'messages'>;
 export type chatMessages = {
 	chat_id: string;
 	chat_created_at: string;
