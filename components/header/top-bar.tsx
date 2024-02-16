@@ -1,6 +1,8 @@
+import React from 'react';
 import AuthButton from '@/components/ui/AuthButton';
 import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
+import InnerTopBar from './inner-top-bar';
 
 const TopBar = () => {
 	const cookieStore = cookies();
@@ -15,10 +17,11 @@ const TopBar = () => {
 			return false;
 		}
 	};
-
 	const isSupabaseConnected = canInitSupabaseClient();
 	return (
 		<nav className='border-b sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+			<InnerTopBar />
+
 			<div className='flex h-16 items-center px-4 lg:justify-end sm:justify-end'>
 				{isSupabaseConnected && <AuthButton />}
 			</div>
