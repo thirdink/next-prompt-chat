@@ -11,7 +11,10 @@ const InnerTopBar: React.FC = () => {
 	const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
 	return (
 		<>
-			<Link href='/' className='hidden items-center space-x-2 md:flex'>
+			<Link
+				href='/'
+				className='hidden items-center space-x-2 md:flex ml-3'
+			>
 				<MessageSquareCode />
 				<span className='hidden font-bold sm:inline-block'>
 					Prompt Lib
