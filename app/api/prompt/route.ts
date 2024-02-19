@@ -2,11 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { promptService } from '@/service/server/prompt-service';
-export async function POST(req: NextRequest) {
+import { promptSchema } from '@/lib/types/prompt/prompt-lib';
+
+export async function POST(req: NextRequest): Promise<NextResponse> {
 	try {
-		let { input, instructions, categories, title } = await req.json();
-		if(categories===''){
-			categories=null;
+		const response = promptSchema.promptFormSchema.safeParse(
+			await req.json()
+		);
+		if (!response.success) {
+			const { errors } = response.error;
+			return NextResponse.json({ error: errors }, { status: 400 });
+		}
+		let { input, instructions, categories, title } = response.data;
+		if (categories === '') {
+			categories = null;
 		}
 
 		const { data, error } = await promptService.insertPrompt({

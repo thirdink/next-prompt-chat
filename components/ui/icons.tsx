@@ -1,9 +1,10 @@
 'use client';
 
 import * as React from 'react';
-type IconProps = React.HTMLAttributes<SVGElement>;
 
+import { LucideIcon, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+type IconProps = React.HTMLAttributes<SVGElement>;
 
 function IconNextChat({
 	className,
@@ -674,6 +675,7 @@ export const Icons = {
 			<path d='M21 12a9 9 0 1 1-6.219-8.56' />
 		</svg>
 	),
+	close: () => <X />,
 };
 
 export {

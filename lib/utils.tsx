@@ -9,6 +9,7 @@ export const handleMessageShortener = (
 	currentMessage: string,
 	maxSubString?: number
 ): string => {
+	if (currentMessage == null) return '';
 	// create a new string that takes currentMessageContent and just returns the first 52 characters with ... at the end
 	if (currentMessage.length > maxSubString! ? maxSubString : 52) {
 		const shortMessage = currentMessage.substring(

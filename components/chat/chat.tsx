@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useContext, useEffect, useState } from 'react';
 import { Metadata } from 'next';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
@@ -9,13 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-
-// import { CodeViewer } from '@/components/code-viewer';
-// import { PresetActions } from '@/components/preset-actions';
-// import { PresetSave } from '@/components/preset-save';
-// import { PresetSelector } from '@/components/preset-selector';
-// import { PresetShare } from '@/components/preset-share';
-// import { presets } from '@/data/presets';
 import { MaxLengthSelector } from '@/components/maxlength-selector';
 import { ModelSelector } from '@/components/model-selector';
 import { TemperatureSelector } from '@/components/temperature-selector';
@@ -153,7 +144,7 @@ export default function ChatPage({
 
 	return (
 		<>
-			<div className='flex-col flex m-auto p-auto'>
+			<div className='flex-col flex m-auto p-auto justify-center'>
 				<div className='flex overflow-x-scroll p-5 hide-scroll-bar'>
 					<div className='flex flex-nowrap ml-10 items-center'>
 						<PromptTopbar
@@ -163,21 +154,7 @@ export default function ChatPage({
 					</div>
 				</div>
 				<Separator />
-				{/* <div className='container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16 w-11/12'>
-					<h2 className='text-lg font-semibold whitespace-nowrap'>
-						Prompt Playground
-					</h2>
-					<div className='ml-auto flex w-full space-x-2 pl-20'>
-						<PresetSelector presets={presets} />
-						<PresetSave />
-						<div className='hidden space-x-2 md:flex'>
-							<CodeViewer />
-							<PresetShare />
-						</div>
-						<PresetActions />
-					</div>
-				</div> */}
-				<Separator />
+
 				<Tabs defaultValue='edit' className='flex-1'>
 					<div className='p-6 w-auto'>
 						<div className='grid items-stretch gap-6 md:grid-cols-[1fr_200px]'>
@@ -202,7 +179,7 @@ export default function ChatPage({
 									setTopP={setTopP}
 								/>
 							</div>
-							<div className='md:order-1 p-2'>
+							<div className='md:order-1 p-2 min-w-[60vw]'>
 								<TabsContent
 									value='edit'
 									className='mt-0 border-0 p-0'

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DrawingPinOutline } from '@/components/ui/icons';
 import { handleMessageShortener } from '@/lib/utils';
 import { PromptProps } from '@/lib/types/prompt/prompt-lib';
+import Link from 'next/link';
 
 type PromptTopbarProps = {
 	loading: boolean;
@@ -19,8 +20,28 @@ const PromptTopBar: React.FC<PromptTopbarProps> = ({
 
 	return (
 		<>
-			{prompt &&
-				prompt.map((prompt) => {
+			{prompt.prompt && prompt.prompt.length === 0 ? (
+				<Link
+					href='/dashboard/prompt.prompt-library'
+					className='flex flex-col items-start gap-2 rounded-lg p-3 text-left text-sm transition-all hover:bg-accent'
+				>
+					<div className='inline-block'>
+						<Card className='max-w-xs overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out h-[175px]  w-[145px]'>
+							<CardHeader className='flex flex-row items-center justify-between space-y-0 '>
+								<CardTitle className='text-sm font-medium'>
+									No Prompts Yet
+								</CardTitle>
+							</CardHeader>
+							<CardContent className='flex flex-row items-center justify-between space-y-0 overflow-auto'>
+								<p className='hyphens-auto whitespace-normal align-middle text-clip text-start antialiased overflow-hidden'>
+									click here! to add new prompt.prompt
+								</p>
+							</CardContent>
+						</Card>
+					</div>
+				</Link>
+			) : (
+				prompt.prompt.map((prompt) => {
 					return (
 						<button
 							key={prompt.id}
@@ -50,7 +71,8 @@ const PromptTopBar: React.FC<PromptTopbarProps> = ({
 							</div>
 						</button>
 					);
-				})}
+				})
+			)}
 		</>
 	);
 };

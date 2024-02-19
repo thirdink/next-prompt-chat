@@ -1,24 +1,27 @@
 'use client';
 import React, { useEffect, useState, useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { LibContainer } from '@/lib/utils';
 
 import SkeletonGrid from '@/components/skeleton-grid-ui';
 import { promptService } from '@/service/client/prompt-service';
-import PromptGrid from '@/components/prompt/prompt-grid';
 import { PromptContext } from '@/data/context/PromptContext';
+import type { chatMessages, selectedChat } from '@/lib/types/chat/chat-lib';
+import List from '@/components/list';
 import CreateNewPrompt from '@/components/prompt/create-new-prompt';
 
 const PromptLib = () => {
 	const [prompts, dispatch] = useContext(PromptContext);
 	const [loading, setLoading] = useState(false);
+	const [chatSelected, setChatSelected] = useState<selectedChat | null>(null);
 	const [skeletonItems] = useState([
-		{ id: 1 },
-		{ id: 2 },
-		{ id: 3 },
-		{ id: 4 },
-		{ id: 5 },
-		{ id: 6 },
+		{ id: uuidv4() },
+		{ id: uuidv4() },
+		{ id: uuidv4() },
+		{ id: uuidv4() },
+		{ id: uuidv4() },
+		{ id: uuidv4() },
 	]);
 
 	const getPrompts = async () => {
@@ -27,31 +30,32 @@ const PromptLib = () => {
 		dispatch({ type: 'SET_PROMPTS', payload: getPrompt });
 		setLoading(false);
 	};
+	const dispatchSelectedChat = () => {
+		dispatch({ type: 'SELECTED_PROMPT', payload: chatSelected });
+	};
 
 	useEffect(() => {
 		getPrompts();
 	}, []);
 
+	useEffect(() => {
+		dispatchSelectedChat();
+	}, [chatSelected]);
+
 	return (
 		<>
 			<CreateNewPrompt getPrompts={getPrompts} />
-			<div className='items-start justify-center gap-6 rounded-lg p-8 md:grid lg:grid-cols-2 xl:grid-cols-3'>
-				{loading
-					? skeletonItems.map((item) => <SkeletonGrid {...item} />)
-					: prompts &&
-					  prompts.map((prompt) => {
-							return (
-								<div
-									key={prompt.id}
-									className='col-span-2 grid items-start gap-6 lg:col-span-1'
-								>
-									<LibContainer>
-										<PromptGrid prompt={prompt} />
-									</LibContainer>
-								</div>
-							);
-					  })}
-			</div>
+			{loading ? (
+				skeletonItems.map((item) => (
+					<SkeletonGrid key={item.id} {...item} />
+				))
+			) : (
+				<List
+					items={prompts.prompt}
+					chatSelected={chatSelected}
+					setChatSelected={setChatSelected}
+				/>
+			)}
 		</>
 	);
 };
