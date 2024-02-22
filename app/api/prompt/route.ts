@@ -49,3 +49,19 @@ export async function GET() {
 		return NextResponse.json({ error: e.message }, { status: 500 });
 	}
 }
+export async function DELETE(req: NextRequest): Promise<NextResponse> {
+	try {
+		const { id } = await req.json();
+		console.log('id: ', id);
+		// const { data, error } = await promptService.deletePrompt(id as string);
+
+		// if (error) {
+		// 	console.error(error.message);
+		// }
+
+		return NextResponse.json(id, { status: 200 });
+	} catch (e: any) {
+		console.error(e.message);
+		return NextResponse.json({ error: e.message }, { status: 500 });
+	}
+}

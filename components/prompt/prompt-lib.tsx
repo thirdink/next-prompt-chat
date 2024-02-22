@@ -1,9 +1,6 @@
 'use client';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, Suspense } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
-import { LibContainer } from '@/lib/utils';
-
 import SkeletonGrid from '@/components/skeleton-grid-ui';
 import { promptService } from '@/service/client/prompt-service';
 import { PromptContext } from '@/data/context/PromptContext';
@@ -33,6 +30,20 @@ const PromptLib = () => {
 	const dispatchSelectedChat = () => {
 		dispatch({ type: 'SELECTED_PROMPT', payload: chatSelected });
 	};
+	const handleDelete = async ({
+		id,
+		chat_id,
+	}: {
+		id?: string;
+		chat_id?: string;
+	}) => {
+		// id from prompt lib component
+		if (id) {
+			console.log('id: ', id);
+			await promptService.deletePrompt(id);
+			getPrompts();
+		}
+	};
 
 	useEffect(() => {
 		getPrompts();
@@ -45,7 +56,15 @@ const PromptLib = () => {
 	return (
 		<>
 			<CreateNewPrompt getPrompts={getPrompts} />
-			{loading ? (
+			<Suspense fallback={<SkeletonGrid />}>
+				<List
+					items={prompts.prompt}
+					chatSelected={chatSelected}
+					setChatSelected={setChatSelected}
+					handleDelete={handleDelete}
+				/>
+			</Suspense>
+			{/* {loading ? (
 				skeletonItems.map((item) => (
 					<SkeletonGrid key={item.id} {...item} />
 				))
@@ -55,7 +74,7 @@ const PromptLib = () => {
 					chatSelected={chatSelected}
 					setChatSelected={setChatSelected}
 				/>
-			)}
+			)} */}
 		</>
 	);
 };

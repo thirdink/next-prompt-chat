@@ -15,6 +15,18 @@ const chatHistory: React.FC = () => {
 	const dispatchSelectedChat = () => {
 		dispatch({ type: 'SELECTED_PROMPT', payload: chatSelected });
 	};
+	const handleDelete = async ({
+		id,
+		chat_id,
+	}: {
+		id?: string;
+		chat_id?: string;
+	}) => {
+		// chat_id from chat history component
+		if (chat_id) {
+			console.log('chat_id: ', chat_id);
+		}
+	};
 	const getAllUserChatData = async () => {
 		const { chatMessages, error } = await chatService.getUserData();
 		if (error) {
@@ -42,6 +54,7 @@ const chatHistory: React.FC = () => {
 			items={history}
 			chatSelected={chatSelected}
 			setChatSelected={setChatSelected}
+			handleDelete={handleDelete}
 		/>
 	);
 };

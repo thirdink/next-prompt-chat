@@ -3,10 +3,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { LibContainer } from '@/lib/utils';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
-const SkeletonGrid = (item: { id: string }) => {
+const SkeletonGrid = (item?: { id?: string }) => {
 	return (
 		<div
-			key={item.id}
+			// key={item.id}
 			className='col-span-2 grid items-start gap-6 lg:col-span-1'
 		>
 			<LibContainer>

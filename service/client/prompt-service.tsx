@@ -5,6 +5,7 @@ import { promptSchema } from '@/lib/types/prompt/prompt-lib';
 import { Database, Tables } from '@/database.types';
 
 const supabase = createClient();
+
 const promptFormSchema = promptSchema.promptFormSchema;
 
 const getPromptCategories = async () => {
@@ -70,7 +71,24 @@ const insertPromptCategory = async ({ category }: category) => {
 	}
 };
 
+const deletePrompt = async (id: string) => {
+	try {
+		const response = await fetch(`/api/prompt/`, {
+			method: 'DELETE',
+			body: JSON.stringify({
+				id,
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		return response;
+	} catch (e: any) {
+		console.error('deletePrompt Error', e);
+	}
+};
 export const promptService = {
+	deletePrompt,
 	getPromptCategories,
 	getAllPrompts,
 	postPrompt,
