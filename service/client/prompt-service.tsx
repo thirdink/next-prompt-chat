@@ -3,13 +3,13 @@ import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
 import { promptSchema } from '@/lib/types/prompt/prompt-lib';
 import { Database, Tables } from '@/database.types';
+import { unstable_noStore } from 'next/cache';
 
 const supabase = createClient();
 
 const promptFormSchema = promptSchema.promptFormSchema;
 
 const getPromptCategories = async () => {
-	// const { data, error } = await supabase.from('categories').select('*');
 	const promptCategoriesQuery = supabase.from('categories').select('*');
 
 	type promptCategories = QueryData<typeof promptCategoriesQuery>;
