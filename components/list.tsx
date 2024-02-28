@@ -1,4 +1,4 @@
-import React, { ComponentProps, Dispatch, SetStateAction } from 'react';
+import React, { ComponentProps } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
@@ -10,25 +10,10 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import type {
-	chatMessages,
-	selectedChat,
-	ChatMessagesFromUser,
-} from '@/lib/types/chat/chat-lib';
+import type { chatMessages } from '@/lib/types/chat/chat-lib';
 import { MoreVertical } from 'lucide-react';
 import { Button } from './ui/button';
-type ListProps = {
-	items?: chatMessages[] | PromptProps[] | undefined;
-	chatSelected: selectedChat | undefined | null;
-	setChatSelected: Dispatch<SetStateAction<selectedChat | null>>;
-	handleDelete: ({ id, chat_id }: { id?: string; chat_id?: string }) => void;
-};
-type ListInternal = {
-	item: chatMessages | PromptProps;
-	chatSelected: selectedChat | undefined;
-	setChatSelected: Dispatch<SetStateAction<selectedChat | null>>;
-	handleDelete: ({ id, chat_id }: { id?: string; chat_id?: string }) => void;
-};
+import { type ListProps, ListInternal } from '@/lib/types/shared/list';
 
 const ListInternal: React.FC<ListInternal> = ({
 	item,

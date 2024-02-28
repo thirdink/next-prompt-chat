@@ -6,12 +6,8 @@ import { PromptContext } from '@/data/context/PromptContext';
 import type { chatMessages, selectedChat } from '@/lib/types/chat/chat-lib';
 import List from '@/components/list';
 import CreateNewPrompt from '@/components/prompt/create-new-prompt';
-import { unstable_noStore } from 'next/cache';
-
-export type HandleDeleteParams = {
-	id?: string;
-	chat_id?: string;
-};
+import { type HandleDeleteParams } from '@/lib/types/prompt/prompt-lib';
+import { toast } from '@/components/ui/use-toast';
 
 const PromptLib = () => {
 	const [prompts, dispatch] = useContext(PromptContext);
@@ -30,9 +26,22 @@ const PromptLib = () => {
 
 	const handleDelete = async (params: HandleDeleteParams) => {
 		if (params.id) {
-			console.log('id: ', params.id);
-			await promptService.deletePrompt(params.id);
-			getPrompts();
+			console.log('delete id: ', params.id);
+			const result = await promptService.deletePrompt(params.id);
+			if (result?.status === 200) {
+				toast({
+					title: 'Prompt Deleted',
+					description: 'Prompt has been deleted',
+				});
+				getPrompts();
+			}
+			if (result?.status === 500) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong with deleting the prompt.',
+					description: JSON.stringify(result?.body),
+				});
+			}
 		}
 	};
 

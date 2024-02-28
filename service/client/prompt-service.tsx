@@ -2,8 +2,6 @@ import z, { string } from 'zod';
 import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
 import { promptSchema } from '@/lib/types/prompt/prompt-lib';
-import { Database, Tables } from '@/database.types';
-import { unstable_noStore } from 'next/cache';
 
 const supabase = createClient();
 

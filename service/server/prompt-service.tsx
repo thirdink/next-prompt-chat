@@ -24,7 +24,15 @@ const fetchPrompts = async () => {
 	return { data, error };
 };
 
+const deletePromptById = async (id: string) => {
+	const cookieStore = cookies();
+	const supabase = createClient(cookieStore);
+	const { data, error } = await supabase.from('prompt').delete().eq('id', id);
+	return { data, error };
+};
+
 export const promptService = {
 	insertPrompt,
 	fetchPrompts,
+	deletePromptById,
 };

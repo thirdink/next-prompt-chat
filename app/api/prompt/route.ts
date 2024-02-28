@@ -27,6 +27,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 		if (error) {
 			console.error(error.message);
+			return NextResponse.json({ error: error.message }, { status: 500 });
 		}
 		return NextResponse.json(data, { status: 200 });
 	} catch (e: any) {
@@ -41,6 +42,7 @@ export async function GET() {
 
 		if (error) {
 			console.error(error.message);
+			return NextResponse.json({ error: error.message }, { status: 500 });
 		}
 
 		return NextResponse.json(data, { status: 200 });
@@ -49,17 +51,21 @@ export async function GET() {
 		return NextResponse.json({ error: e.message }, { status: 500 });
 	}
 }
+
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
 	try {
 		const { id } = await req.json();
-		console.log('id: ', id);
-		// const { data, error } = await promptService.deletePrompt(id as string);
 
-		// if (error) {
-		// 	console.error(error.message);
-		// }
+		const { data, error } = await promptService.deletePromptById(
+			id as string
+		);
 
-		return NextResponse.json(id, { status: 200 });
+		if (error) {
+			console.error(error.message);
+			return NextResponse.json({ error: error.message }, { status: 500 });
+		}
+
+		return NextResponse.json(data, { status: 200 });
 	} catch (e: any) {
 		console.error(e.message);
 		return NextResponse.json({ error: e.message }, { status: 500 });

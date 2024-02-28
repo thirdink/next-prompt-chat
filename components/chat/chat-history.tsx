@@ -4,6 +4,7 @@ import { protectedComponent } from '@/service/client/auth-service';
 import { chatService } from '@/service/client/chat-service';
 import { PromptContext } from '@/data/context/PromptContext';
 import { toast } from '@/components/ui/use-toast';
+import { HandleDeleteParams } from '@/lib/types/prompt/prompt-lib';
 
 import type { chatMessages, selectedChat } from '@/lib/types/chat/chat-lib';
 import List from '@/components/list';
@@ -15,16 +16,10 @@ const chatHistory: React.FC = () => {
 	const dispatchSelectedChat = () => {
 		dispatch({ type: 'SELECTED_PROMPT', payload: chatSelected });
 	};
-	const handleDelete = async ({
-		id,
-		chat_id,
-	}: {
-		id?: string;
-		chat_id?: string;
-	}) => {
+	const handleDelete = async (params: HandleDeleteParams) => {
 		// chat_id from chat history component
-		if (chat_id) {
-			console.log('chat_id: ', chat_id);
+		if (params.chat_id) {
+			console.log('delete chat_id: ', params.chat_id);
 		}
 	};
 	const getAllUserChatData = async () => {
