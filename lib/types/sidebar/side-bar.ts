@@ -21,7 +21,7 @@ export type NavProps = {
 };
 export interface SidebarNavProps {
 	className?: string;
-	defaultLayout: number[] | undefined;
+	defaultLayout: number | undefined;
 	defaultCollapsed?: boolean;
 	navCollapsedSize?: number;
 }

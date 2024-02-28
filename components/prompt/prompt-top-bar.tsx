@@ -43,7 +43,7 @@ const PromptTopBar: React.FC<PromptTopbarProps> = ({
 			) : (
 				prompt.prompt.map((prompt) => {
 					return (
-						<Suspense fallback={<SkeletonGrid />}>
+						<Suspense fallback={<SkeletonGrid />} key={prompt.id}>
 							<button
 								key={prompt.id}
 								className='flex flex-col items-start gap-2 rounded-lg p-3 text-left text-sm transition-all hover:bg-accent '

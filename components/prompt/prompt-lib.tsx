@@ -8,12 +8,17 @@ import List from '@/components/list';
 import CreateNewPrompt from '@/components/prompt/create-new-prompt';
 import { unstable_noStore } from 'next/cache';
 
+export type HandleDeleteParams = {
+	id?: string;
+	chat_id?: string;
+};
+
 const PromptLib = () => {
 	const [prompts, dispatch] = useContext(PromptContext);
 	const [loading, setLoading] = useState(false);
 	const [chatSelected, setChatSelected] = useState<selectedChat | null>(null);
 	const getPrompts = async () => {
-		unstable_noStore();
+		// unstable_noStore();
 		setLoading(true);
 		const getPrompt = await promptService.getAllPrompts();
 		dispatch({ type: 'SET_PROMPTS', payload: getPrompt });
@@ -22,17 +27,11 @@ const PromptLib = () => {
 	const dispatchSelectedChat = () => {
 		dispatch({ type: 'SELECTED_PROMPT', payload: chatSelected });
 	};
-	const handleDelete = async ({
-		id,
-		chat_id,
-	}: {
-		id?: string;
-		chat_id?: string;
-	}) => {
-		// id from prompt lib component
-		if (id) {
-			console.log('id: ', id);
-			await promptService.deletePrompt(id);
+
+	const handleDelete = async (params: HandleDeleteParams) => {
+		if (params.id) {
+			console.log('id: ', params.id);
+			await promptService.deletePrompt(params.id);
 			getPrompts();
 		}
 	};

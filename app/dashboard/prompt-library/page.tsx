@@ -6,7 +6,7 @@ import { protectedComponent } from '@/service/client/auth-service';
 function Page() {
 	return (
 		<div className='overflow-hidden rounded-[0.5rem] border bg-background shadow-md md:shadow-xl m-3'>
-			<Suspense fallback={<h2>Loading...</h2>}>
+			<Suspense fallback={<SkeletonGrid />}>
 				<PromptLib />
 			</Suspense>
 		</div>
