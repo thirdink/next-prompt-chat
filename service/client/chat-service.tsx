@@ -64,7 +64,23 @@ const insertChatMessages = async ({
 	return { data, error };
 };
 
+const deleteChatById = async (id: string) => {
+	try {
+		const response = await fetch('/api/chat/chat-history', {
+			method: 'DELETE',
+			body: JSON.stringify({ id }),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		return response;
+	} catch (e: any) {
+		console.error('deleteChatById Error', e);
+	}
+};
+
 export const chatService = {
+	deleteChatById,
 	getUserData,
 	insertChatMessages,
 };

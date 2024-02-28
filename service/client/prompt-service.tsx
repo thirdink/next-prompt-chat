@@ -71,7 +71,7 @@ const insertPromptCategory = async ({ category }: category) => {
 
 const deletePrompt = async (id: string) => {
 	try {
-		const response = await fetch(`/api/prompt/`, {
+		const response = await fetch('/api/prompt/', {
 			method: 'DELETE',
 			body: JSON.stringify({
 				id,

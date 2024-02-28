@@ -20,8 +20,24 @@ const chatHistory: React.FC = () => {
 		// chat_id from chat history component
 		if (params.chat_id) {
 			console.log('delete chat_id: ', params.chat_id);
+			const result = await chatService.deleteChatById(params.chat_id);
+			if (result?.status === 200) {
+				toast({
+					title: 'Prompt Deleted',
+					description: 'chat has been deleted',
+				});
+				getAllUserChatData();
+			}
+			if (result?.status === 500) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong with deleting the prompt.',
+					description: JSON.stringify(result?.body),
+				});
+			}
 		}
 	};
+
 	const getAllUserChatData = async () => {
 		const { chatMessages, error } = await chatService.getUserData();
 		if (error) {
