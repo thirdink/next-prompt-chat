@@ -2,9 +2,13 @@ import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { Tables } from '@/database.types';
 
-const insertPrompt = async (prompt: Partial<Tables<'prompt'>>) => {
+const getSupabaseClient = () => {
 	const cookieStore = cookies();
-	const supabase = createClient(cookieStore);
+	return createClient(cookieStore);
+};
+
+const insertPrompt = async (prompt: Partial<Tables<'prompt'>>) => {
+	const supabase = getSupabaseClient();
 	const { data, error } = await supabase
 		.from('prompt')
 		.insert([prompt])
@@ -13,8 +17,7 @@ const insertPrompt = async (prompt: Partial<Tables<'prompt'>>) => {
 };
 
 const fetchPrompts = async () => {
-	const cookieStore = cookies();
-	const supabase = createClient(cookieStore);
+	const supabase = getSupabaseClient();
 	const { data, error } = await supabase
 		.from('prompt')
 		.select(
@@ -24,7 +27,14 @@ const fetchPrompts = async () => {
 	return { data, error };
 };
 
+const deletePromptById = async (id: string) => {
+	const supabase = getSupabaseClient();
+	const { data, error } = await supabase.from('prompt').delete().eq('id', id);
+	return { data, error };
+};
+
 export const promptService = {
 	insertPrompt,
 	fetchPrompts,
+	deletePromptById,
 };

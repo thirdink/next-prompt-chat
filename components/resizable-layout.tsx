@@ -27,11 +27,14 @@ const ResizableLayout = ({
 }: ResizableLayoutProps) => {
 	const pathname = usePathname();
 	const [prompts, dispatch] = useContext(PromptContext);
-
+	// useEffect(() => {
+	// 	console.log('defaultLayout ResizableLayout', defaultLayout);
+	// });
 	return (
 		<ResizablePanelGroup
 			direction='horizontal'
 			onLayout={(sizes: number[]) => {
+				console.log('sizes: ', sizes);
 				document.cookie = `react-resizable-panels:layout=${JSON.stringify(
 					sizes
 				)}`;
@@ -42,7 +45,7 @@ const ResizableLayout = ({
 				<aside className='hidden sm:flex -mx-4 w-1/8 p-5'>
 					<SidebarNav
 						defaultCollapsed={defaultCollapsed}
-						defaultLayout={defaultLayout}
+						defaultLayout={defaultLayout[0]}
 						navCollapsedSize={navCollapsedSize}
 					/>
 				</aside>

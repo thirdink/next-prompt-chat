@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { promptService } from '@/service/server/prompt-service';
 import { promptSchema } from '@/lib/types/prompt/prompt-lib';
@@ -27,6 +26,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 		if (error) {
 			console.error(error.message);
+			return NextResponse.json({ error: error.message }, { status: 500 });
 		}
 		return NextResponse.json(data, { status: 200 });
 	} catch (e: any) {
@@ -41,6 +41,7 @@ export async function GET() {
 
 		if (error) {
 			console.error(error.message);
+			return NextResponse.json({ error: error.message }, { status: 500 });
 		}
 
 		return NextResponse.json(data, { status: 200 });
@@ -48,4 +49,17 @@ export async function GET() {
 		console.error(e.message);
 		return NextResponse.json({ error: e.message }, { status: 500 });
 	}
+}
+
+export async function DELETE(req: NextRequest): Promise<NextResponse> {
+	const { id } = await req.json();
+
+	const { data, error } = await promptService.deletePromptById(id as string);
+
+	if (error) {
+		console.error(error.message);
+		return NextResponse.json({ error: error.message }, { status: 500 });
+	}
+
+	return NextResponse.json(data, { status: 200 });
 }

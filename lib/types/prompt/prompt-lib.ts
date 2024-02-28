@@ -21,3 +21,8 @@ export const promptSchema = {
 };
 
 export type PromptProps = Tables<'prompt'> & categoriesType;
+
+export type HandleDeleteParams = {
+	id?: string;
+	chat_id?: string;
+};
