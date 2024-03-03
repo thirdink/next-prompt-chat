@@ -67,7 +67,6 @@ const CreateNewPrompt = ({ getPrompts }: { getPrompts: () => void }) => {
 		},
 	});
 	const handlePromptSubmit = async (data: PromptForm) => {
-		console.info(' handlePromptSubmit data', data);
 		// post request to 'api/prompt'
 		try {
 			await promptService.postPrompt(data);
