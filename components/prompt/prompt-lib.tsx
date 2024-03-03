@@ -31,7 +31,6 @@ const PromptLib = ({ promptIdParams }: { promptIdParams: string }) => {
 
 	const handleDelete = async (params: HandleDeleteParams) => {
 		if (params.id) {
-			console.log('delete id: ', params.id);
 			const result = await promptService.deletePrompt(params.id);
 			if (result?.status === 200) {
 				toast({
@@ -52,17 +51,15 @@ const PromptLib = ({ promptIdParams }: { promptIdParams: string }) => {
 
 	const fetchParamPromptId = async (promptIdParams: string) => {
 		if (promptIdParams !== undefined && promptIdParams !== '') {
-			// Call the API to get the prompt
 			const result = await promptService.getPromptById(promptIdParams);
-
 			if (result) {
 				setChatSelected(result);
 			}
-			if (result == undefined) {
+			if (result === undefined) {
 				toast({
 					variant: 'destructive',
 					title: 'Uh oh! Something went wrong with fetching the prompt.',
-					description: 'Please check the link and try again.',
+					description: 'Please check the link and try again',
 				});
 			}
 		}

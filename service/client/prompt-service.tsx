@@ -1,8 +1,14 @@
 import z, { string } from 'zod';
-import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
+import {
+	QueryResult,
+	QueryData,
+	QueryError,
+	PostgrestError,
+} from '@supabase/supabase-js';
 import type { selectedChat } from '@/lib/types/chat/chat-lib';
 import { createClient } from '@/lib/supabase/client';
 import { promptSchema, PromptProps } from '@/lib/types/prompt/prompt-lib';
+import { toast } from '@/components/ui/use-toast';
 
 const supabase = createClient();
 
@@ -69,7 +75,6 @@ const insertPromptCategory = async ({ category }: category) => {
 		console.error('insertPromptCategory Error', e);
 	}
 };
-
 const deletePrompt = async (id: string) => {
 	try {
 		const response = await fetch('/api/prompt/', {
@@ -87,7 +92,7 @@ const deletePrompt = async (id: string) => {
 	}
 };
 
-const getPromptById = async (id: string): Promise<selectedChat | undefined> => {
+const getPromptById = async (id: string) => {
 	try {
 		const response = await fetch(`/api/prompt/${id}`, {
 			method: 'GET',
@@ -103,12 +108,9 @@ const getPromptById = async (id: string): Promise<selectedChat | undefined> => {
 				};
 				return selectedChat;
 			}
-		} else {
-			throw new Error('Failed to fetch prompt by ID');
 		}
-	} catch (error) {
+	} catch (error: any) {
 		console.error('getPromptById Error', error);
-		return undefined;
 	}
 };
 
