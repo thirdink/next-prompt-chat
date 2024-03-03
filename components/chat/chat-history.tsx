@@ -19,7 +19,6 @@ const chatHistory: React.FC = () => {
 	const handleDelete = async (params: HandleDeleteParams) => {
 		// chat_id from chat history component
 		if (params.chat_id) {
-			console.log('delete chat_id: ', params.chat_id);
 			const result = await chatService.deleteChatById(params.chat_id);
 			if (result?.status === 200) {
 				toast({

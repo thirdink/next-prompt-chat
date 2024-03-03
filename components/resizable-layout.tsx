@@ -41,7 +41,7 @@ const ResizableLayout = ({
 		<ResizablePanelGroup
 			direction='horizontal'
 			onLayout={(sizes: number[]) => {
-				console.log('sizes: ', sizes);
+				// console.log('sizes: ', sizes);
 				document.cookie = `react-resizable-panels:layout=${JSON.stringify(
 					sizes
 				)}`;
