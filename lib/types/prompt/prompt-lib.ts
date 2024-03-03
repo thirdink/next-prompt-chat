@@ -16,13 +16,12 @@ const promptFormSchema = z.object({
 type categoriesType = {
 	categories: categoriesProps;
 };
-export const promptSchema = {
-	promptFormSchema,
-};
-
 export type PromptProps = Tables<'prompt'> & categoriesType;
 
 export type HandleDeleteParams = {
 	id?: string;
 	chat_id?: string;
+};
+export const promptSchema = {
+	promptFormSchema,
 };

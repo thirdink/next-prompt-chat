@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { Tables } from '@/database.types';
+import { unstable_noStore } from 'next/cache';
 
 const getSupabaseClient = () => {
 	const cookieStore = cookies();
@@ -33,7 +34,22 @@ const deletePromptById = async (id: string) => {
 	return { data, error };
 };
 
+const fetchPromptById = async (id: string) => {
+	const supabase = getSupabaseClient();
+	unstable_noStore();
+	const { data, error } = await supabase
+		.from('prompt')
+		.select(
+			`id, title, input, instructions, created_at, categories (id, name, created_at)`
+		)
+		.eq('id', id)
+		.single();
+
+	return { data, error };
+};
+
 export const promptService = {
+	fetchPromptById,
 	insertPrompt,
 	fetchPrompts,
 	deletePromptById,

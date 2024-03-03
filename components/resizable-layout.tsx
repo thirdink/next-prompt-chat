@@ -27,6 +27,13 @@ const ResizableLayout = ({
 }: ResizableLayoutProps) => {
 	const pathname = usePathname();
 	const [prompts, dispatch] = useContext(PromptContext);
+
+	const promptLibraryRegex = /\/dashboard\/prompt-library(\/.*)?/;
+	const isPromptLibraryLink = promptLibraryRegex.test(pathname);
+
+	const chatHistoryRegex = /\/dashboard\/chat-history(\/.*)?/;
+	const isChatHistoryLink = chatHistoryRegex.test(pathname);
+
 	// useEffect(() => {
 	// 	console.log('defaultLayout ResizableLayout', defaultLayout);
 	// });
@@ -57,8 +64,7 @@ const ResizableLayout = ({
 				>
 					<div className='flex-1  h-fit -mx-5'>{children}</div>
 				</ResizablePanel>
-				{pathname === '/dashboard/chat-history' ||
-				pathname === '/dashboard/prompt-library' ? (
+				{isChatHistoryLink || isPromptLibraryLink ? (
 					<>
 						<ResizableHandle withHandle />
 						<ResizablePanel defaultSize={defaultLayout[2]}>

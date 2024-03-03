@@ -1,15 +1,17 @@
 'use client';
 import React, { useEffect, useState, useContext } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { useQueryState } from 'nuqs';
+
 import { promptService } from '@/service/client/prompt-service';
 import { PromptContext } from '@/data/context/PromptContext';
-import type { chatMessages, selectedChat } from '@/lib/types/chat/chat-lib';
+import type { selectedChat } from '@/lib/types/chat/chat-lib';
 import List from '@/components/list';
 import CreateNewPrompt from '@/components/prompt/create-new-prompt';
 import { type HandleDeleteParams } from '@/lib/types/prompt/prompt-lib';
 import { toast } from '@/components/ui/use-toast';
 
-const PromptLib = () => {
+const PromptLib = ({ promptIdParams }: { promptIdParams: string }) => {
+	const [promptId, setPromptId] = useQueryState('promptId');
 	const [prompts, dispatch] = useContext(PromptContext);
 	const [loading, setLoading] = useState(false);
 	const [chatSelected, setChatSelected] = useState<selectedChat | null>(null);
@@ -21,6 +23,9 @@ const PromptLib = () => {
 		setLoading(false);
 	};
 	const dispatchSelectedChat = () => {
+		if (chatSelected?.selectedId) {
+			setPromptId(chatSelected?.selectedId);
+		}
 		dispatch({ type: 'SELECTED_PROMPT', payload: chatSelected });
 	};
 
@@ -45,6 +50,28 @@ const PromptLib = () => {
 		}
 	};
 
+	const fetchParamPromptId = async (promptIdParams: string) => {
+		if (promptIdParams !== undefined && promptIdParams !== '') {
+			// Call the API to get the prompt
+			const result = await promptService.getPromptById(promptIdParams);
+
+			if (result) {
+				setChatSelected(result);
+			}
+			if (result == undefined) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong with fetching the prompt.',
+					description: 'Please check the link and try again.',
+				});
+			}
+		}
+	};
+
+	useEffect(() => {
+		fetchParamPromptId(promptIdParams);
+	}, [promptIdParams]);
+
 	useEffect(() => {
 		getPrompts();
 	}, []);
@@ -52,7 +79,7 @@ const PromptLib = () => {
 	useEffect(() => {
 		dispatchSelectedChat();
 	}, [chatSelected]);
-
+	//  whole component in is a suspense so no need to check for loading
 	return (
 		<>
 			<CreateNewPrompt getPrompts={getPrompts} />
@@ -62,17 +89,6 @@ const PromptLib = () => {
 				setChatSelected={setChatSelected}
 				handleDelete={handleDelete}
 			/>
-			{/* {loading ? (
-				skeletonItems.map((item) => (
-					<SkeletonGrid key={item.id} {...item} />
-				))
-			) : (
-				<List
-					items={prompts.prompt}
-					chatSelected={chatSelected}
-					setChatSelected={setChatSelected}
-				/>
-			)} */}
 		</>
 	);
 };

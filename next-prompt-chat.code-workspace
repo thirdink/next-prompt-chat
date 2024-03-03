@@ -12,6 +12,9 @@
   "settings": {
     "files.exclude": {
       "supabase/functions/": true
-    }
+    },
+    "cSpell.words": [
+      "nuqs"
+    ]
   }
 }

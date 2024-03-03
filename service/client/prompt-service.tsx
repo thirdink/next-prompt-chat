@@ -1,7 +1,8 @@
 import z, { string } from 'zod';
 import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
+import type { selectedChat } from '@/lib/types/chat/chat-lib';
 import { createClient } from '@/lib/supabase/client';
-import { promptSchema } from '@/lib/types/prompt/prompt-lib';
+import { promptSchema, PromptProps } from '@/lib/types/prompt/prompt-lib';
 
 const supabase = createClient();
 
@@ -85,7 +86,34 @@ const deletePrompt = async (id: string) => {
 		console.error('deletePrompt Error', e);
 	}
 };
+
+const getPromptById = async (id: string): Promise<selectedChat | undefined> => {
+	try {
+		const response = await fetch(`/api/prompt/${id}`, {
+			method: 'GET',
+		});
+
+		if (response.ok) {
+			const data = await response.json();
+			// convert data to selectedChat
+			if (data) {
+				const selectedChat: selectedChat = {
+					selectedId: data?.id,
+					chatMessages: data,
+				};
+				return selectedChat;
+			}
+		} else {
+			throw new Error('Failed to fetch prompt by ID');
+		}
+	} catch (error) {
+		console.error('getPromptById Error', error);
+		return undefined;
+	}
+};
+
 export const promptService = {
+	getPromptById,
 	deletePrompt,
 	getPromptCategories,
 	getAllPrompts,
