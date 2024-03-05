@@ -1,9 +1,21 @@
 # Project Name
-Promt lib - A Prompt Library for Language Learning Models
+Prompt lib - A User generated Prompt Library for Language Learning Models
 
 ## Overview
 
-This project is a library for storing user-generated prompts that can be used to initialize chats with Language Learning Models (LLMs) like ChatGPT, using GPT-4. It is built with React and TypeScript, and utilizes Supabase for backend services. The application provides a platform for users to create, store, and manage prompts that can be used to facilitate engaging and dynamic conversations with AI models.
+This project is a library for storing user-generated prompts that can be used to initialize chats with Language Learning Models (LLMs) like ChatGPT, using GPT-4. It is built with :
+
+- React / Next js
+- Next JS for API routes
+- Tailwind CSS + radix UI + shadcn/ui for styling
+- TypeScript
+- Utilizes Supabase DB for backend services and authentication services
+- OPENAI API for AI model integration
+- LangChain JS framework for developing applications powered by language models
+- Vercel AI for readable steams and real-time chat
+
+
+  The application provides a platform for users to create, store, and manage prompts that can be used to facilitate engaging and dynamic conversations with AI models.
 
 ## Features
 
