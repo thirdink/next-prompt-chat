@@ -3,6 +3,8 @@ import AuthButton from '@/components/ui/AuthButton';
 import { createClient } from '@/lib/supabase/server';
 
 import { cookies } from 'next/headers';
+import { GridBackground } from '@/components/grid-background';
+
 
 export default async function Index() {
 	const cookieStore = cookies();
@@ -27,7 +29,9 @@ export default async function Index() {
 					<TopBar />
 				</div>
 			</div>
-			<div className='animate-in flex-1 flex flex-col gap-20 px-3 items-center'></div>
+			<div className='animate-in flex-1 flex flex-col gap-20 px-3 items-center'>
+				<GridBackground />
+			</div>
 		</div>
 	);
 }
