@@ -6,7 +6,7 @@ const {
 } = require('tailwindcss/lib/util/flattenColorPalette');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	darkMode: ['class'],
+	darkMode: 'class',
 	content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
 	theme: {
 		container: {
