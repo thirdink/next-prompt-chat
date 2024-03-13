@@ -5,7 +5,7 @@ import { unstable_noStore } from 'next/cache';
 
 const getSupabaseClient = () => {
 	const cookieStore = cookies();
-	return createClient(cookieStore);
+	return createClient();
 };
 
 const insertPrompt = async (prompt: Partial<Tables<'prompt'>>) => {

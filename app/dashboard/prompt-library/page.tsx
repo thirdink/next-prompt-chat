@@ -16,4 +16,4 @@ function Page({ searchParams }: { searchParams: { promptId: string } }) {
 	);
 }
 
-export default protectedComponent(Page);
+export default Page;

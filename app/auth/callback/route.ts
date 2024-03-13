@@ -9,7 +9,7 @@ export async function GET(request: Request) {
 
 	if (code) {
 		const cookieStore = cookies(); // Update the type of cookieStore to string
-		const supabase = createClient(cookieStore); // Pass the cookieStore to the createClient function
+		const supabase = createClient(); // Pass the cookieStore to the createClient function
 		const { error } = await supabase.auth.exchangeCodeForSession(code);
 		if (!error) {
 			return NextResponse.redirect(

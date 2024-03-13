@@ -6,7 +6,7 @@ import { ModeToggle } from '@/components/theme-toggle';
 
 export default async function AuthButton() {
 	const cookieStore = cookies();
-	const supabase = createClient(cookieStore);
+	const supabase = createClient();
 
 	const {
 		data: { user },
@@ -16,7 +16,7 @@ export default async function AuthButton() {
 		'use server';
 
 		const cookieStore = cookies();
-		const supabase = createClient(cookieStore);
+		const supabase = createClient();
 		await supabase.auth.signOut();
 		return redirect('/login');
 	};

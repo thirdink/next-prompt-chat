@@ -4,7 +4,7 @@ import { Tables } from '@/database.types';
 
 const insertCategory = async (category: Partial<Tables<'categories'>>) => {
 	const cookieStore = cookies();
-	const supabase = createClient(cookieStore);
+	const supabase = createClient();
 	const { data, error } = await supabase
 		.from('categories')
 		.insert([{ ...category, name: category.name ?? '' }])

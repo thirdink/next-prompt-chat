@@ -32,8 +32,7 @@ const TEMPLATE = (instructions: string) => {
 
 export async function POST(req: NextRequest) {
 	try {
-		const cookieStore = cookies();
-		const supabase = createClient(cookieStore);
+		const supabase = createClient();
 		const { temperature, messages, instructions, topP, modelName, chatId } =
 			await req.json();
 

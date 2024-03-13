@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 const getSupabaseClient = () => {
 	const cookieStore = cookies();
-	return createClient(cookieStore);
+	return createClient();
 };
 
 const deleteChatById = async (id: string) => {
