@@ -21,7 +21,7 @@ interface ResizableLayoutProps {
 
 const ResizableLayout = ({
 	children,
-	defaultLayout = [265, 440, 655],
+	defaultLayout = [15, 30, 54],
 	defaultCollapsed = false,
 	navCollapsedSize,
 }: ResizableLayoutProps) => {
@@ -34,9 +34,9 @@ const ResizableLayout = ({
 	const chatHistoryRegex = /\/dashboard\/chat-history(\/.*)?/;
 	const isChatHistoryLink = chatHistoryRegex.test(pathname);
 
-	// useEffect(() => {
-	// 	console.log('defaultLayout ResizableLayout', defaultLayout);
-	// });
+	useEffect(() => {
+		console.log('defaultLayout ResizableLayout', defaultLayout);
+	});
 	return (
 		<ResizablePanelGroup
 			direction='horizontal'
