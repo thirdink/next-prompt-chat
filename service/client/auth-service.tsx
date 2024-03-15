@@ -1,8 +1,13 @@
 'ues client';
+import { z } from 'zod';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { UserResponse } from '@supabase/supabase-js';
+import {
+	signUpSchema,
+	SignUpValidationSchemaType,
+} from '@/lib/types/auth/auth-lib';
 
 const supabase = createClient();
 
@@ -30,3 +35,12 @@ function protectedComponent<T>(WrappedComponent: React.ComponentType<T>) {
 }
 
 export { protectedComponent };
+
+export const SignUpUser = async (values: z.infer<typeof signUpSchema>) => {
+	const {
+		data: { user, session },
+		error,
+	} = await supabase.auth.signUp(values);
+
+	return { user, error };
+};
