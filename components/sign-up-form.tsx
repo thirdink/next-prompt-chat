@@ -1,5 +1,8 @@
 'use client';
 import React from 'react';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Button } from '@/components/ui/button';
@@ -7,18 +10,12 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/ui/icons';
-import { signup } from '@/app/login/actions';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
 	Form,
 	FormControl,
@@ -123,7 +120,7 @@ const SignUpForm = () => {
 											<FormItem>
 												<FormLabel
 													className='sr-only'
-													htmlFor='email'
+													htmlFor='password'
 												>
 													Password
 												</FormLabel>
@@ -150,7 +147,7 @@ const SignUpForm = () => {
 													className='sr-only'
 													htmlFor='confirmPassword'
 												>
-													Password
+													Confirm Password
 												</FormLabel>
 												<FormControl>
 													<Input
@@ -166,7 +163,7 @@ const SignUpForm = () => {
 											</FormItem>
 										)}
 									/>
-									<Button type='submit'>
+									<Button type='submit' disabled={isLoading}>
 										{isLoading && (
 											<Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
 										)}

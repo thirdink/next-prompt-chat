@@ -7,6 +7,8 @@ import { UserResponse } from '@supabase/supabase-js';
 import {
 	signUpSchema,
 	SignUpValidationSchemaType,
+	loginSchema,
+	LoginValidationSchemaType,
 } from '@/lib/types/auth/auth-lib';
 
 const supabase = createClient();
@@ -43,4 +45,9 @@ export const SignUpUser = async (values: z.infer<typeof signUpSchema>) => {
 	} = await supabase.auth.signUp(values);
 
 	return { user, error };
+};
+
+export const loginUser = async (values: z.infer<typeof loginSchema>) => {
+	const { data, error } = await supabase.auth.signInWithPassword(values);
+	return { data, error };
 };
