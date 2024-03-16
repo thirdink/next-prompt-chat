@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { createClient } from '@/lib/supabase/server';
 import { SidebarNav } from '@/components/sidebar/side-bar';
 import TopBar from '@/components/header/top-bar';
 import Footer from '@/components/footer';
@@ -16,7 +18,15 @@ interface DashboardLayoutProps {
 	children: React.ReactNode;
 }
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+export default async function DashboardLayout({
+	children,
+}: DashboardLayoutProps) {
+	const supabase = createClient();
+
+	const { data, error } = await supabase.auth.getUser();
+	if (error || !data?.user) {
+		redirect('/login');
+	}
 	const layout = cookies().get('react-resizable-panels:layout');
 	const collapsed = cookies().get('react-resizable-panels:collapsed');
 	const defaultLayout = layout ? JSON.parse(layout.value) : undefined;

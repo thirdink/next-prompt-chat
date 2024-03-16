@@ -1,6 +1,6 @@
 'use client';
 import { useContext, useEffect, useState } from 'react';
-import { protectedComponent } from '@/service/client/auth-service';
+
 import { chatService } from '@/service/client/chat-service';
 import { PromptContext } from '@/data/context/PromptContext';
 import { toast } from '@/components/ui/use-toast';
@@ -69,4 +69,4 @@ const chatHistory: React.FC = () => {
 	);
 };
 
-export default protectedComponent(chatHistory);
+export default chatHistory;

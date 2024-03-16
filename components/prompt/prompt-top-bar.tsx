@@ -22,7 +22,7 @@ const PromptTopBar: React.FC<PromptTopbarProps> = ({
 		<>
 			{prompt.prompt && prompt.prompt.length === 0 ? (
 				<Link
-					href='/dashboard/prompt.prompt-library'
+					href='/dashboard/prompt-library'
 					className='flex flex-col items-start gap-2 rounded-lg p-3 text-left text-sm transition-all hover:bg-accent'
 				>
 					<div className='inline-block'>

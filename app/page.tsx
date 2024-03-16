@@ -1,27 +1,8 @@
 import TopBar from '@/components/header/top-bar';
-import AuthButton from '@/components/ui/AuthButton';
-import { createClient } from '@/lib/supabase/server';
 
-import { cookies } from 'next/headers';
 import { GridBackground } from '@/components/grid-background';
 
-
 export default async function Index() {
-	const cookieStore = cookies();
-
-	const canInitSupabaseClient = () => {
-		// This function is just for the interactive tutorial.
-		// Feel free to remove it once you have Supabase connected.
-		try {
-			createClient(cookieStore);
-			return true;
-		} catch (e) {
-			return false;
-		}
-	};
-
-	const isSupabaseConnected = canInitSupabaseClient();
-
 	return (
 		<div className='flex-col md:flex'>
 			<div className='space-y-0.5'>
