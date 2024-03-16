@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginUser } from '@/service/client/auth-service';
+import { AuthService } from '@/service/client/auth-service';
 import { useRouter } from 'next/navigation';
 import {
 	loginSchema,
@@ -38,7 +38,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 	});
 	async function onLogInSubmit(value: z.infer<typeof loginSchema>) {
 		setIsLoading(true);
-		const result = await loginUser(value);
+		const result = await AuthService.loginUser(value);
 		console.log('result', result);
 		if (result.error) {
 			toast({
