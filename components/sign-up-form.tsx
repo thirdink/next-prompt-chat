@@ -48,7 +48,7 @@ const SignUpForm = () => {
 		if (result.error) {
 			toast({
 				variant: 'destructive',
-				title: 'Uh oh! Something went wrong with deleting the prompt.',
+				title: 'Uh oh! Something went wrong with the sign up.',
 				description: JSON.stringify(result?.error),
 			});
 		}
