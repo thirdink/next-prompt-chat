@@ -10,7 +10,7 @@ import { PromptProvider } from '@/data/context/PromptContext';
 import ResizableLayout from '@/components/resizable-layout';
 import { TooltipProvider } from '@/components/ui/tooltip';
 export const metadata: Metadata = {
-	title: 'prompt lib',
+	title: 'Prompt lib',
 	description: 'create and store your prompts',
 };
 
