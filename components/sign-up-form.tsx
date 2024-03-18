@@ -66,6 +66,8 @@ const SignUpForm = () => {
 	async function signInWithGithub() {
 		setIsLoading(true);
 		const { data, error } = await AuthService.signInWithGithub();
+		console.log('error: ', error);
+		console.log('data: ', data);
 		if (error) {
 			toast({
 				variant: 'destructive',
@@ -80,8 +82,8 @@ const SignUpForm = () => {
 			});
 		}
 		setIsLoading(false);
-		router.push('/dashboard');
-		router.refresh();
+		// router.push('/dashboard');
+		// router.refresh();
 	}
 
 	return (
