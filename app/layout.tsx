@@ -16,7 +16,7 @@ const fontSans = FontSans({
 
 export const metadata = {
 	metadataBase: new URL(defaultUrl),
-	title: 'Prompt Chat',
+	title: 'Prompt Lib',
 	description: 'store and share prompt snippets',
 };
 
