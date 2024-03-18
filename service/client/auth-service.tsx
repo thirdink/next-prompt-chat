@@ -53,8 +53,11 @@ const loginUser = async (values: z.infer<typeof loginSchema>) => {
 };
 
 async function signInWithGithub() {
-	const { data, error } = await githubClient.auth.signInWithOAuth({
+	const { data, error } = await supabase.auth.signInWithOAuth({
 		provider: 'github',
+		options: {
+			redirectTo: `${location.origin}/auth/callback`,
+		},
 	});
 	return { data, error };
 }
