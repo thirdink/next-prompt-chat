@@ -137,4 +137,4 @@ backend = "postgres"
 enabled = true
 client_id = "env(GITHUB_CLIENT_ID)"
 secret = "env(GITHUB_SECRET)"
-redirect_uri = "" # Overrides the default auth redirectUrl.
+redirect_uri = "http://localhost:3000/" # Overrides the default auth redirectUrl.
