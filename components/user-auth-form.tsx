@@ -57,6 +57,28 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 		router.push('/dashboard');
 		router.refresh();
 	}
+	async function signInWithGithub() {
+		setIsLoading(true);
+		const { data, error } = await AuthService.signInWithGithub();
+		console.log('error: ', error);
+		console.log('data: ', data);
+		if (error) {
+			toast({
+				variant: 'destructive',
+				title: 'Uh oh! Something went wrong with the sign in.',
+				description: JSON.stringify(error),
+			});
+		}
+		if (data) {
+			toast({
+				title: 'Sign In Successful',
+				description: 'You have been signed in',
+			});
+		}
+		setIsLoading(false);
+		// router.push('/dashboard');
+		// router.refresh();
+	}
 
 	return (
 		<div className={cn('grid gap-6', className)} {...props}>
@@ -134,7 +156,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 					</span>
 				</div>
 			</div>
-			<Button variant='outline' type='button' disabled={isLoading}>
+			<Button
+				variant='outline'
+				type='button'
+				disabled={isLoading}
+				onClick={signInWithGithub}
+			>
 				{isLoading ? (
 					<Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
 				) : (
