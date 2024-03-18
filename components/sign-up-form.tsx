@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 import { buttonVariants } from '@/components/ui/button';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,11 +29,12 @@ import {
 	signUpSchema,
 	SignUpValidationSchemaType,
 } from '@/lib/types/auth/auth-lib';
-import { SignUpUser } from '@/service/client/auth-service';
+import { AuthService } from '@/service/client/auth-service';
 import { toast } from '@/components/ui/use-toast';
 
 const SignUpForm = () => {
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+	const router = useRouter();
 	const signUpForm = useForm<SignUpValidationSchemaType>({
 		resolver: zodResolver(signUpSchema),
 		defaultValues: {
@@ -44,11 +46,11 @@ const SignUpForm = () => {
 
 	async function onSignUpSubmit(value: z.infer<typeof signUpSchema>) {
 		setIsLoading(true);
-		const result = await SignUpUser(value);
+		const result = await AuthService.SignUpUser(value);
 		if (result.error) {
 			toast({
 				variant: 'destructive',
-				title: 'Uh oh! Something went wrong with deleting the prompt.',
+				title: 'Uh oh! Something went wrong with the sign up.',
 				description: JSON.stringify(result?.error),
 			});
 		}
@@ -60,6 +62,28 @@ const SignUpForm = () => {
 		}
 		setIsLoading(false);
 	}
+
+	async function signInWithGithub() {
+		setIsLoading(true);
+		const { data, error } = await AuthService.signInWithGithub();
+		if (error) {
+			toast({
+				variant: 'destructive',
+				title: 'Uh oh! Something went wrong with the sign in.',
+				description: JSON.stringify(error),
+			});
+		}
+		if (data) {
+			toast({
+				title: 'Sign In Successful',
+				description: 'You have been signed in',
+			});
+		}
+		setIsLoading(false);
+		router.push('/dashboard');
+		router.refresh();
+	}
+
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -108,7 +132,6 @@ const SignUpForm = () => {
 														{...field}
 													/>
 												</FormControl>
-
 												<FormMessage />
 											</FormItem>
 										)}
@@ -133,7 +156,6 @@ const SignUpForm = () => {
 														{...field}
 													/>
 												</FormControl>
-
 												<FormMessage />
 											</FormItem>
 										)}
@@ -185,12 +207,18 @@ const SignUpForm = () => {
 						</span>
 					</div>
 				</div>
-				<Button variant='outline' type='button' disabled={isLoading}>
-					{/* {isLoading ? (
-							<Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
-						) : ( */}
-					<Icons.gitHub className='mr-2 h-4 w-4' />
-					{/* )} */} GitHub
+				<Button
+					variant='outline'
+					type='button'
+					disabled={isLoading}
+					onClick={signInWithGithub}
+				>
+					{isLoading ? (
+						<Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
+					) : (
+						<Icons.gitHub className='mr-2 h-4 w-4' />
+					)}{' '}
+					GitHub
 				</Button>
 			</DialogContent>
 		</Dialog>

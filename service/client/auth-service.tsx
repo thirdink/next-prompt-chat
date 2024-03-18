@@ -3,15 +3,15 @@ import { z } from 'zod';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { UserResponse } from '@supabase/supabase-js';
-import {
-	signUpSchema,
-	SignUpValidationSchemaType,
-	loginSchema,
-	LoginValidationSchemaType,
-} from '@/lib/types/auth/auth-lib';
+import { signUpSchema, loginSchema } from '@/lib/types/auth/auth-lib';
 
 const supabase = createClient();
+const githubClient = createSupabaseClient(
+	process.env.NEXT_PUBLIC_SUPABASE_URL!,
+	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 function protectedComponent<T>(WrappedComponent: React.ComponentType<T>) {
 	return function ProtectedRoute(props: T) {
@@ -38,7 +38,7 @@ function protectedComponent<T>(WrappedComponent: React.ComponentType<T>) {
 
 export { protectedComponent };
 
-export const SignUpUser = async (values: z.infer<typeof signUpSchema>) => {
+const SignUpUser = async (values: z.infer<typeof signUpSchema>) => {
 	const {
 		data: { user, session },
 		error,
@@ -47,7 +47,20 @@ export const SignUpUser = async (values: z.infer<typeof signUpSchema>) => {
 	return { user, error };
 };
 
-export const loginUser = async (values: z.infer<typeof loginSchema>) => {
+const loginUser = async (values: z.infer<typeof loginSchema>) => {
 	const { data, error } = await supabase.auth.signInWithPassword(values);
 	return { data, error };
+};
+
+async function signInWithGithub() {
+	const { data, error } = await githubClient.auth.signInWithOAuth({
+		provider: 'github',
+	});
+	return { data, error };
+}
+
+export const AuthService = {
+	SignUpUser,
+	loginUser,
+	signInWithGithub,
 };
