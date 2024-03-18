@@ -49,7 +49,7 @@ const ResizableLayout = ({
 			className='h-full items-stretch'
 		>
 			<div className='flex space-y-8 lg:flex-row lg:space-x-1 lg:space-y-0'>
-				<aside className='hidden sm:flex -mx-4 w-1/8 p-5'>
+				<aside className='sm:flex -mx-4 w-1/8 p-5'>
 					<SidebarNav
 						defaultCollapsed={defaultCollapsed}
 						defaultLayout={defaultLayout[0]}
