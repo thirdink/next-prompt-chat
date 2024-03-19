@@ -138,7 +138,6 @@ export default function ChatPage({
 			if (selectedPrompt.instructions) {
 				setInstructions(selectedPrompt.instructions!);
 			}
-			console.log('clicked selectedPrompts', selectedPrompt);
 		}
 	}, [selectedPrompt]);
 

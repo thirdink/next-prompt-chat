@@ -2,12 +2,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useQueryState } from 'nuqs';
 
-import { promptService } from '@/service/client/prompt-service';
-import { PromptContext } from '@/data/context/PromptContext';
 import type { selectedChat } from '@/lib/types/chat/chat-lib';
+import { type HandleDeleteParams } from '@/lib/types/prompt/prompt-lib';
 import List from '@/components/list';
 import CreateNewPrompt from '@/components/prompt/create-new-prompt';
-import { type HandleDeleteParams } from '@/lib/types/prompt/prompt-lib';
+import { promptService } from '@/service/client/prompt-service';
+import { PromptContext } from '@/data/context/PromptContext';
 import { toast } from '@/components/ui/use-toast';
 
 const PromptLib = ({ promptIdParams }: { promptIdParams: string }) => {
