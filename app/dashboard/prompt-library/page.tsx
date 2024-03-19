@@ -1,8 +1,7 @@
 'use client';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import SkeletonGrid from '@/components/skeleton-grid-ui';
 import PromptLib from '@/components/prompt/prompt-lib';
-import { protectedComponent } from '@/service/client/auth-service';
 
 function Page({ searchParams }: { searchParams: { promptId: string } }) {
 	// check if searchParams.promptId is a string and call the api to get the prompt dispatch the selected chat action to the context
