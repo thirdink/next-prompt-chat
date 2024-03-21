@@ -34,9 +34,9 @@ const ResizableLayout = ({
 	const chatHistoryRegex = /\/dashboard\/chat-history(\/.*)?/;
 	const isChatHistoryLink = chatHistoryRegex.test(pathname);
 
-	useEffect(() => {
-		console.log('defaultLayout ResizableLayout', defaultLayout);
-	});
+	// useEffect(() => {
+	// 	console.log('defaultLayout ResizableLayout', defaultLayout);
+	// });
 	return (
 		<ResizablePanelGroup
 			direction='horizontal'

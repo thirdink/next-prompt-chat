@@ -3,30 +3,30 @@ import { selectedChat, chatMessages } from '@/lib/types/chat/chat-lib';
 import { format } from 'date-fns/format';
 import { ChatList } from '@/components/chat/chat-list';
 import { Separator } from '@/components/ui/separator';
+import SelectListSwitch from '@/components/select-list-switch';
 
 interface SelectedListDisplayProps {
 	item: selectedChat | null;
 }
 
 export function SelectedListDisplay({ item }: SelectedListDisplayProps) {
-	const today = new Date();
-
 	return (
 		<div className='flex h-full flex-col'>
 			<Separator />
 			{item ? (
 				<div className='flex flex-col'>
+					{item.chatMessages && 'id' in item.chatMessages && (
+						<>
+							<div className='flex p-4 justify-end'>
+								<SelectListSwitch
+									id={item.chatMessages['id']}
+								/>
+							</div>
+							<Separator />
+						</>
+					)}
 					<div className='flex items-start p-4'>
 						<div className='flex items-start gap-4 text-sm'>
-							{/* <Avatar>
-                <AvatarImage alt={item.name} />
-                <AvatarFallback>
-                  {item.name
-                    .split(" ")
-                    .map((chunk) => chunk[0])
-                    .join("")}
-                </AvatarFallback>
-              </Avatar> */}
 							<div className='grid gap-1'>
 								<div className='font-semibold'>
 									{item.chatMessages.title}

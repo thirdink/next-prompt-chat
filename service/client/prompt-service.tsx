@@ -114,6 +114,12 @@ const getPromptById = async (id: string) => {
 	}
 };
 
+const switchPublishPrompt = async({id,published}:{id:string,published:boolean}) =>{
+	const {data,error} = await supabase.from('prompt').update({published}).eq('id', id).select();
+
+	return {data,error};
+}
+
 export const promptService = {
 	getPromptById,
 	deletePrompt,
@@ -121,4 +127,5 @@ export const promptService = {
 	getAllPrompts,
 	postPrompt,
 	insertPromptCategory,
+	switchPublishPrompt,
 };
