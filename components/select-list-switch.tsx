@@ -16,11 +16,11 @@ const SelectListSwitch = ({ id }: { id: string }) => {
 	const [pending, setPending] = useState(false);
 
 	const handleOnchange = () => {
+		setPending(true);
 		setPublished(!published);
 	};
 
 	const switchPublished = async () => {
-		setPending(true);
 		const { data, error } = await promptService.switchPublishPrompt({
 			id,
 			published,
