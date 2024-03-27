@@ -22,7 +22,7 @@ const fetchPrompts = async () => {
 	const { data, error } = await supabase
 		.from('prompt')
 		.select(
-			`id, title, input, instructions, created_at, categories (id, name, created_at)`
+			`id, title, input, instructions, created_at, published, categories (id, name, created_at)`
 		)
 		.order('created_at', { ascending: false });
 	return { data, error };
@@ -40,15 +40,30 @@ const fetchPromptById = async (id: string) => {
 	const { data, error } = await supabase
 		.from('prompt')
 		.select(
-			`id, title, input, instructions, created_at, categories (id, name, created_at)`
+			`id, title, input, instructions, created_at, published, categories (id, name, created_at)`
 		)
 		.eq('id', id)
 		.single();
 
 	return { data, error };
 };
+const fetchPublicPromptById = async (id: string) => {
+	const supabase = getSupabaseClient();
+	const { data, error } = await supabase
+		.from('prompt')
+		.select(
+			`id, title, input, instructions, created_at, published, categories (id, name, created_at)`
+		)
+		.is('published', true)
+		.eq('id', id)
+
+		.single();
+
+	return { data, error };
+};
 
 export const promptService = {
+	fetchPublicPromptById,
 	fetchPromptById,
 	insertPrompt,
 	fetchPrompts,

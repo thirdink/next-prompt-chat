@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { selectedChat, chatMessages } from '@/lib/types/chat/chat-lib';
 import { format } from 'date-fns/format';
 import { ChatList } from '@/components/chat/chat-list';
@@ -18,10 +18,14 @@ export function SelectedListDisplay({ item }: SelectedListDisplayProps) {
 					{item.chatMessages && 'id' in item.chatMessages && (
 						<>
 							<div className='flex p-4 justify-end'>
-								<SelectListSwitch
-									id={item.chatMessages['id']}
-								/>
+								<Suspense fallback='loading...'>
+									<SelectListSwitch
+										id={item.chatMessages.id}
+										published={item.chatMessages.published}
+									/>
+								</Suspense>
 							</div>
+
 							<Separator />
 						</>
 					)}

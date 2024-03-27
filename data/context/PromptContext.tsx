@@ -31,6 +31,7 @@ export function reducer(state: Store, action: Action): Store {
 				...state,
 				prompt: [...state.prompt, action.payload as PromptProps],
 			};
+
 		case 'SELECTED_PROMPT':
 			return { ...state, selectedPrompt: action.payload as selectedChat };
 		default:
