@@ -1,34 +1,42 @@
+'use client';
 import React, { Suspense } from 'react';
 import { selectedChat, chatMessages } from '@/lib/types/chat/chat-lib';
 import { format } from 'date-fns/format';
+import { usePathname } from 'next/navigation';
 import { ChatList } from '@/components/chat/chat-list';
 import { Separator } from '@/components/ui/separator';
 import SelectListSwitch from '@/components/select-list-switch';
+import { isPromptLibraryLink } from '@/lib/utils';
 
 interface SelectedListDisplayProps {
 	item: selectedChat | null;
 }
 
 export function SelectedListDisplay({ item }: SelectedListDisplayProps) {
+	const pathname = usePathname();
+
 	return (
 		<div className='flex h-full flex-col'>
 			<Separator />
 			{item ? (
 				<div className='flex flex-col'>
-					{item.chatMessages && 'id' in item.chatMessages && (
-						<>
-							<div className='flex p-4 justify-end'>
-								<Suspense fallback='loading...'>
-									<SelectListSwitch
-										id={item.chatMessages.id}
-										published={item.chatMessages.published}
-									/>
-								</Suspense>
-							</div>
-
-							<Separator />
-						</>
-					)}
+					{item.chatMessages &&
+						isPromptLibraryLink(pathname) &&
+						'id' in item.chatMessages && (
+							<>
+								<div className='flex p-4 justify-end'>
+									<Suspense fallback='loading...'>
+										<SelectListSwitch
+											id={item.chatMessages.id}
+											published={
+												item.chatMessages.published
+											}
+										/>
+									</Suspense>
+								</div>
+								<Separator />
+							</>
+						)}
 					<div className='flex items-start p-4'>
 						<div className='flex items-start gap-4 text-sm'>
 							<div className='grid gap-1'>
@@ -64,36 +72,6 @@ export function SelectedListDisplay({ item }: SelectedListDisplayProps) {
 									</>
 							  )}
 					</div>
-					{/* <Separator className='mt-auto' />
-					<div className='p-4'>
-						<form>
-							<div className='grid gap-4'>
-								<Textarea
-									className='p-4'
-									placeholder='Type your message here'
-								/>
-								<div className='flex items-center'>
-									<Label
-										htmlFor='mute'
-										className='flex items-center gap-2 text-xs font-normal'
-									>
-										<Switch
-											id='mute'
-											aria-label='Mute thread'
-										/>{' '}
-										Mute this thread
-									</Label>
-									<Button
-										onClick={(e) => e.preventDefault()}
-										size='sm'
-										className='ml-auto'
-									>
-										Send
-									</Button>
-								</div>
-							</div>
-						</form>
-					</div> */}
 				</div>
 			) : (
 				<div className='p-8 text-center text-muted-foreground'>

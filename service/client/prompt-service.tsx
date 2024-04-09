@@ -118,6 +118,7 @@ const getPromptById = async (id: string) => {
 const getPublicPromptById = async (id: string) => {
 	unstable_noStore();
 	try {
+		let selectedChat: selectedChat | null = null;
 		const { data, error } = await supabase
 			.from('prompt')
 			.select(
@@ -127,7 +128,14 @@ const getPublicPromptById = async (id: string) => {
 			.is('published', true)
 			.single();
 
-		return { data, error };
+		if (data) {
+			selectedChat = {
+				selectedId: data?.id,
+				chatMessages: data as PromptProps, // Add the missing 'as PromptProps' cast here
+			};
+		}
+
+		return { selectedChat, error };
 	} catch (error: any) {
 		console.error('getPublicPromptById Error', error);
 	}

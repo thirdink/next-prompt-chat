@@ -39,3 +39,11 @@ export function LibContainer({
 export const defaultUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
 	: 'http://localhost:3000';
+
+export const isPromptLibraryLink = (pathname: string) => {
+	return /\/dashboard\/prompt-library(\/.*)?/.test(pathname);
+};
+
+export const isChatHistoryLink = (pathname: string) => {
+	return /\/dashboard\/chat-history(\/.*)?/.test(pathname);
+};

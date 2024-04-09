@@ -23,7 +23,13 @@ export async function middleware(request: NextRequest) {
 	// 	return NextResponse.redirect(new URL('/login', request.url));
 	// }
 
-	return preResponse.response;
+	return NextResponse.next({
+		...preResponse.response,
+		headers: {
+			'x-pathname': request.nextUrl.pathname,
+			...preResponse.response.headers,
+		},
+	});
 }
 
 export const config = {

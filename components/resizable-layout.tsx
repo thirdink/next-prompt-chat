@@ -11,6 +11,7 @@ import { PromptContext } from '@/data/context/PromptContext';
 
 import { SidebarNav } from '@/components/sidebar/side-bar';
 import { SelectedListDisplay } from '@/components/selected-list-display';
+import { isChatHistoryLink, isPromptLibraryLink } from '@/lib/utils';
 
 interface ResizableLayoutProps {
 	children: React.ReactNode;
@@ -28,15 +29,6 @@ const ResizableLayout = ({
 	const pathname = usePathname();
 	const [prompts, dispatch] = useContext(PromptContext);
 
-	const promptLibraryRegex = /\/dashboard\/prompt-library(\/.*)?/;
-	const isPromptLibraryLink = promptLibraryRegex.test(pathname);
-
-	const chatHistoryRegex = /\/dashboard\/chat-history(\/.*)?/;
-	const isChatHistoryLink = chatHistoryRegex.test(pathname);
-
-	// useEffect(() => {
-	// 	console.log('defaultLayout ResizableLayout', defaultLayout);
-	// });
 	return (
 		<ResizablePanelGroup
 			direction='horizontal'
@@ -64,7 +56,8 @@ const ResizableLayout = ({
 				>
 					<div className='flex-1  h-fit -mx-5'>{children}</div>
 				</ResizablePanel>
-				{isChatHistoryLink || isPromptLibraryLink ? (
+				{isChatHistoryLink(pathname) ||
+				isPromptLibraryLink(pathname) ? (
 					<>
 						<ResizableHandle withHandle />
 						<ResizablePanel defaultSize={defaultLayout[2]}>
