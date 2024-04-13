@@ -19,10 +19,10 @@ export const sidebarNavItems: NavProps['links'] = [
 		icon: FolderClock,
 		variant: 'ghost',
 	},
-	{
-		title: 'Profile',
-		href: '/dashboard/profile',
-		icon: User,
-		variant: 'ghost',
-	},
+	// {
+	// 	title: 'Profile',
+	// 	href: '/dashboard/profile',
+	// 	icon: User,
+	// 	variant: 'ghost',
+	// },
 ];
