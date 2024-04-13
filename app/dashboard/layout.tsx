@@ -9,6 +9,7 @@ import { PromptProvider } from '@/data/context/PromptContext';
 
 import ResizableLayout from '@/components/resizable-layout';
 import { TooltipProvider } from '@/components/ui/tooltip';
+
 export const metadata: Metadata = {
 	title: 'Prompt lib',
 	description: 'create and store your prompts',
@@ -29,7 +30,7 @@ export default async function DashboardLayout({
 	}
 	const layout = cookies().get('react-resizable-panels:layout');
 	const collapsed = cookies().get('react-resizable-panels:collapsed');
-	const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
+	const defaultLayout = layout ? JSON.parse(layout.value) : [15, 30, 54];
 	const defaultCollapsed = collapsed
 		? JSON.parse(collapsed.value)
 		: undefined;

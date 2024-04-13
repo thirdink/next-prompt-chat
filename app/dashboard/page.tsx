@@ -6,7 +6,7 @@ import { Message } from 'ai/react';
 import { Model } from '@/data/models';
 import { models } from '@/data/models';
 
-const Page = () => {
+const Page = ({ params }: { params: { slug: string } }) => {
 	const [chatId, setChatId] = useState(uuidv4());
 	const [temperature, setTemperature] = useState([0.56]);
 	const [topP, setTopP] = useState([0.9]);

@@ -9,6 +9,7 @@ import type { selectedChat } from '@/lib/types/chat/chat-lib';
 import { createClient } from '@/lib/supabase/client';
 import { promptSchema, PromptProps } from '@/lib/types/prompt/prompt-lib';
 import { toast } from '@/components/ui/use-toast';
+import { unstable_noStore } from 'next/cache';
 
 const supabase = createClient();
 
@@ -114,11 +115,62 @@ const getPromptById = async (id: string) => {
 	}
 };
 
+const getPublicPromptById = async (id: string) => {
+	unstable_noStore();
+	try {
+		let selectedChat: selectedChat | null = null;
+		const { data, error } = await supabase
+			.from('prompt')
+			.select(
+				`id, title, input, instructions, created_at, published, categories (id, name, created_at)`
+			)
+			.eq('id', id)
+			.is('published', true)
+			.single();
+
+		if (data) {
+			selectedChat = {
+				selectedId: data?.id,
+				chatMessages: data as PromptProps, // Add the missing 'as PromptProps' cast here
+			};
+		}
+
+		return { selectedChat, error };
+	} catch (error: any) {
+		console.error('getPublicPromptById Error', error);
+	}
+};
+
+const switchPublishPrompt = async ({
+	id,
+	published,
+}: {
+	id: string;
+	published: boolean;
+}) => {
+	const { data, error } = await supabase
+		.from('prompt')
+		.update({ published })
+		.eq('id', id)
+		.select();
+	let selectedChat: selectedChat | null = null;
+	if (data) {
+		selectedChat = {
+			selectedId: data?.[0].id,
+			chatMessages: data?.[0] as PromptProps, // Add the missing 'as PromptProps' cast here
+		};
+	}
+
+	return { selectedChat, error };
+};
+
 export const promptService = {
+	getPublicPromptById,
 	getPromptById,
 	deletePrompt,
 	getPromptCategories,
 	getAllPrompts,
 	postPrompt,
 	insertPromptCategory,
+	switchPublishPrompt,
 };

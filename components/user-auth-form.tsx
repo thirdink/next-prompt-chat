@@ -39,7 +39,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 	async function onLogInSubmit(value: z.infer<typeof loginSchema>) {
 		setIsLoading(true);
 		const result = await AuthService.loginUser(value);
-		console.log('result', result);
+
 		if (result.error) {
 			toast({
 				variant: 'destructive',
