@@ -30,18 +30,17 @@ const Page = async ({
 						<TopBar />
 					</div>
 				</div>
-
-				{selectedChat !== null ? (
-					<>
-						<SelectedListDisplay item={selectedChat} />
-					</>
-				) : (
-					<div className='flex flex-row container'>
+				<div className='flex flex-row container'>
+					{selectedChat !== null ? (
+						<>
+							<SelectedListDisplay item={selectedChat} />
+						</>
+					) : (
 						<div className='animate-in flex-1 flex flex-col gap-20 px-3 items-center container'>
 							<h2> This Prompt is not made public</h2>
 						</div>
-					</div>
-				)}
+					)}
+				</div>
 				<Footer />
 			</div>
 		</TooltipProvider>
